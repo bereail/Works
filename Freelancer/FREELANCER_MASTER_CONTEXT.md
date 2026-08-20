@@ -97,7 +97,7 @@ Ningún proyecto para ocultar/archivar — los 4 aportan un ángulo distinto.
 | Portfolio / Demos | 75/100 | 3 de 4 con demo viva, faltan case studies narrativos |
 | Technical Proof (testing, arquitectura, deploy) | 88/100 | El punto más fuerte del perfil |
 | LinkedIn / contacto externo | No evaluable | No hay datos suficientes para determinarlo |
-| Freelance Positioning (oferta de servicios clara) | 55/100 | Hoy no existe una oferta articulada públicamente |
+| Freelance Positioning (oferta de servicios clara) | 70/100 | Oferta ya definida internamente (2026-08-20) — sube cuando esté publicada/comunicada |
 
 ### Top job types a priorizar (RECOMENDACIÓN)
 
@@ -106,6 +106,30 @@ Ningún proyecto para ocultar/archivar — los 4 aportan un ángulo distinto.
 3. Full Stack Node + React (librook/VI habilitan esto) para MVPs/SaaS chicos.
 
 No priorizar por ahora: frontend puro sin backend (no aprovecha el diferencial real), ofertas genéricas sin filtro.
+
+### Oferta de servicios freelance (definida con Berenice el 2026-08-20)
+
+- **Capacidad real:** 5-10 hs/semana (además de su trabajo full-time y PCfix).
+- **Clientes objetivo, en orden de prioridad:**
+  1. PyMEs / comercios de Rosario — mismo público que PCfix, sinergia real de venta cruzada ("te arreglo la PC + te hago el sistema").
+  2. Instituciones/organizaciones más grandes (tipo el hospital) — proyectos de mayor valor, venta más lenta y formal.
+  3. Subcontratos para otros desarrolladores/agencias — pago probablemente menor por hora pero más constante, útil para llenar huecos de tiempo.
+- **Idioma de mercado:** español / mercado local-LatAm por ahora — inglés técnico básico, no priorizar plataformas internacionales (Upwork, remoto en USD) hasta que mejore.
+- **LinkedIn:** existe pero está abandonado — revivirlo es tarea del plan de 30 días, no crear uno nuevo.
+
+**Servicios concretos a ofrecer** (based en el stack real demostrado, no genérico):
+- Sistemas de gestión/backoffice a medida (inventario, turnos, clientes, reportes) — exactamente lo que ya demuestran stockToner y Glicemia.
+- Desarrollo de dashboards con reportes exportables (Excel/PDF).
+- APIs REST + integración de servicios externos.
+- Mantenimiento/mejora de sistemas Django o React/Node existentes.
+
+**Precio orientativo** (investigado en el mercado argentino 2026, no inventado — ver fuentes):
+- Freelancers Django/React en Argentina cobran entre USD 20-45/hora según experiencia (semi-senior: USD 30-45/hora) — [fuente](https://cristiantait.com/blog/programador-web-freelance-argentina-2026), [fuente](https://julitaenremoto.com/cuanto-cobrar-freelancer-dolares-2026/).
+- Un sistema de gestión a medida completo cuesta entre USD 2.500 (módulo básico) y USD 8.000 (ERP completo) — [fuente](https://studiox.com.ar/novedades/cuanto-cuesta-desarrollar-un-software-a-medida-en-argentina-en-2026).
+- **Recomendación para arrancar (primeros 2-3 clientes, mientras arma su track record freelance formal):** por debajo del piso de mercado semi-senior pero sin subvalorar la evidencia técnica real —
+  - Por hora (consultoría/subcontratos): **USD 15-25/hora**.
+  - Sistema de gestión chico a medida (login + 1-2 módulos + reportes básicos, sin roles múltiples ni integraciones complejas): **USD 600-1.500** por proyecto, según alcance.
+  - Subir estos números apenas tenga 2-3 testimonios/casos reales como freelance (no solo como empleada).
 
 ### Sobre automatizar la búsqueda en plataformas externas (nota crítica y honesta)
 
@@ -139,6 +163,7 @@ LinkedIn, Upwork, Workana, Indeed y Glassdoor **no tienen APIs públicas gratuit
 
 - 2026-08-20: se prioriza NO scrapear plataformas de empleo que lo prohíben en sus ToS (LinkedIn, Upwork, Workana, Indeed, Glassdoor). El sistema de búsqueda se diseñará alrededor de carga manual + fuentes con API/RSS pública reales, a definir en Fase 2.
 - 2026-08-20: se recomienda posicionamiento "Full Stack Developer (Django + React/Node) con sistemas en producción real", pendiente de validación por Berenice.
+- 2026-08-20: definida la oferta de servicios con Berenice — ver sección "Oferta de servicios freelance" arriba. Prioridad de clientes: PyMEs de Rosario > instituciones > subcontratos. Capacidad: 5-10 hs/semana. Mercado local/español (inglés técnico básico, no priorizar plataformas internacionales).
 
 ## 6. LEARNING LOG
 
