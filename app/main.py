@@ -1,3 +1,4 @@
+import asyncio
 import secrets
 from pathlib import Path
 
@@ -7,6 +8,7 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from app.database import Base, SesionLocal, engine
 from app.seed.datos_simulados import sembrar
+from app.services.programador import correr_programador_en_segundo_plano
 from app.ui.routers import analiticas, automatizar, autenticacion, configuracion, dashboard, inicio, memoria, oportunidades, publicaciones
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -44,3 +46,4 @@ def al_iniciar() -> None:
         sembrar(sesion)
     finally:
         sesion.close()
+    asyncio.create_task(correr_programador_en_segundo_plano())

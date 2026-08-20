@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.auth.dependencias import requiere_login
 from app.database import obtener_sesion
-from app.models import CuentaConectada, IdentidadNegocio, Oportunidad
+from app.models import CuentaConectada, IdentidadNegocio, Oportunidad, Publicacion
 from app.services import analitica
 from app.ui.plantillas import templates
 
@@ -28,6 +28,12 @@ def dashboard(request: Request, sesion: Session = Depends(obtener_sesion)):
     mejor_horario = analitica.mejor_horario(analizadas)
     crecimiento = analitica.crecimiento_seguidores(sesion)
     oportunidades_recientes = sesion.query(Oportunidad).filter(Oportunidad.estado == "nueva").order_by(Oportunidad.creado_en.desc()).limit(4).all()
+    publicacion_pendiente = (
+        sesion.query(Publicacion)
+        .filter(Publicacion.estado.in_(["previsualizado", "aprobado"]))
+        .order_by(Publicacion.creado_en.desc())
+        .first()
+    )
 
     return templates.TemplateResponse("dashboard.html", {
         "request": request,
@@ -40,5 +46,6 @@ def dashboard(request: Request, sesion: Session = Depends(obtener_sesion)):
         "mejor_horario": mejor_horario,
         "crecimiento": crecimiento,
         "oportunidades_recientes": oportunidades_recientes,
+        "publicacion_pendiente": publicacion_pendiente,
         "ahora": datetime.now(),
     })

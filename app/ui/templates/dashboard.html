@@ -14,6 +14,16 @@
   </div>
 </div>
 
+{% if publicacion_pendiente %}
+<div class="tarjeta fade-in" style="border-left: 4px solid var(--alerta); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:24px;">
+  <div>
+    <div style="font-weight:700;">📝 Ya te dejé un borrador listo, esperando tu OK</div>
+    <div class="texto-suave" style="font-size:13px; margin-top:2px;">{{ publicacion_pendiente.tema }} — generado solo por la automatización semanal.</div>
+  </div>
+  <a href="/publicaciones/{{ publicacion_pendiente.id }}/previsualizar" class="boton boton-primario">Ver y confirmar →</a>
+</div>
+{% endif %}
+
 <div class="tarjeta fade-in" style="background: linear-gradient(135deg, var(--color-primario), var(--color-acento)); border: none; padding: 28px 32px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:24px;">
   <div style="color:#fff;">
     <div style="font-size:17px; font-weight:700;">¿Publicamos algo hoy?</div>
