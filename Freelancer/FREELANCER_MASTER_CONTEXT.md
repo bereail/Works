@@ -77,7 +77,9 @@ Esto conecta directo con lo que PCfix también quiere vender (sistemas/automatiz
 2. ✅ Hecho (2026-08-20) — URL del perfil: `https://ailonline.com.ar` (agrupa las demos de VI y librook).
 3. ✅ Hecho (2026-08-20) — badge de GitHub Actions ("Tests") agregado al README de VI, [commit](https://github.com/bereail/VI/commit/4e057fd8d1c6a8db9ac09856b0a26a5c6aecc2ae).
 4. ✅ Ya estaba — los 4 proyectos ya están fijados en el perfil, con Glicemia primero (orden exacto de los otros 3 no se tocó para no arriesgar el drag & drop automatizado).
-5. ⏳ Pendiente — grabar un GIF corto de cada demo funcionando (VI, librook) y agregarlo al README. Tarea más larga, para la próxima sesión de este tema.
+5. ✅ Hecho (2026-08-20) — GIF de demo agregado a los README de VI ([commit](https://github.com/bereail/VI/commit/6879a9a6906557a727b39a29dd0a735a13c776f6)) y librook ([commit](https://github.com/bereail/librook/commit/bc276f57df83110331d8f24c46f4ce6d544a50c9)). El de librook quedó casi estático (1 frame) — se puede regrabar más adelante con un recorrido más largo si se quiere más movimiento.
+
+**Los 5 quick wins de GitHub: completos.**
 
 ### Clasificación de proyectos
 
