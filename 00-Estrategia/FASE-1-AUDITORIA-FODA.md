@@ -7,7 +7,7 @@
 
 - **Operación:** trabajos esporádicos, sin sistematizar. No hay pricing público, ni turnos, ni seguimiento post-servicio documentado.
 - **Perfil del dueño:** Analista de Sistemas (rol full-time en otra institución) + freelance propio. Es decir, PC Fix hoy es un **segundo trabajo**, no la actividad principal — esto condiciona cuánto tiempo real hay disponible por semana.
-- **Presencia digital:** cuenta de Instagram @pcfix.informatica ya existente; página de Facebook "PC Fix" recién creada (separada de la identidad personal, con datos de contacto cargados: Barrio Arroyito, Rosario, tel. 341 318-4829); primer posteo ya publicado. Cuenta comercial de Meta todavía **sin verificar**, lo que bloquea publicidad paga por ahora.
+- **Presencia digital:** cuenta de Instagram @pcfix.informatica ya existente; página de Facebook "PC Fix" recién creada (separada de la identidad personal, con datos de contacto cargados: Barrio Arroyito, Rosario — sin teléfono público, contacto por mensaje directo); primer posteo ya publicado. Cuenta comercial de Meta todavía **sin verificar**, lo que bloquea publicidad paga por ahora.
 - **Sitio web:** no existe un sitio propio todavía; se usó un placeholder (`ailonline.com.ar/pcfix`) solo para completar un formulario de Meta.
 - **Ubicación:** Barrio Arroyito, Rosario, Santa Fe — sin indicios de local comercial propio; la operación parece ser a domicilio o con el equipo yendo y viniendo.
 - **Servicios actuales:** reparación de PC/notebook, instalación de Windows, formateo, drivers, limpieza de virus, optimización, migración a SSD, RAM, limpieza física, cambio de discos, configuración, recuperación básica, backups, soporte remoto, venta de SSD/RAM/accesorios. Todo servicios individuales sueltos, sin paquetes ni recurrencia.

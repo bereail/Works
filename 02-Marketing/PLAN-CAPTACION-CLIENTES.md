@@ -45,7 +45,7 @@ No lo reemplaza — lo complementa. El contenido construye confianza para cuando
 
 ## Textos listos para copiar y pegar
 
-WhatsApp: 341 318-4829 · link directo: https://wa.me/5493413184829
+Contacto: por mensaje directo de Instagram/Facebook — sin número de teléfono público (ver `17-Backlog/` / memoria del proyecto: regla de no publicar celular/dirección exacta).
 
 ### A. Descripción — Perfil de Negocio de Google
 
@@ -55,28 +55,27 @@ WhatsApp: 341 318-4829 · link directo: https://wa.me/5493413184829
 
 > Se entiende lo que te arreglan 🛠️
 > Reparación de PC y notebooks en Rosario | Instalación, SSD, RAM y más
-> 📍 Barrio Arroyito · Turnos por WhatsApp 👇
-> https://wa.me/5493413184829
+> 📍 Barrio Arroyito · Escribinos por mensaje 👇
 
 ### C. Posteo — grupos de Facebook (compra-venta / recomendaciones)
 
 > ¿Se te rompió la PC o la notebook y no sabés a quién llevarla? 🖥️
 > Soy Berenice, de PC Fix Informática (Barrio Arroyito). Hago reparación, instalación de Windows, migración a SSD, ampliación de RAM, limpieza de virus y más — con diagnóstico claro y presupuesto por escrito antes de tocar el equipo, sin sorpresas después.
 > También tengo SSD y memoria RAM si querés actualizar tu equipo sin comprar uno nuevo.
-> Consultas por WhatsApp: https://wa.me/5493413184829
+> Consultas por mensaje directo.
 > 📍 Retiro y entrega en punto fijo, Barrio Arroyito.
 
 ### D. Mensaje directo — comercios y PyMEs cercanos
 
 > Hola, ¿cómo estás? Soy Berenice, de PC Fix Informática, trabajo acá cerca (Barrio Arroyito). Ofrezco mantenimiento y soporte técnico para comercios — que un problema con la red, las computadoras o los backups no te complique un día de trabajo.
 > Si en algún momento tenés un problema técnico, o querés que revise el estado general de tus equipos, contame y coordinamos sin compromiso.
-> Mi WhatsApp: https://wa.me/5493413184829
+> Escribime por mensaje directo.
 
 ### E. Post — venta de RAM/SSD (funnel de bajo costo, alta conversión)
 
 > ¿Tu PC tarda una eternidad en prender? Puede que no necesites una compu nueva.
 > Con un SSD, tu equipo arranca en segundos — te cuento qué te conviene según tu PC, sin venderte de más. También tengo memoria RAM si lo que te falta es fluidez con varios programas abiertos.
-> Consultas por WhatsApp 👇 https://wa.me/5493413184829
+> Consultas por mensaje directo 👇
 
 ---
 
