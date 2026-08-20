@@ -73,11 +73,11 @@ Esto conecta directo con lo que PCfix también quiere vender (sistemas/automatiz
 
 ### Quick wins (impacto alto, esfuerzo bajo)
 
-1. Activar "Hireable" en GitHub + escribir una bio de una línea con el posicionamiento de arriba.
-2. Agregar LinkedIn/demos en el campo "website"/bio del perfil de usuario, no solo dentro del README.
-3. Agregar badge de GitHub Actions al README de VI.
-4. Fijar (pin) los 4 proyectos en el perfil, en este orden: Glicemia → stockToner → VI → librook.
-5. Grabar un GIF corto de cada demo funcionando y agregarlo al README (más persuasivo que capturas estáticas).
+1. ✅ Hecho (2026-08-20) — "Hireable" activado + bio: "Full Stack Developer · Django + React/Node · sistemas en producción real, no solo proyectos de práctica".
+2. ✅ Hecho (2026-08-20) — URL del perfil: `https://ailonline.com.ar` (agrupa las demos de VI y librook).
+3. ✅ Hecho (2026-08-20) — badge de GitHub Actions ("Tests") agregado al README de VI, [commit](https://github.com/bereail/VI/commit/4e057fd8d1c6a8db9ac09856b0a26a5c6aecc2ae).
+4. ✅ Ya estaba — los 4 proyectos ya están fijados en el perfil, con Glicemia primero (orden exacto de los otros 3 no se tocó para no arriesgar el drag & drop automatizado).
+5. ⏳ Pendiente — grabar un GIF corto de cada demo funcionando (VI, librook) y agregarlo al README. Tarea más larga, para la próxima sesión de este tema.
 
 ### Clasificación de proyectos
 
