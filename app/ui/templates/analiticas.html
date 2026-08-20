@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block titulo %}Analíticas — PCfix Automation Center{% endblock %}
+{% block contenido %}
+
+<div class="header-pagina">
+  <div>
+    <h1>📈 Analíticas</h1>
+    <p>Rendimiento por plataforma, servicio, formato, pilar, día y horario.</p>
+  </div>
+  <div class="selector-periodo">
+    <a href="/analiticas?periodo=7" class="{{ 'activo' if periodo_actual == '7' else '' }}">7 días</a>
+    <a href="/analiticas?periodo=30" class="{{ 'activo' if periodo_actual == '30' else '' }}">30 días</a>
+    <a href="/analiticas?periodo=90" class="{{ 'activo' if periodo_actual == '90' else '' }}">90 días</a>
+    <a href="/analiticas?periodo=todo" class="{{ 'activo' if periodo_actual == 'todo' else '' }}">Histórico</a>
+  </div>
+</div>
+
+{% if not resumen.hay_datos %}
+  <div class="tarjeta vacio"><p>No hay datos suficientes para determinarlo en este período.</p></div>
+{% else %}
+
+<div class="grilla-tarjetas">
+  <div class="tarjeta metrica-tarjeta"><div class="etiqueta">Publicaciones</div><div class="valor">{{ resumen.cantidad_publicaciones }}</div></div>
+  <div class="tarjeta metrica-tarjeta"><div class="etiqueta">Alcance total</div><div class="valor">{{ "{:,}".format(resumen.alcance_total).replace(",", ".") }}</div></div>
+  <div class="tarjeta metrica-tarjeta"><div class="etiqueta">Interacciones</div><div class="valor">{{ "{:,}".format(resumen.interacciones_total).replace(",", ".") }}</div></div>
+  <div class="tarjeta metrica-tarjeta"><div class="etiqueta">Tasa de interacción promedio</div><div class="valor">{{ "%.1f"|format(resumen.tasa_interaccion_promedio * 100) }}%</div></div>
+</div>
+
+<div class="tarjeta mt-24">
+  <div class="subtitulo-seccion" style="margin-top:0;">Interacción por pilar de contenido</div>
+  <canvas id="graficoPilar" height="90"></canvas>
+</div>
+
+<div class="fila-campos mt-24" style="align-items:start;">
+  <div class="tarjeta">
+    <div class="subtitulo-seccion" style="margin-top:0;">Por plataforma</div>
+    {% for nombre, datos in por_plataforma.items() %}
+    <div class="lista-fila"><span>{{ nombre|capitalize }}</span><span class="badge badge-neutro">{{ "%.1f"|format(datos.tasa_interaccion_promedio * 100) }}%</span></div>
+    {% endfor %}
+  </div>
+  <div class="tarjeta">
+    <div class="subtitulo-seccion" style="margin-top:0;">Por formato</div>
+    {% for nombre, datos in por_formato.items() %}
+    <div class="lista-fila"><span>{{ nombre|capitalize }}</span><span class="badge badge-neutro">{{ "%.1f"|format(datos.tasa_interaccion_promedio * 100) }}%</span></div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="fila-campos mt-24" style="align-items:start;">
+  <div class="tarjeta">
+    <div class="subtitulo-seccion" style="margin-top:0;">Por servicio</div>
+    {% for nombre, datos in por_servicio.items() %}
+    <div class="lista-fila"><span>{{ nombre }}</span><span class="badge badge-neutro">{{ "%.1f"|format(datos.tasa_interaccion_promedio * 100) }}%</span></div>
+    {% endfor %}
+  </div>
+  <div class="tarjeta">
+    <div class="subtitulo-seccion" style="margin-top:0;">Por día de la semana</div>
+    {% for nombre, datos in por_dia_semana.items() %}
+    <div class="lista-fila"><span>{{ nombre }}</span><span class="badge badge-neutro">{{ "%.1f"|format(datos.tasa_interaccion_promedio * 100) }}%</span></div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="tarjeta mt-24">
+  <div class="subtitulo-seccion" style="margin-top:0;">Por horario</div>
+  {% for nombre, datos in por_horario.items() %}
+  <div class="lista-fila"><span>{{ nombre }}</span><span class="badge badge-neutro">{{ "%.1f"|format(datos.tasa_interaccion_promedio * 100) }}%</span></div>
+  {% endfor %}
+</div>
+
+<script>
+  const datosPilar = {{ por_pilar|tojson }};
+  const etiquetas = Object.keys(datosPilar);
+  const valores = etiquetas.map(k => (datosPilar[k].tasa_interaccion_promedio * 100));
+  new Chart(document.getElementById('graficoPilar'), {
+    type: 'bar',
+    data: {
+      labels: etiquetas,
+      datasets: [{ label: 'Tasa de interacción (%)', data: valores, backgroundColor: 'rgba(37,99,235,0.55)', borderRadius: 6 }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { callback: v => v + '%' } } }
+    }
+  });
+</script>
+
+{% endif %}
+{% endblock %}

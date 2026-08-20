@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block titulo %}Calendario — PCfix Automation Center{% endblock %}
+{% block contenido %}
+
+<div class="header-pagina">
+  <div>
+    <h1>🗓️ Calendario</h1>
+    <p>Todas las publicaciones, reales y simuladas, ordenadas por fecha.</p>
+  </div>
+</div>
+
+{% if not publicaciones %}
+  <div class="tarjeta vacio"><p>No hay publicaciones cargadas todavía.</p></div>
+{% else %}
+<div class="tarjeta">
+  {% for p in publicaciones %}
+  <div class="lista-fila">
+    <div>
+      <span class="badge badge-neutro">{{ p.fecha.strftime('%d/%m/%Y %H:%M') }}</span>
+      <strong style="margin-left:10px;">{{ p.tema }}</strong>
+      <div class="texto-suave" style="font-size:13px; margin-top:4px;">{{ p.plataforma|capitalize }} · {{ p.formato }} {% if p.origen_datos == 'simulado' %}<span class="badge badge-simulado">SIMULADO</span>{% endif %}</div>
+    </div>
+    <div class="gap-8">
+      <span class="badge badge-neutro">{{ p.estado }}</span>
+      <a href="/publicaciones/{{ p.id }}/previsualizar" class="boton boton-ghost boton-chico">Ver →</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

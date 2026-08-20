@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{% block titulo %}PCfix Automation Center{% endblock %}</title>
+<link rel="stylesheet" href="/static/estilos.css" />
+<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+<script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --color-primario: {{ identidad.color_primario if identidad else '#2563eb' }};
+    --color-acento: {{ identidad.color_acento if identidad else '#0ea5a4' }};
+  }
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="marca-sidebar">
+      <div class="nombre">{{ identidad.nombre_comercial if identidad else 'PCfix' }}</div>
+      <div class="tag">Automation Center</div>
+    </div>
+
+    <a class="nav-link {{ 'activo' if request.url.path == '/' else '' }}" href="/">📊 Dashboard</a>
+
+    <div class="nav-grupo">
+      <div class="nav-titulo">Automatizar</div>
+      <a class="nav-link {{ 'activo' if request.url.path == '/automatizar' else '' }}" href="/automatizar">🤖 Análisis integral</a>
+      <a class="nav-link {{ 'activo' if request.url.path == '/oportunidades' else '' }}" href="/oportunidades">💡 Oportunidades</a>
+    </div>
+
+    <div class="nav-grupo">
+      <div class="nav-titulo">Publicaciones</div>
+      <a class="nav-link {{ 'activo' if request.url.path == '/publicaciones/crear' else '' }}" href="/publicaciones/crear">✍️ Crear</a>
+      <a class="nav-link {{ 'activo' if request.url.path == '/publicaciones/flyers' else '' }}" href="/publicaciones/flyers">🎨 Flyers</a>
+      <a class="nav-link {{ 'activo' if request.url.path == '/publicaciones/calendario' else '' }}" href="/publicaciones/calendario">🗓️ Calendario</a>
+      <a class="nav-link {{ 'activo' if request.url.path == '/publicaciones/pendientes' else '' }}" href="/publicaciones/pendientes">⏳ Pendientes</a>
+    </div>
+
+    <div class="nav-grupo">
+      <div class="nav-titulo">Negocio</div>
+      <a class="nav-link {{ 'activo' if request.url.path == '/analiticas' else '' }}" href="/analiticas">📈 Analíticas</a>
+      <a class="nav-link {{ 'activo' if request.url.path == '/memoria' else '' }}" href="/memoria">🧠 Memoria</a>
+      <a class="nav-link {{ 'activo' if request.url.path == '/configuracion' else '' }}" href="/configuracion">⚙️ Configuración</a>
+    </div>
+
+    <div class="sidebar-pie">
+      <form method="post" action="/logout">
+        <button type="submit" class="boton boton-ghost boton-chico" style="width:100%;">Cerrar sesión</button>
+      </form>
+    </div>
+  </aside>
+
+  <main class="main">
+    {% block contenido %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block titulo %}Previsualizar publicación — PCfix Automation Center{% endblock %}
+{% block contenido %}
+
+<div class="header-pagina">
+  <div>
+    <h1>Previsualización</h1>
+    <p>Generar → Previsualizar → Aprobar → Publicar. Nada sale a ninguna red sin tu confirmación explícita.</p>
+  </div>
+  <span class="badge badge-neutro">Estado: {{ publicacion.estado }}</span>
+</div>
+
+<div class="fila-campos" style="align-items:start;">
+  <div class="tarjeta">
+    <div class="subtitulo-seccion" style="margin-top:0;">Vista previa</div>
+
+    {% if publicacion.flyers %}
+      <img src="/static/{{ publicacion.flyers[-1].archivo_generado }}" alt="Flyer generado" style="width:100%; border-radius: var(--radio); margin-bottom:14px;" />
+    {% else %}
+      <div class="vacio" style="border: 1px dashed var(--borde); border-radius: var(--radio); margin-bottom:14px;">
+        <p>Todavía no se generó ninguna pieza gráfica para esta publicación.</p>
+      </div>
+    {% endif %}
+
+    <p style="white-space:pre-wrap;">{{ publicacion.texto }}</p>
+    {% if publicacion.cta %}<p style="font-weight:600; color: var(--color-primario);">{{ publicacion.cta }}</p>{% endif %}
+
+    {% if publicacion.estado in ['previsualizado', 'borrador'] %}
+    <form method="post" action="/publicaciones/{{ publicacion.id }}/generar-flyer" class="mt-24">
+      <button type="submit" class="boton boton-acento">🎨 Generar flyer</button>
+    </form>
+    {% endif %}
+  </div>
+
+  <div class="tarjeta">
+    <div class="subtitulo-seccion" style="margin-top:0;">Detalle</div>
+    <div class="lista-fila"><span class="texto-suave">Plataforma</span><strong>{{ publicacion.plataforma|capitalize }}</strong></div>
+    <div class="lista-fila"><span class="texto-suave">Cuenta que se usará</span><strong>{{ cuenta.nombre_cuenta if cuenta else '—' }} <span class="badge badge-simulado">{{ cuenta.estado_conexion if cuenta else 'sin cuenta' }}</span></strong></div>
+    <div class="lista-fila"><span class="texto-suave">Fecha</span><strong>{{ publicacion.fecha.strftime('%d/%m/%Y') }}</strong></div>
+    <div class="lista-fila"><span class="texto-suave">Hora</span><strong>{{ publicacion.fecha.strftime('%H:%M') }}</strong></div>
+    <div class="lista-fila"><span class="texto-suave">Formato</span><strong>{{ publicacion.formato|capitalize }}</strong></div>
+    <div class="lista-fila"><span class="texto-suave">Servicio</span><strong>{{ publicacion.servicio.nombre if publicacion.servicio else '—' }}</strong></div>
+    <div class="lista-fila"><span class="texto-suave">Público</span><strong>Seguidores actuales + alcance orgánico</strong></div>
+
+    <div class="mt-24">
+      {% if publicacion.estado == 'previsualizado' %}
+        <form method="post" action="/publicaciones/{{ publicacion.id }}/aprobar">
+          <button type="submit" class="boton boton-primario" style="width:100%; justify-content:center;">Aprobar publicación</button>
+        </form>
+      {% elif publicacion.estado == 'aprobado' %}
+        <div class="mensaje-exito">Aprobada. Confirmá para simular la publicación (modo Simulación activo — no sale a ninguna red real).</div>
+        <form method="post" action="/publicaciones/{{ publicacion.id }}/publicar">
+          <button type="submit" class="boton boton-primario" style="width:100%; justify-content:center;">Confirmar publicación (simulada)</button>
+        </form>
+      {% elif publicacion.estado in ['simulado', 'publicado'] %}
+        <div class="mensaje-exito">✅ Publicación {{ 'simulada' if publicacion.estado == 'simulado' else 'publicada' }} — no se envió a ninguna cuenta real.</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

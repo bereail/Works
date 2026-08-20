@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block titulo %}Flyers — PCfix Automation Center{% endblock %}
+{% block contenido %}
+
+<div class="header-pagina">
+  <div>
+    <h1>🎨 Flyers</h1>
+    <p>Piezas gráficas generadas para publicaciones.</p>
+  </div>
+</div>
+
+{% if not flyers %}
+  <div class="tarjeta vacio">
+    <div class="icono">🎨</div>
+    <p>Todavía no generaste ningún flyer. Se generan desde la previsualización de una publicación.</p>
+    <a href="/publicaciones/crear" class="boton boton-primario mt-24">✍️ Crear publicación</a>
+  </div>
+{% else %}
+<div class="grilla-tarjetas">
+  {% for f in flyers %}
+  <a href="/publicaciones/{{ f.publicacion_id }}/previsualizar" class="tarjeta interactiva">
+    <img src="/static/{{ f.archivo_generado }}" alt="{{ f.titular }}" style="width:100%; border-radius: var(--radio-chico); margin-bottom:10px;" />
+    <strong style="font-size:14px;">{{ f.titular }}</strong>
+    <div class="texto-suave" style="font-size:12px;">{{ f.creado_en.strftime('%d/%m/%Y %H:%M') }}</div>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

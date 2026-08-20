@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block titulo %}Pendientes — PCfix Automation Center{% endblock %}
+{% block contenido %}
+
+<div class="header-pagina">
+  <div>
+    <h1>⏳ Pendientes de aprobación</h1>
+    <p>Publicaciones en borrador, previsualizadas o aprobadas, esperando el siguiente paso.</p>
+  </div>
+  <a href="/publicaciones/crear" class="boton boton-primario">✍️ Crear nueva</a>
+</div>
+
+{% if not publicaciones %}
+  <div class="tarjeta vacio">
+    <div class="icono">✅</div>
+    <p>No hay nada pendiente por ahora.</p>
+  </div>
+{% else %}
+<div class="tarjeta">
+  {% for p in publicaciones %}
+  <div class="lista-fila">
+    <div>
+      <strong>{{ p.tema }}</strong>
+      <div class="texto-suave" style="font-size:13px; margin-top:4px;">{{ p.plataforma|capitalize }} · {{ p.formato }} · {{ p.fecha.strftime('%d/%m/%Y %H:%M') }}</div>
+    </div>
+    <div class="gap-8">
+      <span class="badge badge-{{ 'amarillo' if p.estado == 'borrador' else ('neutro' if p.estado == 'previsualizado' else 'verde') }}">{{ p.estado }}</span>
+      <a href="/publicaciones/{{ p.id }}/previsualizar" class="boton boton-primario boton-chico">Continuar →</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

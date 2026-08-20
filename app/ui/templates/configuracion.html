@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block titulo %}Configuración — PCfix Automation Center{% endblock %}
+{% block contenido %}
+
+<div class="header-pagina">
+  <div>
+    <h1>⚙️ Configuración</h1>
+    <p>Identidad de marca, paleta visual y modo de operación.</p>
+  </div>
+</div>
+
+{% if guardado %}<div class="mensaje-exito">Cambios guardados.</div>{% endif %}
+
+<div class="fila-campos" style="align-items:start;">
+  <div class="tarjeta">
+    <div class="subtitulo-seccion" style="margin-top:0;">Identidad (solo lectura)</div>
+    <p class="texto-suave" style="font-size:13px;">Nombre, actividad y zona vienen de la documentación real del negocio — no se editan acá para evitar inconsistencias con el resto del proyecto PCfix.</p>
+    <div class="lista-fila"><span class="texto-suave">Nombre comercial</span><strong>{{ identidad.nombre_comercial }}</strong></div>
+    <div class="lista-fila"><span class="texto-suave">Actividad</span><strong>{{ identidad.actividad }}</strong></div>
+    <div class="lista-fila"><span class="texto-suave">Zona</span><strong>{{ identidad.zona }}</strong></div>
+
+    <div class="subtitulo-seccion">Modo de operación</div>
+    <div class="lista-fila">
+      <span>Simulación / Real</span>
+      <span class="badge badge-simulado">{{ identidad.modo_operacion|capitalize }}</span>
+    </div>
+    <p class="texto-suave" style="font-size:13px;">El modo Real se habilita recién cuando haya al menos una cuenta de Instagram/Facebook comercial conectada de verdad — no antes.</p>
+
+    <div class="subtitulo-seccion">Cuentas</div>
+    {% for c in cuentas %}
+    <div class="lista-fila">
+      <span><span class="estado-punto {{ c.estado_conexion }}"></span> {{ c.plataforma|capitalize }} — {{ c.nombre_cuenta }}</span>
+      <span class="badge badge-neutro">{{ c.tipo }} · {{ c.estado_conexion }}</span>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="tarjeta">
+    <div class="subtitulo-seccion" style="margin-top:0;">Paleta visual (provisoria)</div>
+    <p class="texto-suave" style="font-size:13px;">Todavía no existe una identidad visual formal de PCfix (logo, tipografía). Esta paleta es de trabajo — reemplazala cuando la definan.</p>
+    <form method="post" action="/configuracion">
+      <div class="campo">
+        <label for="tagline">Tagline</label>
+        <input id="tagline" name="tagline" value="{{ identidad.tagline }}" />
+      </div>
+      <div class="fila-campos">
+        <div class="campo">
+          <label for="color_primario">Color primario</label>
+          <input id="color_primario" name="color_primario" type="color" value="{{ identidad.color_primario }}" style="height:42px;" />
+        </div>
+        <div class="campo">
+          <label for="color_acento">Color acento</label>
+          <input id="color_acento" name="color_acento" type="color" value="{{ identidad.color_acento }}" style="height:42px;" />
+        </div>
+      </div>
+      <button type="submit" class="boton boton-primario">Guardar cambios</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block titulo %}Automatizar — PCfix Automation Center{% endblock %}
+{% block contenido %}
+
+<div class="header-pagina">
+  <div>
+    <h1>🤖 Análisis integral</h1>
+    <p>Analiza publicaciones, temas, servicios, formatos y horarios disponibles, y genera aprendizajes.</p>
+  </div>
+</div>
+
+<div class="tarjeta" style="text-align:center; padding: 40px;">
+  <button
+    class="boton boton-primario"
+    style="font-size:16px; padding:14px 30px;"
+    hx-post="/automatizar/ejecutar"
+    hx-target="#resultado-automatizar"
+    hx-swap="innerHTML"
+    hx-indicator="#spinner-automatizar"
+  >
+    🤖 AUTOMATIZAR
+    <span id="spinner-automatizar" class="spinner-htmx">⏳</span>
+  </button>
+  <p class="texto-suave" style="margin-top:14px;">No publica ni modifica nada — solo analiza lo que ya existe en la memoria.</p>
+</div>
+
+<div id="resultado-automatizar" class="mt-24"></div>
+
+{% endblock %}
