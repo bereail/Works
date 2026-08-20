@@ -16,7 +16,7 @@
     <a href="/publicaciones/crear" class="boton boton-primario mt-24">✍️ Crear publicación</a>
   </div>
 {% else %}
-<div class="grilla-tarjetas">
+<div class="grilla-tarjetas" style="grid-template-columns: repeat(auto-fill, minmax(240px, 280px));">
   {% for f in flyers %}
   <a href="/publicaciones/{{ f.publicacion_id }}/previsualizar" class="tarjeta interactiva">
     <img src="/static/{{ f.archivo_generado }}" alt="{{ f.titular }}" style="width:100%; border-radius: var(--radio-chico); margin-bottom:10px;" />
