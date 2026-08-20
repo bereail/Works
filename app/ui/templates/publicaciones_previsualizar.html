@@ -5,7 +5,7 @@
 <div class="header-pagina">
   <div>
     <h1>Previsualización</h1>
-    <p>Generar → Previsualizar → Aprobar → Publicar. Nada sale a ninguna red sin tu confirmación explícita.</p>
+    <p>Esto es lo que se publicaría. Revisalo y confirmá — nada sale a ninguna red sin ese último click tuyo.</p>
   </div>
   <span class="badge badge-neutro">Estado: {{ publicacion.estado }}</span>
 </div>
@@ -43,15 +43,11 @@
     <div class="lista-fila"><span class="texto-suave">Público</span><strong>Seguidores actuales + alcance orgánico</strong></div>
 
     <div class="mt-24">
-      {% if publicacion.estado == 'previsualizado' %}
-        <form method="post" action="/publicaciones/{{ publicacion.id }}/aprobar">
-          <button type="submit" class="boton boton-primario" style="width:100%; justify-content:center;">Aprobar publicación</button>
+      {% if publicacion.estado in ['previsualizado', 'aprobado'] %}
+        <form method="post" action="/publicaciones/{{ publicacion.id }}/confirmar-y-publicar">
+          <button type="submit" class="boton boton-primario" style="width:100%; justify-content:center; font-size:15px; padding:14px;">✅ Confirmar y publicar</button>
         </form>
-      {% elif publicacion.estado == 'aprobado' %}
-        <div class="mensaje-exito">Aprobada. Confirmá para simular la publicación (modo Simulación activo — no sale a ninguna red real).</div>
-        <form method="post" action="/publicaciones/{{ publicacion.id }}/publicar">
-          <button type="submit" class="boton boton-primario" style="width:100%; justify-content:center;">Confirmar publicación (simulada)</button>
-        </form>
+        <p class="texto-suave" style="font-size:12px; margin-top:8px; text-align:center;">Por ahora queda simulada — no sale a ninguna red real (modo Simulación activo).</p>
       {% elif publicacion.estado in ['simulado', 'publicado'] %}
         <div class="mensaje-exito">✅ Publicación {{ 'simulada' if publicacion.estado == 'simulado' else 'publicada' }} — no se envió a ninguna cuenta real.</div>
       {% endif %}

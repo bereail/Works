@@ -14,6 +14,16 @@
   </div>
 </div>
 
+<div class="tarjeta fade-in" style="background: linear-gradient(135deg, var(--color-primario), var(--color-acento)); border: none; padding: 28px 32px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:24px;">
+  <div style="color:#fff;">
+    <div style="font-size:17px; font-weight:700;">¿Publicamos algo hoy?</div>
+    <div style="font-size:13px; opacity:0.9; margin-top:2px;">Un solo click: elige el tema, arma el texto y la imagen. Vos solo confirmás antes de que salga.</div>
+  </div>
+  <form method="post" action="/publicaciones/generar-automatico">
+    <button type="submit" class="boton" style="background:#fff; color: var(--color-primario); font-size:15px; padding:14px 26px; white-space:nowrap;">🚀 Automatizar y publicar</button>
+  </form>
+</div>
+
 {% if not resumen.hay_datos %}
   <div class="tarjeta vacio">
     <div class="icono">📭</div>

@@ -9,14 +9,15 @@ generar → previsualizar → aprobar → publicar).
 """
 
 import json
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from sqlalchemy.orm import Session
 
-from app.models import RegistroAccion, Servicio
+from app.models import Flyer, IdentidadNegocio, Publicacion, RegistroAccion, Servicio
 from app.services import analitica
 from app.services.aprendizajes import generar_aprendizajes
 from app.services.generador_copy import generar_copy
+from app.services.generador_flyer import generar_flyer
 from app.services.oportunidades import detectar_oportunidades
 
 
@@ -86,12 +87,7 @@ class AgentePCfix:
         pilar_recomendado = next(iter(por_pilar), "criterio_tecnico")
         formato_recomendado = next(iter(por_formato), "carrusel")
 
-        servicio_candidato = (
-            self.sesion.query(Servicio)
-            .filter(Servicio.prioridad == "verde", Servicio.activo.is_(True))
-            .order_by(Servicio.id)
-            .first()
-        )
+        servicio_candidato = self._elegir_servicio_a_promocionar()
 
         propuesta = {
             "servicio": servicio_candidato,
@@ -120,3 +116,72 @@ class AgentePCfix:
             copy.texto,
         )
         return copy
+
+    def _elegir_servicio_a_promocionar(self) -> Servicio | None:
+        """Prioriza servicios de prioridad alta que todavía no tuvieron ninguna publicación;
+        si todos ya tuvieron alguna, elige el que hace más tiempo no se promociona."""
+        servicios_verdes = (
+            self.sesion.query(Servicio)
+            .filter(Servicio.prioridad == "verde", Servicio.activo.is_(True))
+            .order_by(Servicio.id)
+            .all()
+        )
+        if not servicios_verdes:
+            return None
+
+        ultima_fecha_por_servicio: dict[int, datetime] = {}
+        for pub in self.sesion.query(Publicacion).filter(Publicacion.servicio_id.isnot(None)).all():
+            actual = ultima_fecha_por_servicio.get(pub.servicio_id)
+            if actual is None or pub.fecha > actual:
+                ultima_fecha_por_servicio[pub.servicio_id] = pub.fecha
+
+        nunca_promocionados = [s for s in servicios_verdes if s.id not in ultima_fecha_por_servicio]
+        if nunca_promocionados:
+            return nunca_promocionados[0]
+
+        return min(servicios_verdes, key=lambda s: ultima_fecha_por_servicio[s.id])
+
+    def generar_publicacion_automatica(self) -> Publicacion:
+        """Botón único: analiza, decide qué publicar, arma el copy y el flyer, y deja
+        la publicación lista en 'previsualizado' — falta un solo click para confirmarla."""
+        propuesta = self.herramienta_proponer_publicacion()
+        servicio = propuesta["servicio"]
+        if servicio is None:
+            raise ValueError("No hay servicios activos en el catálogo para proponer una publicación.")
+
+        copy = self.herramienta_generar_copy(servicio.nombre, propuesta["objetivo"])
+        identidad = self.sesion.query(IdentidadNegocio).first()
+
+        publicacion = Publicacion(
+            plataforma="instagram",
+            fecha=datetime.now(),
+            formato=propuesta["formato"],
+            pilar=propuesta["pilar"],
+            objetivo=propuesta["objetivo"],
+            tema=f"{servicio.nombre} — {propuesta['objetivo'].replace('_', ' ')}",
+            texto=copy.texto,
+            cta=copy.cta,
+            estado="previsualizado",
+            origen_datos="simulado",
+            servicio_id=servicio.id,
+        )
+        self.sesion.add(publicacion)
+        self.sesion.commit()
+        self.sesion.refresh(publicacion)
+
+        ruta = generar_flyer(
+            titular=servicio.nombre,
+            subtitulo=copy.texto,
+            cta=copy.cta,
+            nombre_comercial=identidad.nombre_comercial,
+            tagline=identidad.tagline,
+            color_primario=identidad.color_primario,
+            color_acento=identidad.color_acento,
+        )
+        self.sesion.add(Flyer(
+            publicacion_id=publicacion.id, titular=publicacion.tema, subtitulo=copy.texto,
+            cta=copy.cta, archivo_generado=ruta,
+        ))
+        self._registrar("herramienta_generar_flyer", f"publicacion_id={publicacion.id}", ruta)
+
+        return publicacion

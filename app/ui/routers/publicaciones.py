@@ -103,27 +103,17 @@ def generar_flyer_publicacion(publicacion_id: int, request: Request, sesion: Ses
     return RedirectResponse(url=f"/publicaciones/{publicacion.id}/previsualizar", status_code=303)
 
 
-@router.post("/{publicacion_id}/aprobar")
-def aprobar(publicacion_id: int, request: Request, sesion: Session = Depends(obtener_sesion)):
+@router.post("/{publicacion_id}/confirmar-y-publicar")
+def confirmar_y_publicar(publicacion_id: int, request: Request, sesion: Session = Depends(obtener_sesion)):
+    """Un solo click aprueba y publica — Berenice ya vio el texto y el flyer en la previsualización
+    antes de llegar acá, así que no hace falta un paso de aprobación separado."""
     if (redireccion := requiere_login(request)):
         return redireccion
     publicacion = sesion.get(Publicacion, publicacion_id)
-    publicacion.estado = "aprobado"
-    sesion.add(RegistroAccion(
-        herramienta="aprobar_publicacion", datos_utilizados=f"publicacion_id={publicacion.id}",
-        resultado="aprobado por Berenice", requirio_aprobacion=True, aprobado=True,
-    ))
-    sesion.commit()
-    return RedirectResponse(url=f"/publicaciones/{publicacion.id}/previsualizar", status_code=303)
+    if publicacion.estado not in ("previsualizado", "aprobado"):
+        return RedirectResponse(url=f"/publicaciones/{publicacion.id}/previsualizar", status_code=303)
 
-
-@router.post("/{publicacion_id}/publicar")
-def publicar(publicacion_id: int, request: Request, sesion: Session = Depends(obtener_sesion)):
-    if (redireccion := requiere_login(request)):
-        return redireccion
-    publicacion = sesion.get(Publicacion, publicacion_id)
     identidad = sesion.query(IdentidadNegocio).first()
-
     if identidad.modo_operacion != "real":
         publicacion.estado = "simulado"
         resultado = "Publicación simulada: no se envió a ninguna red social real (modo Simulación activo)."
@@ -132,10 +122,21 @@ def publicar(publicacion_id: int, request: Request, sesion: Session = Depends(ob
         resultado = "Bloqueado: no hay ninguna cuenta real conectada todavía."
 
     sesion.add(RegistroAccion(
-        herramienta="publicar_publicacion", datos_utilizados=f"publicacion_id={publicacion.id}",
+        herramienta="confirmar_y_publicar", datos_utilizados=f"publicacion_id={publicacion.id}",
         resultado=resultado, requirio_aprobacion=True, aprobado=True,
     ))
     sesion.commit()
+    return RedirectResponse(url=f"/publicaciones/{publicacion.id}/previsualizar", status_code=303)
+
+
+@router.post("/generar-automatico")
+def generar_automatico(request: Request, sesion: Session = Depends(obtener_sesion)):
+    """El botón único: analiza, elige qué publicar, arma texto e imagen, y deja todo
+    listo para que Berenice lo vea y lo confirme con un solo click más."""
+    if (redireccion := requiere_login(request)):
+        return redireccion
+    agente = AgentePCfix(sesion)
+    publicacion = agente.generar_publicacion_automatica()
     return RedirectResponse(url=f"/publicaciones/{publicacion.id}/previsualizar", status_code=303)
 
 
