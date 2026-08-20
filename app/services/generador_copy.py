@@ -13,14 +13,17 @@ PLANTILLAS_POR_OBJETIVO = {
     "generar_consultas": [
         "¿Tu equipo tiene que ver con {servicio}? Te lo explicamos en criollo antes de tocarlo. {tagline}",
         "Antes de gastar de más: capaz tu problema se resuelve con {servicio}. Te lo confirmamos sin compromiso.",
+        "{servicio}, diagnosticado por una Analista de Sistemas — no por prueba y error. Te contamos qué tiene tu equipo, en criollo.",
     ],
     "generar_confianza": [
         "En PCfix el presupuesto de {servicio} sale siempre por escrito, sin letra chica. {tagline}",
         "Te mostramos cómo trabajamos con {servicio} — sin vueltas, sin sorpresas al final.",
+        "Dejar tu compu con alguien da un poco de cosa — se ven fotos, cuentas, todo. En PCfix tus datos no se tocan: solo se hace lo del {servicio}, nada más.",
     ],
     "reconocimiento": [
         "{tagline} Así encaramos cada trabajo de {servicio}.",
         "Un poco de cómo trabajamos {servicio} en PCfix — criterio técnico real, explicado en criollo.",
+        "Detrás de PCfix hay una Analista de Sistemas, no un aficionado con destornillador. Así se nota en cada {servicio}.",
     ],
     "recuperar_clientes": [
         "¿Hace tiempo no le hacés mantenimiento a tu equipo? {servicio} puede ser justo lo que necesita.",
