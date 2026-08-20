@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PCfix — Centro de herramientas</title>
+<link rel="stylesheet" href="/static/estilos.css" />
+<style>
+  body { background: var(--fondo); }
+  .pantalla-inicio { min-height: 100vh; padding: 56px 32px; }
+  .encabezado-inicio { max-width: 960px; margin: 0 auto 40px; text-align: center; }
+  .encabezado-inicio h1 { font-size: 26px; margin: 0 0 6px; }
+  .encabezado-inicio p { color: var(--texto-suave); margin: 0; font-size: 14px; }
+
+  .grilla-secciones {
+    max-width: 960px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;
+  }
+
+  .tile-seccion {
+    background: var(--superficie); border: 1px solid var(--borde); border-radius: 16px;
+    padding: 28px 24px; text-align: left; display: flex; flex-direction: column; gap: 10px;
+    box-shadow: var(--sombra); transition: box-shadow var(--transicion), transform var(--transicion), border-color var(--transicion);
+  }
+  .tile-seccion.activa:hover { box-shadow: var(--sombra-hover); transform: translateY(-2px); border-color: var(--color-primario); }
+  .tile-seccion .icono { font-size: 32px; }
+  .tile-seccion h2 { font-size: 17px; margin: 0; }
+  .tile-seccion p { font-size: 13px; color: var(--texto-suave); margin: 0; line-height: 1.5; }
+  .tile-seccion .flecha { margin-top: auto; font-size: 13px; font-weight: 600; color: var(--color-primario); }
+
+  .tile-seccion.proxima { opacity: 0.55; cursor: default; border-style: dashed; }
+  .tile-seccion.proxima .flecha { color: var(--texto-tenue); }
+
+  a.tile-seccion { text-decoration: none; color: inherit; }
+</style>
+</head>
+<body>
+<div class="pantalla-inicio">
+  <div class="encabezado-inicio fade-in">
+    <h1>PCfix — Centro de herramientas</h1>
+    <p>Elegí qué querés hacer. Con el tiempo se van a ir sumando más secciones acá.</p>
+  </div>
+
+  <div class="grilla-secciones fade-in">
+    <a href="/" class="tile-seccion activa">
+      <div class="icono">🤖</div>
+      <h2>Automatización</h2>
+      <p>Dashboard, análisis, oportunidades, publicaciones y analíticas de marketing de PCfix.</p>
+      <div class="flecha">Entrar →</div>
+    </a>
+
+    <div class="tile-seccion proxima">
+      <div class="icono">➕</div>
+      <h2>Próxima sección</h2>
+      <p>Acá se va a sumar la próxima herramienta cuando la construyamos.</p>
+      <div class="flecha">Próximamente</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

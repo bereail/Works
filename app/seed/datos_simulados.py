@@ -215,7 +215,7 @@ def sembrar(sesion: Session) -> None:
         zona="Arroyito, Rosario, Santa Fe",
         tagline="Se entiende lo que te arreglan.",
         modo_operacion="simulacion",
-        identidad_visual_definitiva=False,
+        identidad_visual_definitiva=True,
     )
     sesion.add(identidad)
 

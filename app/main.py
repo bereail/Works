@@ -7,7 +7,7 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from app.database import Base, SesionLocal, engine
 from app.seed.datos_simulados import sembrar
-from app.ui.routers import analiticas, automatizar, autenticacion, configuracion, dashboard, memoria, oportunidades, publicaciones
+from app.ui.routers import analiticas, automatizar, autenticacion, configuracion, dashboard, inicio, memoria, oportunidades, publicaciones
 
 BASE_DIR = Path(__file__).resolve().parent
 CLAVE_SESION_PATH = BASE_DIR.parent / ".clave_sesion"
@@ -25,6 +25,7 @@ app = FastAPI(title="PCfix Automation Center")
 app.add_middleware(SessionMiddleware, secret_key=_obtener_o_crear_clave_sesion())
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "ui" / "static")), name="static")
 
+app.include_router(inicio.router)
 app.include_router(autenticacion.router)
 app.include_router(dashboard.router)
 app.include_router(automatizar.router)

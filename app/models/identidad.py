@@ -17,8 +17,8 @@ class IdentidadNegocio(Base):
     zona: Mapped[str] = mapped_column(String(120))
     tagline: Mapped[str] = mapped_column(String(255), default="")
     modo_operacion: Mapped[str] = mapped_column(String(20), default="simulacion")  # simulacion | real
-    color_primario: Mapped[str] = mapped_column(String(20), default="#2563eb")
-    color_acento: Mapped[str] = mapped_column(String(20), default="#0ea5a4")
+    color_primario: Mapped[str] = mapped_column(String(20), default="#0b0f0d")
+    color_acento: Mapped[str] = mapped_column(String(20), default="#2ee85e")
     identidad_visual_definitiva: Mapped[bool] = mapped_column(default=False)
     actualizado_en: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
