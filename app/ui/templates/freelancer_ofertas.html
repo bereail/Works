@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ofertas — Freelancer</title>
+<link rel="stylesheet" href="/static/estilos.css" />
+<style>
+  .franja-freelancer { max-width: 980px; margin: 0 auto; padding: 40px 24px 80px; }
+  .volver { display: inline-flex; align-items: center; gap: 6px; color: var(--texto-suave); font-size: 13px; margin-bottom: 20px; }
+  .volver:hover { color: var(--texto); }
+  .fuente-badge { text-transform: capitalize; }
+  .oferta-tarjeta { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+  .oferta-acciones { display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
+  .oferta-notas { font-size: 13px; color: var(--texto-suave); margin: 8px 0 0; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<div class="franja-freelancer">
+  <a class="volver" href="/">← Freelancer</a>
+
+  <div class="header-pagina">
+    <div>
+      <h1>📋 Ofertas y postulaciones</h1>
+      <p>Cargá a mano cada oferta o proyecto que encontrés — sin scraping, sumando vos misma lo que ves en cada plataforma.</p>
+    </div>
+    <a href="/ofertas/nueva" class="boton boton-primario">+ Nueva oferta</a>
+  </div>
+
+  <div class="selector-periodo mt-24" style="flex-wrap: wrap; width: auto;">
+    <a href="/ofertas" class="{{ 'activo' if not filtro_estado else '' }}">Todas</a>
+    <a href="/ofertas?estado=por_postular" class="{{ 'activo' if filtro_estado == 'por_postular' else '' }}">Por postular</a>
+    <a href="/ofertas?estado=postulada" class="{{ 'activo' if filtro_estado == 'postulada' else '' }}">Postuladas</a>
+    <a href="/ofertas?estado=en_conversacion" class="{{ 'activo' if filtro_estado == 'en_conversacion' else '' }}">En conversación</a>
+    <a href="/ofertas?estado=ganada" class="{{ 'activo' if filtro_estado == 'ganada' else '' }}">Ganadas</a>
+    <a href="/ofertas?estado=rechazada" class="{{ 'activo' if filtro_estado == 'rechazada' else '' }}">Rechazadas</a>
+    <a href="/ofertas?estado=descartada" class="{{ 'activo' if filtro_estado == 'descartada' else '' }}">Descartadas</a>
+  </div>
+
+  {% if not ofertas %}
+  <div class="tarjeta vacio mt-24">
+    <div class="icono">📋</div>
+    <p>{% if filtro_estado %}No hay ofertas en este estado.{% else %}Todavía no cargaste ninguna oferta.{% endif %}</p>
+    <a href="/ofertas/nueva" class="boton boton-primario boton-chico">+ Cargar la primera</a>
+  </div>
+  {% else %}
+  {% for o in ofertas %}
+  <div class="tarjeta interactiva mt-24 fade-in oferta-tarjeta">
+    <div style="min-width:0;">
+      <div class="gap-8" style="margin-bottom:8px; flex-wrap:wrap;">
+        {% if o.estado == 'por_postular' %}<span class="badge badge-neutro">por postular</span>{% endif %}
+        {% if o.estado == 'postulada' %}<span class="badge badge-amarillo">postulada</span>{% endif %}
+        {% if o.estado == 'en_conversacion' %}<span class="badge badge-verde">en conversación</span>{% endif %}
+        {% if o.estado == 'ganada' %}<span class="badge badge-verde">🎉 ganada</span>{% endif %}
+        {% if o.estado == 'rechazada' %}<span class="badge badge-rojo">rechazada</span>{% endif %}
+        {% if o.estado == 'descartada' %}<span class="badge badge-neutro">descartada</span>{% endif %}
+        <span class="badge badge-neutro fuente-badge">{{ o.fuente }}</span>
+        <span class="badge badge-neutro">{{ {'proyecto_freelance': 'proyecto freelance', 'empleo_relacion_dependencia': 'relación de dependencia', 'subcontrato': 'subcontrato'}[o.tipo] }}</span>
+      </div>
+      <h3 style="margin: 0 0 4px;">
+        {% if o.url %}<a href="{{ o.url }}" target="_blank" rel="noopener" style="color:inherit;">{{ o.titulo }}</a>{% else %}{{ o.titulo }}{% endif %}
+      </h3>
+      {% if o.cliente_o_empresa %}<p class="texto-suave" style="margin:0; font-size:13px;">{{ o.cliente_o_empresa }}</p>{% endif %}
+      {% if o.notas %}<p class="oferta-notas">{{ o.notas }}</p>{% endif %}
+    </div>
+    <div class="oferta-acciones">
+      {% if o.estado == 'por_postular' %}
+      <form method="post" action="/ofertas/{{ o.id }}/estado">
+        <input type="hidden" name="estado" value="postulada" />
+        <button type="submit" class="boton boton-primario boton-chico">Marcar postulada</button>
+      </form>
+      {% endif %}
+      {% if o.estado == 'postulada' %}
+      <form method="post" action="/ofertas/{{ o.id }}/estado">
+        <input type="hidden" name="estado" value="en_conversacion" />
+        <button type="submit" class="boton boton-primario boton-chico">En conversación</button>
+      </form>
+      {% endif %}
+      {% if o.estado in ('postulada', 'en_conversacion') %}
+      <form method="post" action="/ofertas/{{ o.id }}/estado">
+        <input type="hidden" name="estado" value="ganada" />
+        <button type="submit" class="boton boton-acento boton-chico">Ganada</button>
+      </form>
+      <form method="post" action="/ofertas/{{ o.id }}/estado">
+        <input type="hidden" name="estado" value="rechazada" />
+        <button type="submit" class="boton boton-ghost boton-chico">Rechazada</button>
+      </form>
+      {% endif %}
+      <a href="/ofertas/{{ o.id }}/editar" class="boton boton-ghost boton-chico">Editar</a>
+      {% if o.estado == 'por_postular' %}
+      <form method="post" action="/ofertas/{{ o.id }}/estado">
+        <input type="hidden" name="estado" value="descartada" />
+        <button type="submit" class="boton boton-ghost boton-chico">Descartar</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+</body>
+</html>
