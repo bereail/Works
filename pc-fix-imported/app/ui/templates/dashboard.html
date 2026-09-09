@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block titulo %}Dashboard — PCfix Automation Center{% endblock %}
+{% block contenido %}
+
+<div class="header-pagina">
+  <div>
+    <h1>Dashboard</h1>
+    <p>Estado general del negocio en redes — {{ ahora.strftime('%d/%m/%Y %H:%M') }}</p>
+  </div>
+  <div class="gap-8">
+    {% for cuenta in cuentas %}
+    <span class="badge badge-neutro"><span class="estado-punto {{ cuenta.estado_conexion }}"></span> {{ cuenta.plataforma|capitalize }} · {{ cuenta.estado_conexion }}</span>
+    {% endfor %}
+  </div>
+</div>
+
+{% if publicacion_pendiente %}
+<div class="tarjeta fade-in" style="border-left: 4px solid var(--alerta); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:24px;">
+  <div>
+    <div style="font-weight:700;">📝 Ya te dejé un borrador listo, esperando tu OK</div>
+    <div class="texto-suave" style="font-size:13px; margin-top:2px;">{{ publicacion_pendiente.tema }} — generado solo por la automatización semanal.</div>
+  </div>
+  <a href="/publicaciones/{{ publicacion_pendiente.id }}/previsualizar" class="boton boton-primario">Ver y confirmar →</a>
+</div>
+{% endif %}
+
+<div class="tarjeta fade-in" style="background: linear-gradient(135deg, var(--color-primario), var(--color-acento)); border: none; padding: 28px 32px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:24px;">
+  <div style="color:#fff;">
+    <div style="font-size:17px; font-weight:700;">¿Publicamos algo hoy?</div>
+    <div style="font-size:13px; opacity:0.9; margin-top:2px;">Un solo click: elige el tema, arma el texto y la imagen. Vos solo confirmás antes de que salga.</div>
+  </div>
+  <form method="post" action="/publicaciones/generar-automatico">
+    <button type="submit" class="boton" style="background:#fff; color: var(--color-primario); font-size:15px; padding:14px 26px; white-space:nowrap;">🚀 Automatizar y publicar</button>
+  </form>
+</div>
+
+{% if not resumen.hay_datos %}
+  <div class="tarjeta vacio">
+    <div class="icono">📭</div>
+    <p>No hay datos suficientes para determinarlo.</p>
+  </div>
+{% else %}
+
+<div class="grilla-tarjetas fade-in">
+  <div class="tarjeta metrica-tarjeta">
+    <div class="etiqueta">Alcance total <span class="badge badge-simulado">SIMULADO</span></div>
+    <div class="valor">{{ "{:,}".format(resumen.alcance_total).replace(",", ".") }}</div>
+  </div>
+  <div class="tarjeta metrica-tarjeta">
+    <div class="etiqueta">Visualizaciones <span class="badge badge-simulado">SIMULADO</span></div>
+    <div class="valor">{{ "{:,}".format(resumen.visualizaciones_total).replace(",", ".") }}</div>
+  </div>
+  <div class="tarjeta metrica-tarjeta">
+    <div class="etiqueta">Interacciones <span class="badge badge-simulado">SIMULADO</span></div>
+    <div class="valor">{{ "{:,}".format(resumen.interacciones_total).replace(",", ".") }}</div>
+  </div>
+  <div class="tarjeta metrica-tarjeta">
+    <div class="etiqueta">Consultas generadas <span class="badge badge-simulado">SIMULADO</span></div>
+    <div class="valor">{{ resumen.consultas_total }}</div>
+  </div>
+</div>
+
+<div class="subtitulo-seccion">Crecimiento de seguidores</div>
+<div class="grilla-tarjetas">
+  {% for plataforma, datos in crecimiento.items() %}
+  <div class="tarjeta metrica-tarjeta">
+    <div class="etiqueta">{{ plataforma|capitalize }} <span class="badge badge-simulado">SIMULADO</span></div>
+    <div class="valor">{{ datos.actual }}</div>
+    <div class="delta {{ 'positivo' if datos.crecimiento_absoluto >= 0 else 'negativo' }}">
+      {{ '+' if datos.crecimiento_absoluto >= 0 else '' }}{{ datos.crecimiento_absoluto }} ({{ datos.crecimiento_pct }}%) en el período
+    </div>
+  </div>
+  {% endfor %}
+  <div class="tarjeta metrica-tarjeta">
+    <div class="etiqueta">Mejor horario detectado</div>
+    <div class="valor" style="font-size:22px;">{{ mejor_horario or "Sin datos suficientes" }}</div>
+  </div>
+</div>
+
+<div class="subtitulo-seccion">Servicios con mayor interés</div>
+<div class="tarjeta">
+  {% for nombre, datos in por_servicio %}
+  <div class="lista-fila">
+    <div>
+      <strong>{{ nombre }}</strong>
+      <div class="texto-suave" style="font-size:13px;">{{ datos.cantidad_publicaciones }} publicación(es) · {{ datos.interacciones_total }} interacciones</div>
+    </div>
+    <span class="badge badge-neutro">{{ "%.1f"|format(datos.tasa_interaccion_promedio * 100) }}% interacción</span>
+  </div>
+  {% else %}
+  <div class="vacio"><p>No hay datos suficientes para determinarlo.</p></div>
+  {% endfor %}
+</div>
+
+<div class="fila-campos mt-24" style="align-items: start;">
+  <div class="tarjeta">
+    <div class="subtitulo-seccion" style="margin-top:0;">Mejores publicaciones</div>
+    {% for p in mejores %}
+    <div class="lista-fila">
+      <div>
+        <strong>{{ p.publicacion.tema }}</strong>
+        <div class="texto-suave" style="font-size:13px;">{{ p.publicacion.plataforma|capitalize }} · {{ p.publicacion.formato }} · {{ p.publicacion.fecha.strftime('%d/%m') }}</div>
+      </div>
+      <span class="badge badge-verde">{{ "%.1f"|format(p.tasa_interaccion * 100) }}%</span>
+    </div>
+    {% else %}
+    <div class="vacio"><p>No hay datos suficientes.</p></div>
+    {% endfor %}
+  </div>
+
+  <div class="tarjeta">
+    <div class="subtitulo-seccion" style="margin-top:0;">Peores publicaciones</div>
+    {% for p in peores %}
+    <div class="lista-fila">
+      <div>
+        <strong>{{ p.publicacion.tema }}</strong>
+        <div class="texto-suave" style="font-size:13px;">{{ p.publicacion.plataforma|capitalize }} · {{ p.publicacion.formato }} · {{ p.publicacion.fecha.strftime('%d/%m') }}</div>
+      </div>
+      <span class="badge badge-rojo">{{ "%.1f"|format(p.tasa_interaccion * 100) }}%</span>
+    </div>
+    {% else %}
+    <div class="vacio"><p>No hay datos suficientes.</p></div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="subtitulo-seccion">Oportunidades detectadas</div>
+<div class="tarjeta">
+  {% for o in oportunidades_recientes %}
+  <div class="lista-fila">
+    <div>
+      <strong>{{ o.titulo }}</strong>
+      <div class="texto-suave" style="font-size:13px;">{{ o.explicacion }}</div>
+    </div>
+    <span class="badge badge-confianza-{{ o.nivel_confianza }}">confianza {{ o.nivel_confianza }}</span>
+  </div>
+  {% else %}
+  <div class="vacio">
+    <p>Todavía no se corrió un análisis. Probá el botón 🤖 Automatizar.</p>
+  </div>
+  {% endfor %}
+</div>
+
+{% endif %}
+{% endblock %}

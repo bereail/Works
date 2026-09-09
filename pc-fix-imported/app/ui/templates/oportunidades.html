@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block titulo %}Oportunidades — PCfix Automation Center{% endblock %}
+{% block contenido %}
+
+<div class="header-pagina">
+  <div>
+    <h1>💡 Oportunidades</h1>
+    <p>Oportunidades comerciales detectadas por reglas sobre datos disponibles.</p>
+  </div>
+  <a href="/automatizar" class="boton boton-ghost">🤖 Correr análisis</a>
+</div>
+
+{% if not oportunidades %}
+  <div class="tarjeta vacio">
+    <div class="icono">💡</div>
+    <p>Todavía no hay oportunidades detectadas. Corré el análisis integral primero.</p>
+  </div>
+{% else %}
+
+{% for o in oportunidades %}
+<div class="tarjeta interactiva mt-24 fade-in">
+  <div class="flex-entre">
+    <div style="max-width: 640px;">
+      <div class="gap-8" style="margin-bottom:8px;">
+        <span class="badge badge-confianza-{{ o.nivel_confianza }}">confianza {{ o.nivel_confianza }}</span>
+        {% if o.estado == 'convertida_en_campania' %}<span class="badge badge-verde">convertida en campaña</span>{% endif %}
+        {% if o.estado == 'descartada' %}<span class="badge badge-neutro">descartada</span>{% endif %}
+      </div>
+      <h3 style="margin: 0 0 6px;">{{ o.titulo }}</h3>
+      <p class="texto-suave" style="margin: 0 0 10px;">{{ o.explicacion }}</p>
+      <p style="margin: 0 0 4px; font-size: 13px;"><strong>Acción recomendada:</strong> {{ o.accion_recomendada }}</p>
+      <p class="texto-suave" style="margin: 0; font-size: 12px;">Datos utilizados: {{ o.datos_utilizados }}</p>
+    </div>
+    {% if o.estado == 'nueva' %}
+    <div class="gap-8" style="flex-shrink:0;">
+      <form method="post" action="/oportunidades/{{ o.id }}/crear-campania">
+        <button type="submit" class="boton boton-primario boton-chico">Crear campaña</button>
+      </form>
+      <form method="post" action="/oportunidades/{{ o.id }}/descartar">
+        <button type="submit" class="boton boton-ghost boton-chico">Descartar</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endfor %}
+
+{% endif %}
+{% endblock %}

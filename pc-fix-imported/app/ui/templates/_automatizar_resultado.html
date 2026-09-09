@@ -1,0 +1,65 @@
+<div class="fade-in">
+
+{% if not resultado.analisis.resumen.hay_datos %}
+  <div class="tarjeta vacio">
+    <div class="icono">📭</div>
+    <p>No hay datos suficientes para determinarlo.</p>
+  </div>
+{% else %}
+
+<div class="fila-campos">
+  <div class="tarjeta">
+    <div class="subtitulo-seccion" style="margin-top:0;">✅ Qué funcionó</div>
+    {% for p in resultado.analisis.mejores %}
+      <div class="lista-fila">
+        <div><strong>{{ p.publicacion.tema }}</strong><div class="texto-suave" style="font-size:13px;">{{ p.publicacion.formato }} · {{ p.publicacion.plataforma }}</div></div>
+        <span class="badge badge-verde">{{ "%.1f"|format(p.tasa_interaccion * 100) }}%</span>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="tarjeta">
+    <div class="subtitulo-seccion" style="margin-top:0;">⚠️ Qué no funcionó / debería dejar de usarse</div>
+    {% for p in resultado.analisis.peores %}
+      <div class="lista-fila">
+        <div><strong>{{ p.publicacion.tema }}</strong><div class="texto-suave" style="font-size:13px;">{{ p.publicacion.formato }} · {{ p.publicacion.plataforma }}</div></div>
+        <span class="badge badge-rojo">{{ "%.1f"|format(p.tasa_interaccion * 100) }}%</span>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="subtitulo-seccion">📌 Qué parece estar funcionando (con nivel de confianza)</div>
+<div class="tarjeta">
+  {% for a in resultado.aprendizajes %}
+    <div class="lista-fila">
+      <div>
+        <span class="badge badge-neutro">{{ a.tipo }}</span>
+        <div style="margin-top:6px;">{{ a.texto }}</div>
+      </div>
+      <span class="badge badge-confianza-{{ a.nivel_confianza }}">confianza {{ a.nivel_confianza }}</span>
+    </div>
+  {% else %}
+    <div class="vacio"><p>No hay datos suficientes para determinarlo.</p></div>
+  {% endfor %}
+</div>
+
+<div class="subtitulo-seccion">🧪 Qué debería probarse</div>
+<div class="tarjeta">
+  {% for o in resultado.oportunidades %}
+    <div class="lista-fila">
+      <div>
+        <strong>{{ o.titulo }}</strong>
+        <div class="texto-suave" style="font-size:13px;">{{ o.explicacion }}</div>
+        <div class="texto-suave" style="font-size:12px; margin-top:4px;">Acción recomendada: {{ o.accion_recomendada }}</div>
+      </div>
+      <span class="badge badge-confianza-{{ o.nivel_confianza }}">confianza {{ o.nivel_confianza }}</span>
+    </div>
+  {% else %}
+    <div class="vacio"><p>No se detectaron oportunidades nuevas.</p></div>
+  {% endfor %}
+</div>
+
+<p class="texto-suave mt-24">Ver el detalle completo de datos vs. interpretaciones en <a href="/memoria" style="color:var(--color-primario); font-weight:600;">Memoria</a>.</p>
+
+{% endif %}
+</div>

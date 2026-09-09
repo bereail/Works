@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block titulo %}Crear publicación — PCfix Automation Center{% endblock %}
+{% block contenido %}
+
+<div class="header-pagina">
+  <div>
+    <h1>✍️ Crear publicación</h1>
+    <p>Propuesta basada en el historial disponible. Revisá y ajustá antes de generar.</p>
+  </div>
+</div>
+
+<div class="tarjeta" style="border-left: 3px solid var(--color-primario); margin-bottom:24px;">
+  <strong>Propuesta del sistema</strong>
+  <p class="texto-suave" style="margin: 6px 0 0;">{{ propuesta.justificacion }}</p>
+</div>
+
+<div class="tarjeta">
+  <form method="post" action="/publicaciones/crear">
+    <div class="fila-campos">
+      <div class="campo">
+        <label for="servicio_id">Servicio a promocionar</label>
+        <select id="servicio_id" name="servicio_id" required>
+          {% for s in servicios %}
+          <option value="{{ s.id }}" {{ 'selected' if propuesta.servicio and s.id == propuesta.servicio.id else '' }}>{{ s.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="campo">
+        <label for="plataforma">Plataforma</label>
+        <select id="plataforma" name="plataforma" required>
+          <option value="instagram">Instagram</option>
+          <option value="facebook">Facebook</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="formato">Formato</label>
+        <select id="formato" name="formato" required>
+          {% for f in ["imagen", "carrusel", "reel", "historia", "post estático"] %}
+          <option value="{{ f }}" {{ 'selected' if f == propuesta.formato else '' }}>{{ f|capitalize }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="fila-campos">
+      <div class="campo">
+        <label for="pilar">Pilar de contenido</label>
+        <select id="pilar" name="pilar" required>
+          {% for p in ["criterio_tecnico", "transparencia", "confianza", "tecnologia"] %}
+          <option value="{{ p }}" {{ 'selected' if p == propuesta.pilar else '' }}>{{ p.replace('_', ' ')|capitalize }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="campo">
+        <label for="objetivo">Objetivo comercial</label>
+        <select id="objetivo" name="objetivo" required>
+          <option value="generar_consultas" {{ 'selected' if propuesta.objetivo == 'generar_consultas' else '' }}>Generar consultas</option>
+          <option value="generar_confianza">Generar confianza</option>
+          <option value="reconocimiento">Reconocimiento de marca</option>
+          <option value="recuperar_clientes">Recuperar clientes</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="fila-campos">
+      <div class="campo">
+        <label for="fecha">Fecha</label>
+        <input id="fecha" type="date" name="fecha" value="{{ ahora.strftime('%Y-%m-%d') }}" required />
+      </div>
+      <div class="campo">
+        <label for="hora">Hora recomendada</label>
+        <input id="hora" type="time" name="hora" value="{{ propuesta.horario_recomendado }}" required />
+      </div>
+    </div>
+
+    <button type="submit" class="boton boton-primario">Generar borrador →</button>
+  </form>
+</div>
+
+{% endblock %}

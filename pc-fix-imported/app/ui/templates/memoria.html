@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block titulo %}Memoria — PCfix Automation Center{% endblock %}
+{% block contenido %}
+
+<div class="header-pagina">
+  <div>
+    <h1>🧠 Memoria</h1>
+    <p>Todo lo que el sistema sabe sobre PCfix, y de dónde sale cada cosa.</p>
+  </div>
+</div>
+
+<div class="tarjeta">
+  <div class="subtitulo-seccion" style="margin-top:0;">Identidad</div>
+  <div class="lista-fila"><span class="texto-suave">Nombre comercial</span><strong>{{ identidad.nombre_comercial }}</strong></div>
+  <div class="lista-fila"><span class="texto-suave">Actividad</span><strong>{{ identidad.actividad }}</strong></div>
+  <div class="lista-fila"><span class="texto-suave">Zona</span><strong>{{ identidad.zona }}</strong></div>
+  <div class="lista-fila"><span class="texto-suave">Tagline</span><strong>{{ identidad.tagline }}</strong></div>
+  <div class="lista-fila"><span class="texto-suave">Modo de operación</span><strong>{{ identidad.modo_operacion|capitalize }}</strong></div>
+  <div class="lista-fila"><span class="texto-suave">Publicaciones en memoria</span><strong>{{ total_publicaciones }}</strong></div>
+</div>
+
+<div class="subtitulo-seccion">Catálogo de servicios</div>
+<div class="tarjeta">
+  {% for s in servicios %}
+  <div class="lista-fila">
+    <span>{{ s.nombre }}</span>
+    <span class="badge badge-{{ s.prioridad }}">{{ s.categoria }}</span>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="subtitulo-seccion">Aprendizajes (dato / interpretación / hipótesis / recomendación)</div>
+<div class="tarjeta">
+  {% for a in aprendizajes %}
+  <div class="lista-fila">
+    <div style="max-width: 720px;">
+      <span class="badge badge-neutro">{{ a.tipo }}</span>
+      <div style="margin-top:6px;">{{ a.texto }}</div>
+      <div class="texto-suave" style="font-size:12px; margin-top:4px;">Fuente: {{ a.fuente }} · {{ a.creado_en.strftime('%d/%m/%Y %H:%M') }}</div>
+    </div>
+    <span class="badge badge-confianza-{{ a.nivel_confianza }}">confianza {{ a.nivel_confianza }}</span>
+  </div>
+  {% else %}
+  <div class="vacio"><p>Todavía no hay aprendizajes. Corré el análisis integral desde 🤖 Automatizar.</p></div>
+  {% endfor %}
+</div>
+
+<div class="subtitulo-seccion">Decisiones tomadas</div>
+<div class="tarjeta">
+  {% for d in decisiones %}
+  <div class="lista-fila">
+    <div>
+      <strong>{{ d.texto }}</strong>
+      {% if d.contexto %}<div class="texto-suave" style="font-size:13px; margin-top:4px;">{{ d.contexto }}</div>{% endif %}
+    </div>
+    <span class="texto-suave" style="font-size:12px; white-space:nowrap;">{{ d.fecha.strftime('%d/%m/%Y') }}</span>
+  </div>
+  {% else %}
+  <div class="vacio"><p>Todavía no hay decisiones registradas.</p></div>
+  {% endfor %}
+</div>
+
+<div class="subtitulo-seccion">Registro de acciones (auditoría)</div>
+<div class="tarjeta">
+  {% for r in registro_acciones %}
+  <div class="lista-fila">
+    <div>
+      <strong>{{ r.herramienta }}</strong>
+      <div class="texto-suave" style="font-size:12px; margin-top:2px;">{{ r.datos_utilizados }}</div>
+    </div>
+    <div style="text-align:right;">
+      {% if r.requirio_aprobacion %}
+        <span class="badge {{ 'badge-verde' if r.aprobado else 'badge-rojo' }}">{{ 'aprobado' if r.aprobado else 'rechazado' }}</span>
+      {% endif %}
+      <div class="texto-suave" style="font-size:11px; margin-top:4px;">{{ r.fecha.strftime('%d/%m %H:%M') }}</div>
+    </div>
+  </div>
+  {% else %}
+  <div class="vacio"><p>Todavía no hay acciones registradas.</p></div>
+  {% endfor %}
+</div>
+
+{% endblock %}
