@@ -4,7 +4,7 @@ Este archivo es la única fuente de verdad del proyecto "Freelancer" de Berenice
 
 **Regla de este archivo:** no duplicar información. Si un dato cambia, se actualiza acá mismo, no se crea una versión nueva.
 
-Última actualización: 2026-08-21 (Fase 1 cerrada, Fase 2 — Job Discovery manual — construida).
+Última actualización: 2026-09-09 (Fase 2b — ingesta automática de ofertas desde APIs/RSS públicas — construida).
 
 ---
 
@@ -21,7 +21,7 @@ Este archivo es la única fuente de verdad del proyecto "Freelancer" de Berenice
 | Proyecto | Stack | Testing | Estado |
 |---|---|---|---|
 | **Glicemia-Calculadora** (METANUTRIC) | Django 5.2, SQLite→Postgres, Chart.js, openpyxl, reportlab | 108 tests | En uso real en UCI del Hospital Eva Perón. [Demo](http://138.36.238.175:8001/login) (credenciales a pedido) |
-| **stockTonerDesktop** | Django 5.2 embebido + pywebview + waitress, PyInstaller (.exe) | 70 tests | En uso real en el mismo hospital (inventario de insumos IT) |
+| **StockFlow** | Django 5.2 embebido + pywebview + waitress, PyInstaller (.exe) | 70 tests | En uso real en el mismo hospital (inventario de insumos IT) |
 | **librook** | React 19 + TypeScript + Vite (PWA), Node/Express + PostgreSQL, JWT+bcrypt | Vitest + Testing Library + Jest + Supertest | Deploy real (VPS propio, `deploy.sh`). [Demo pública](https://ailonline.com.ar/librook/) — botón "Ver sin cuenta" |
 | **VI** | React 19 + Vite, Node/Express + PostgreSQL, JWT+bcrypt | 128 tests (Vitest + Testing Library) + Playwright E2E | CI/CD real con GitHub Actions (rsync/SSH, secrets en GitHub Actions). [Demo pública](https://ailonline.com.ar/vi/) — botón "Ver sin cuenta" |
 
@@ -84,7 +84,7 @@ Esto conecta directo con lo que PCfix también quiere vender (sistemas/automatiz
 ### Clasificación de proyectos
 
 - **Glicemia-Calculadora** — ⭐ STAR + 🚀 candidato a CASE STUDY (dominio complejo real, en producción, mejor testing).
-- **stockTonerDesktop** — ⭐ STAR (caso de uso real, arquitectura de escritorio poco común como diferenciador).
+- **StockFlow** — ⭐ STAR (caso de uso real, arquitectura de escritorio poco común como diferenciador).
 - **VI** — 🟢 KEEP (demuestra CI/CD real, diferenciador que los otros dos no muestran).
 - **librook** — 🟢 KEEP (demo pública navegable, full-stack JS moderno con TypeScript).
 - **Perfil `bereail/bereail`** — 🟡 IMPROVE (contenido sólido, falta contacto directo y optimización como "landing" de reclutamiento).
@@ -158,10 +158,21 @@ LinkedIn, Upwork, Workana, Indeed y Glassdoor **no tienen APIs públicas gratuit
 
 - **Fase 0 (Auditoría):** ✅ completa — 2026-08-20.
 - **Fase 1 (Perfil profesional + Employability Score):** ✅ completa — 2026-08-21. LinkedIn revivido (título, bio, experiencia con los 4 proyectos reales incl. Vi, idiomas, destacados); inglés confirmado como intermedio; oferta de servicios ya estaba definida. Ver detalle en "LinkedIn revivido" más abajo.
-- **Fase 2 (Job Discovery manual):** ✅ construida — 2026-08-21. Sección `/ofertas`: carga manual de ofertas/proyectos (sin scraping), con pipeline de estados (por postular → postulada → en conversación → ganada/rechazada/descartada). Fuentes con API/RSS pública reales (RemoteOK, GetOnBoard, etc.) todavía no investigadas — pendiente si se quiere sumar más adelante.
-- **Fases 3-9** (Matching Engine, Application Generator, CRM de clientes, Client Prospecting, Analytics, Autopilot, Learning System): **no empezadas** — se construyen de a una. No construir todo de una vez (regla explícita del proyecto: evitar sobreingeniería).
+- **Fase 2 (Job Discovery manual):** ✅ construida — 2026-08-21. Sección `/ofertas`: carga manual de ofertas/proyectos (sin scraping), con pipeline de estados (por postular → postulada → en conversación → ganada/rechazada/descartada).
+- **Fase 2b (Ingesta automática de ofertas):** ✅ construida — 2026-09-09. Cierra el pendiente que había quedado abierto en la Fase 2 (las fuentes con API/RSS pública real). Detalle completo en "Ingesta automática" más abajo.
+- **Fases 3-9** (Matching Engine, Application Generator, CRM de clientes, Client Prospecting, Analytics, Autopilot, Learning System): **no empezadas** — se construyen de a una. No construir todo de una vez (regla explícita del proyecto: evitar sobreingeniería). Ojo: el filtro de relevancia de la Fase 2b es un adelanto mínimo del Matching Engine (palabras clave, no un modelo), no la Fase 3 completa.
 
-**IMPORTANTE — proyecto separado de PC Fix (2026-08-21):** este proyecto vive en su propia carpeta `GIT/work/Freelancer/`, con su propio código, su propia base de datos SQLite (`freelancer.db`) y su propio repo git — **no** dentro de `PCFIX/app/`. Al principio la Fase 2 se había construido por error adentro de la app de PC Fix (reusando su FastAPI, sus modelos y su base de datos); Berenice corrigió: "lo de pcfix va separado de freelancer son dos cosas distintas". Corre en `http://127.0.0.1:8002/` (PC Fix corre en el 8001) — arrancar con `iniciar.bat` en esta misma carpeta. Sin login (herramienta personal de un solo usuario, corre solo en localhost).
+**IMPORTANTE — proyecto separado de PC Fix (2026-08-21):** este proyecto vive en su propia carpeta `GIT/work/Freelancer/`, con su propio código, su propia base de datos SQLite (`freelancer.db`) y su propio repo git — **no** dentro de `PCFIX/app/`. Al principio la Fase 2 se había construido por error adentro de la app de PC Fix (reusando su FastAPI, sus modelos y su base de datos); Berenice corrigió: "lo de pcfix va separado de freelancer son dos cosas distintas". Corre en `http://127.0.0.1:8002/` (PC Fix corre en el 8001). Sin login (herramienta personal de un solo usuario, corre solo en localhost).
+
+**Arranque de un solo clic (2026-08-31):** en el Escritorio hay un acceso directo
+`Buscador de Trabajo (Freelancer).lnk` que apunta a `iniciar_silencioso.vbs` (en esta
+carpeta). Al hacer doble clic: si el servidor ya está corriendo en :8002 solo abre el
+navegador; si no, lo levanta oculto (sin ventana de consola, vía `iniciar_oculto.bat`,
+log en `uvicorn.log`) y recién ahí abre el navegador — nunca duplica el proceso. El
+proceso queda corriendo independiente del acceso directo (no se cae si se cierra
+Explorador ni nada relacionado al clic), solo se corta si se cierra manualmente desde
+el Administrador de tareas o se reinicia la PC. `iniciar.bat` (con ventana visible)
+sigue existiendo como alternativa manual para debug directo.
 
 ## 4bis. LINKEDIN REVIVIDO (2026-08-21)
 
@@ -176,12 +187,97 @@ Perfil: `linkedin.com/in/berenice-solohaga`. Cambios reales aplicados:
 - Destacados: publicado y fijado un case study narrativo sobre Glicemia (METANUTRIC), más un link a ailonline.com.ar.
 - **Pendiente, en manos de Berenice:** el perfil tenía 1 solo contacto/seguidor — máximo problema de credibilidad actual. LinkedIn sugirió 4 compañeros reales de UTN (Belen Venturini, Valentino Appo, Daniza Paz, Lucas Rossi) para conectar. Berenice prefirió elegir ella misma a quién agregar, no automatizarlo.
 
+---
+
+## 4ter. INGESTA AUTOMÁTICA DE OFERTAS (2026-09-09)
+
+Las ofertas ya no dependen de que Berenice las cargue a mano una por una: la app las
+trae sola desde fuentes públicas. La carga manual sigue existiendo y no cambió (sirve
+para lo que llega por LinkedIn, por un referido o por PC Fix).
+
+### Fuentes conectadas (las 4 verificadas funcionando el 2026-09-09)
+
+| Fuente | Canal | Por qué |
+|---|---|---|
+| **Get on Board** | API JSON `/api/v0/categories/programming/jobs` (con `expand[]=company`) | La más relevante: LatAm, muchos avisos en español, Chile/Argentina/Perú/Colombia. Es la que más aporta (35 de 42 en la primera corrida) |
+| **Remote OK** | API JSON `/api` | Remoto internacional. El primer elemento del array es el aviso legal, no una oferta |
+| **Remotive** | API JSON `/api/remote-jobs` | Remoto internacional. Catálogo chico (17 avisos totales al 2026-09-09) |
+| **We Work Remotely** | Feed RSS de `remote-programming-jobs` | El título viene como "Empresa: Puesto" y hay que separarlo |
+
+**Descartada: Arbeitnow** — su API pública funciona, pero es casi todo mercado alemán
+y presencial en Alemania: aportaba ruido, no ofertas.
+
+### Cumplimiento de los términos de cada plataforma (decisión, no detalle técnico)
+
+Se mantiene la regla del proyecto de no scrapear. Todo lo conectado es API o RSS
+**oficial y pública**, el canal que cada plataforma publica justamente para que
+terceros redistribuyan sus avisos. Además:
+
+- **Link de vuelta + atribución:** Remote OK y Remotive lo exigen en sus términos y
+  amenazan con cortar el acceso si no se cumple. Cada ficha linkea al aviso original
+  y muestra el nombre de la fuente.
+- **Máximo una consulta cada 6 horas por fuente:** Remotive pide explícitamente no
+  pasar de 4 consultas por día. La espera se guarda en la tabla `estado_fuentes` y la
+  respeta tanto el botón manual como el refresco automático.
+- **No republicar hacia afuera:** Remotive prohíbe reenviar sus avisos a terceros.
+  Esta app es local, de un solo usuario, sin publicación externa — no hay conflicto.
+
+### Cómo funciona
+
+1. **Se busca sola cada 6 horas** (tarea en segundo plano que arranca con la app,
+   `app/main.py`), y también a demanda con el botón "Buscar ahora".
+2. **Filtro de relevancia** (`app/services/relevancia.py`) contra el perfil real de
+   este documento: suma por Django/React/Node/Python, por part-time o freelance
+   (capacidad real 5-10 hs/semana), por LatAm o español; resta por seniority alta,
+   stack ajeno (.NET, Java, PHP), rol no técnico y frontend puro sin backend. Lo que
+   queda por debajo de 25 puntos **se descarta sin guardarse**.
+3. **Bandeja de entrada:** lo que pasa el filtro entra con estado `nueva`, ordenado
+   por puntaje. Berenice decide con dos botones: "Me interesa" (pasa a `por_postular`
+   y entra al pipeline de siempre) o "No me sirve" (`descartada`).
+4. **Nada se repite:** la deduplicación es por fuente + id externo, así que una oferta
+   ya descartada no vuelve a aparecer en la siguiente búsqueda.
+
+**El filtro es por palabras clave, no un modelo de IA.** Puede dejar pasar ruido y
+puede descartar algo bueno; conviene mirar las fuentes directamente cada tanto. Los
+pesos están en `relevancia.py` y se ajustan ahí.
+
+### Archivos nuevos
+
+```
+app/services/
+├── relevancia.py          # puntaje contra el perfil
+├── ingesta.py             # orquesta, deduplica, respeta la espera
+└── fuentes/
+    ├── base.py            # OfertaExterna, limpieza de HTML, pedidos HTTP
+    ├── getonbrd.py  remoteok.py  remotive.py  weworkremotely.py
+```
+
+Modelo ampliado (`origen`, `id_externo`, `descripcion`, `ubicacion`, `salario`,
+`etiquetas`, `puntaje`, `fecha_publicacion`) más la tabla `estado_fuentes`. Como el
+proyecto no usa Alembic, `app/database.py` suma las columnas faltantes en cada
+arranque con `ALTER TABLE ADD COLUMN` (SQL estándar, sirve también para PostgreSQL).
+
+**Sumar una fuente nueva:** crear un módulo en `fuentes/` con `NOMBRE`, `ETIQUETA`,
+`SITIO`, `HORAS_ENTRE_CONSULTAS` y `obtener()`, y agregarlo a la lista de
+`fuentes/__init__.py`. Nada más.
+
+**Tests:** 58 en total (`pytest tests/`), ninguno sale a internet. Cubren el filtro de
+relevancia, el parseo de cada fuente, la deduplicación, la espera entre consultas, que
+una fuente caída no frene a las demás, la migración de columnas y las rutas.
+
+---
+
 ## 5. DECISIONES TOMADAS
 
 - 2026-08-20: se prioriza NO scrapear plataformas de empleo que lo prohíben en sus ToS (LinkedIn, Upwork, Workana, Indeed, Glassdoor). El sistema de búsqueda se diseñará alrededor de carga manual + fuentes con API/RSS pública reales, a definir en Fase 2.
 - 2026-08-20: se recomienda posicionamiento "Full Stack Developer (Django + React/Node) con sistemas en producción real", pendiente de validación por Berenice.
 - 2026-08-20: definida la oferta de servicios con Berenice — ver sección "Oferta de servicios freelance" arriba. Prioridad de clientes: PyMEs de Rosario > instituciones > subcontratos. Capacidad: 5-10 hs/semana. Mercado local/español (inglés técnico básico, no priorizar plataformas internacionales).
 - 2026-08-21: modelo `OportunidadFreelance` (tabla `oportunidades_freelance`) agregado sin migración de alembic explícita — el proyecto ya depende de `Base.metadata.create_all` en el startup de la app para crear tablas nuevas (mismo patrón que el resto de los modelos).
+- 2026-09-09: se conectan 4 fuentes públicas (Get on Board, Remote OK, Remotive, We Work Remotely) por API/RSS oficial. Se mantiene intacta la decisión de no scrapear: ninguna de estas plataformas lo prohíbe porque el canal usado es el que ellas mismas publican para redistribuir sus avisos.
+- 2026-09-09: **Arbeitnow descartada** aunque su API funciona — es casi todo mercado alemán presencial, aportaba ruido.
+- 2026-09-09: las ofertas importadas **no entran directo al pipeline** sino a una bandeja aparte (estado `nueva`). Si entraran como "por postular" se mezclarían decenas de avisos sin revisar con las postulaciones reales y el pipeline dejaría de ser confiable.
+- 2026-09-09: el filtro de relevancia **descarta sin guardar** lo que no llega a 25 puntos. Se prefiere perder alguna oferta dudosa antes que volver la bandeja inusable — el umbral y los pesos se ajustan en `app/services/relevancia.py`.
+- 2026-09-09: `create_all` no alcanzaba para las columnas nuevas (no toca tablas que ya existen). Se agregó `agregar_columnas_faltantes()` en `app/database.py`, que corre en cada arranque con `ALTER TABLE ADD COLUMN`. Sigue sin usarse Alembic: si en algún momento hace falta renombrar o borrar columnas, ahí sí habrá que incorporarlo.
 
 ## 6. LEARNING LOG
 

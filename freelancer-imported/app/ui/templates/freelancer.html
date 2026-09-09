@@ -28,7 +28,7 @@
       <h1>💼 Freelancer</h1>
       <p>Tu carrera como Full Stack Developer — auditoría, posicionamiento y oferta de servicios ya definidos.</p>
     </div>
-    <span class="badge badge-simulado">Fase 0-1 completa</span>
+    <span class="badge badge-simulado">Fase 0-2 completa</span>
   </div>
 
   <div class="subtitulo-seccion" style="margin-top:8px;">Employability Score</div>
@@ -83,11 +83,20 @@
   </div>
 
   <div class="subtitulo-seccion">Búsqueda de oportunidades</div>
-  <a href="/ofertas" class="tarjeta interactiva" style="display:flex; justify-content:space-between; align-items:center; text-decoration:none; color:inherit;">
+  <a href="/ofertas?estado=nueva" class="tarjeta interactiva" style="display:flex; justify-content:space-between; align-items:center; text-decoration:none; color:inherit;">
     <div>
-      <p style="margin:0; font-size:16px; font-weight:600;">📋 Ofertas y postulaciones</p>
+      <p style="margin:0; font-size:16px; font-weight:600;">
+        📋 Ofertas y postulaciones
+        {% if total_bandeja %}<span class="badge badge-amarillo" style="margin-left:8px;">{{ total_bandeja }} sin revisar</span>{% endif %}
+      </p>
       <p class="texto-suave" style="margin:4px 0 0; font-size:13px;">
-        {% if total_ofertas_activas %}{{ total_ofertas_activas }} oferta{{ 's' if total_ofertas_activas != 1 else '' }} en seguimiento activo.{% else %}Todavía no cargaste ninguna oferta — sumalas a mano vos misma (sin scraping, cumpliendo los términos de cada plataforma).{% endif %}
+        {% if total_bandeja %}
+          Llegaron solas desde las fuentes públicas conectadas.{% if total_ofertas_activas %} Además tenés {{ total_ofertas_activas }} en seguimiento activo.{% endif %}
+        {% elif total_ofertas_activas %}
+          {{ total_ofertas_activas }} oferta{{ 's' if total_ofertas_activas != 1 else '' }} en seguimiento activo.
+        {% else %}
+          Get on Board, Remote OK, Remotive y We Work Remotely se consultan solas cada 6 horas.
+        {% endif %}
       </p>
     </div>
     <div class="flecha texto-suave">Ver →</div>

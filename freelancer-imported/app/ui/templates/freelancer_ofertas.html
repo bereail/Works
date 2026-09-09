@@ -9,10 +9,61 @@
   .franja-freelancer { max-width: 980px; margin: 0 auto; padding: 40px 24px 80px; }
   .volver { display: inline-flex; align-items: center; gap: 6px; color: var(--texto-suave); font-size: 13px; margin-bottom: 20px; }
   .volver:hover { color: var(--texto); }
-  .fuente-badge { text-transform: capitalize; }
+  .acciones-header { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+  .aviso {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; margin-top: 20px;
+    border-radius: var(--radio-chico);
+    background: rgba(14, 165, 164, 0.10);
+    border: 1px solid rgba(14, 165, 164, 0.35);
+    font-size: 14px;
+  }
+
+  .fuentes { margin-top: 20px; }
+  .fuentes summary {
+    cursor: pointer; font-size: 13px; color: var(--texto-suave);
+    padding: 8px 0; list-style: none; display: inline-flex; align-items: center; gap: 8px;
+    transition: color var(--transicion);
+  }
+  .fuentes summary:hover { color: var(--texto); }
+  .fuentes summary::-webkit-details-marker { display: none; }
+  .fuentes summary .chevron { transition: transform var(--transicion); display: inline-block; }
+  .fuentes[open] summary .chevron { transform: rotate(90deg); }
+  .fuente-fila { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; padding: 10px 4px; border-bottom: 1px solid var(--borde); font-size: 13px; }
+  .fuente-fila:last-child { border-bottom: none; }
+  .fuente-fila a { font-weight: 600; }
+  .fuente-fila a:hover { color: var(--color-acento); }
+  .fuente-detalle { color: var(--texto-tenue); font-size: 12px; text-align: right; }
+  .fuente-detalle.error { color: var(--peligro); }
+
   .oferta-tarjeta { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
   .oferta-acciones { display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
   .oferta-notas { font-size: 13px; color: var(--texto-suave); margin: 8px 0 0; white-space: pre-wrap; }
+  .fuente-badge { text-transform: capitalize; }
+  .oferta-meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--texto-tenue); margin-top: 6px; }
+  .etiquetas { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .etiqueta {
+    font-size: 11px; padding: 2px 8px; border-radius: 999px;
+    background: var(--superficie-hover); color: var(--texto-suave); border: 1px solid var(--borde);
+  }
+  .descripcion summary {
+    cursor: pointer; font-size: 12.5px; color: var(--texto-tenue); margin-top: 10px;
+    list-style: none; transition: color var(--transicion);
+  }
+  .descripcion summary:hover { color: var(--texto-suave); }
+  .descripcion summary::-webkit-details-marker { display: none; }
+  .descripcion p {
+    font-size: 13px; color: var(--texto-suave); white-space: pre-wrap;
+    margin: 10px 0 0; padding-left: 12px; border-left: 2px solid var(--borde);
+    max-height: 260px; overflow-y: auto;
+  }
+
+  .puntaje { display: inline-flex; align-items: center; gap: 5px; }
+  .puntaje .barra { width: 34px; height: 4px; border-radius: 999px; background: var(--borde); overflow: hidden; }
+  .puntaje .relleno { height: 100%; border-radius: 999px; background: currentColor; }
+
+  .nota-legal { font-size: 11.5px; color: var(--texto-tenue); margin-top: 14px; line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -22,74 +73,178 @@
   <div class="header-pagina">
     <div>
       <h1>📋 Ofertas y postulaciones</h1>
-      <p>Cargá a mano cada oferta o proyecto que encontrés — sin scraping, sumando vos misma lo que ves en cada plataforma.</p>
+      <p>Las fuentes públicas se consultan solas cada 6 horas. Lo que llega acá ya está filtrado contra tu perfil — igual podés sumar a mano lo que encuentres en LinkedIn o te llegue por un referido.</p>
     </div>
-    <a href="/ofertas/nueva" class="boton boton-primario">+ Nueva oferta</a>
+    <div class="acciones-header">
+      <form method="post" action="/ofertas/buscar" id="form-buscar">
+        <button type="submit" class="boton boton-primario" id="boton-buscar">🔎 Buscar ahora</button>
+      </form>
+      <a href="/ofertas/nueva" class="boton boton-ghost">+ Cargar a mano</a>
+    </div>
   </div>
 
+  {% if aviso %}
+  <div class="aviso fade-in" role="status">✅ {{ aviso }}</div>
+  {% endif %}
+
+  <details class="fuentes">
+    <summary aria-label="Ver el estado de las fuentes de ofertas"><span class="chevron">›</span> Fuentes conectadas ({{ fuentes|length }})</summary>
+    <div class="tarjeta" style="margin-top:8px;">
+      {% for f in fuentes %}
+      <div class="fuente-fila">
+        <a href="{{ f.sitio }}" target="_blank" rel="noopener">{{ f.etiqueta }}</a>
+        <span class="fuente-detalle {{ 'error' if f.error else '' }}">
+          {% if f.error %}{{ f.error }}{% else %}{{ f.resultado or 'sin consultar todavía' }}{% endif %}
+          · {{ f.ultima_consulta }}
+        </span>
+      </div>
+      {% endfor %}
+      <p class="nota-legal">
+        Todas son APIs o feeds RSS públicos y oficiales de cada plataforma: no hay scraping.
+        Cada aviso enlaza de vuelta a su publicación original, como piden los términos de Remote OK y Remotive.
+        El filtro es por palabras clave contra tu perfil (Django, React, Node, LatAm, part-time), no un modelo de IA:
+        descarta lo que queda por debajo de {{ puntaje_minimo }} puntos, así que conviene mirar la fuente directamente de vez en cuando.
+      </p>
+      <p class="nota-legal">
+        Cada fuente se consulta como máximo una vez cada 6 horas — Remotive pide explícitamente
+        no pasar de 4 consultas por día y bloquea a quien abusa. Si acabás de buscar y querés
+        ignorar esa espera, podés hacerlo, pero no lo repitas seguido.
+      </p>
+      <form method="post" action="/ofertas/buscar">
+        <input type="hidden" name="forzar" value="1" />
+        <button type="submit" class="boton boton-ghost boton-chico">Buscar igual, sin esperar</button>
+      </form>
+    </div>
+  </details>
+
   <div class="selector-periodo mt-24" style="flex-wrap: wrap; width: auto;">
-    <a href="/ofertas" class="{{ 'activo' if not filtro_estado else '' }}">Todas</a>
+    <a href="/ofertas?estado={{ estado_bandeja }}" class="{{ 'activo' if filtro_estado == estado_bandeja else '' }}">
+      Bandeja{% if total_bandeja %} ({{ total_bandeja }}){% endif %}
+    </a>
     <a href="/ofertas?estado=por_postular" class="{{ 'activo' if filtro_estado == 'por_postular' else '' }}">Por postular</a>
     <a href="/ofertas?estado=postulada" class="{{ 'activo' if filtro_estado == 'postulada' else '' }}">Postuladas</a>
     <a href="/ofertas?estado=en_conversacion" class="{{ 'activo' if filtro_estado == 'en_conversacion' else '' }}">En conversación</a>
     <a href="/ofertas?estado=ganada" class="{{ 'activo' if filtro_estado == 'ganada' else '' }}">Ganadas</a>
     <a href="/ofertas?estado=rechazada" class="{{ 'activo' if filtro_estado == 'rechazada' else '' }}">Rechazadas</a>
     <a href="/ofertas?estado=descartada" class="{{ 'activo' if filtro_estado == 'descartada' else '' }}">Descartadas</a>
+    <a href="/ofertas" class="{{ 'activo' if not filtro_estado else '' }}">Todas</a>
   </div>
 
   {% if not ofertas %}
   <div class="tarjeta vacio mt-24">
-    <div class="icono">📋</div>
-    <p>{% if filtro_estado %}No hay ofertas en este estado.{% else %}Todavía no cargaste ninguna oferta.{% endif %}</p>
-    <a href="/ofertas/nueva" class="boton boton-primario boton-chico">+ Cargar la primera</a>
+    <div class="icono">{{ '📥' if filtro_estado == estado_bandeja else '📋' }}</div>
+    {% if filtro_estado == estado_bandeja %}
+    <p>La bandeja está vacía. Tocá <strong>Buscar ahora</strong> para traer ofertas de las fuentes públicas, o cargá una a mano.</p>
+    {% elif filtro_estado %}
+    <p>No hay ofertas en este estado.</p>
+    {% else %}
+    <p>Todavía no hay ninguna oferta.</p>
+    {% endif %}
+    <a href="/ofertas/nueva" class="boton boton-ghost boton-chico">+ Cargar a mano</a>
   </div>
   {% else %}
   {% for o in ofertas %}
   <div class="tarjeta interactiva mt-24 fade-in oferta-tarjeta">
     <div style="min-width:0;">
       <div class="gap-8" style="margin-bottom:8px; flex-wrap:wrap;">
+        {% if o.estado == 'nueva' %}<span class="badge badge-amarillo">sin revisar</span>{% endif %}
         {% if o.estado == 'por_postular' %}<span class="badge badge-neutro">por postular</span>{% endif %}
         {% if o.estado == 'postulada' %}<span class="badge badge-amarillo">postulada</span>{% endif %}
         {% if o.estado == 'en_conversacion' %}<span class="badge badge-verde">en conversación</span>{% endif %}
         {% if o.estado == 'ganada' %}<span class="badge badge-verde">🎉 ganada</span>{% endif %}
         {% if o.estado == 'rechazada' %}<span class="badge badge-rojo">rechazada</span>{% endif %}
         {% if o.estado == 'descartada' %}<span class="badge badge-neutro">descartada</span>{% endif %}
+
+        {% if o.origen == 'importada' %}
+        <span class="badge {{ 'badge-verde' if o.puntaje >= 50 else ('badge-amarillo' if o.puntaje >= 35 else 'badge-neutro') }} puntaje"
+              title="Afinidad con tu perfil según el filtro por palabras clave">
+          <span class="barra"><span class="relleno" style="width: {{ o.puntaje }}%;"></span></span>
+          {{ o.puntaje }}
+        </span>
+        {% endif %}
+
         <span class="badge badge-neutro fuente-badge">{{ o.fuente }}</span>
-        <span class="badge badge-neutro">{{ {'proyecto_freelance': 'proyecto freelance', 'empleo_relacion_dependencia': 'relación de dependencia', 'subcontrato': 'subcontrato'}[o.tipo] }}</span>
+        <span class="badge badge-neutro">{{ {'proyecto_freelance': 'proyecto freelance', 'empleo_relacion_dependencia': 'relación de dependencia', 'subcontrato': 'subcontrato'}.get(o.tipo, o.tipo) }}</span>
       </div>
+
       <h3 style="margin: 0 0 4px;">
         {% if o.url %}<a href="{{ o.url }}" target="_blank" rel="noopener" style="color:inherit;">{{ o.titulo }}</a>{% else %}{{ o.titulo }}{% endif %}
       </h3>
       {% if o.cliente_o_empresa %}<p class="texto-suave" style="margin:0; font-size:13px;">{{ o.cliente_o_empresa }}</p>{% endif %}
+
+      {% if o.ubicacion or o.salario or o.fecha_publicacion %}
+      <div class="oferta-meta">
+        {% if o.ubicacion %}<span>📍 {{ o.ubicacion }}</span>{% endif %}
+        {% if o.salario %}<span>💵 {{ o.salario }}</span>{% endif %}
+        {% if o.fecha_publicacion %}<span>🗓️ {{ o.fecha_publicacion.strftime('%d/%m/%Y') }}</span>{% endif %}
+      </div>
+      {% endif %}
+
+      {% if o.lista_etiquetas %}
+      <div class="etiquetas">
+        {% for e in o.lista_etiquetas[:8] %}<span class="etiqueta">{{ e }}</span>{% endfor %}
+      </div>
+      {% endif %}
+
+      {% if o.descripcion %}
+      <details class="descripcion">
+        <summary>Ver descripción</summary>
+        <p>{{ o.descripcion }}</p>
+      </details>
+      {% endif %}
+
       {% if o.notas %}<p class="oferta-notas">{{ o.notas }}</p>{% endif %}
     </div>
+
     <div class="oferta-acciones">
+      {% if o.estado == 'nueva' %}
+      <form method="post" action="/ofertas/{{ o.id }}/estado">
+        <input type="hidden" name="estado" value="por_postular" />
+        <input type="hidden" name="volver_a" value="/ofertas?estado={{ estado_bandeja }}" />
+        <button type="submit" class="boton boton-primario boton-chico">Me interesa</button>
+      </form>
+      <form method="post" action="/ofertas/{{ o.id }}/estado">
+        <input type="hidden" name="estado" value="descartada" />
+        <input type="hidden" name="volver_a" value="/ofertas?estado={{ estado_bandeja }}" />
+        <button type="submit" class="boton boton-ghost boton-chico">No me sirve</button>
+      </form>
+      {% endif %}
+
       {% if o.estado == 'por_postular' %}
       <form method="post" action="/ofertas/{{ o.id }}/estado">
         <input type="hidden" name="estado" value="postulada" />
+        <input type="hidden" name="volver_a" value="/ofertas?estado={{ filtro_estado }}" />
         <button type="submit" class="boton boton-primario boton-chico">Marcar postulada</button>
       </form>
       {% endif %}
+
       {% if o.estado == 'postulada' %}
       <form method="post" action="/ofertas/{{ o.id }}/estado">
         <input type="hidden" name="estado" value="en_conversacion" />
+        <input type="hidden" name="volver_a" value="/ofertas?estado={{ filtro_estado }}" />
         <button type="submit" class="boton boton-primario boton-chico">En conversación</button>
       </form>
       {% endif %}
+
       {% if o.estado in ('postulada', 'en_conversacion') %}
       <form method="post" action="/ofertas/{{ o.id }}/estado">
         <input type="hidden" name="estado" value="ganada" />
+        <input type="hidden" name="volver_a" value="/ofertas?estado={{ filtro_estado }}" />
         <button type="submit" class="boton boton-acento boton-chico">Ganada</button>
       </form>
       <form method="post" action="/ofertas/{{ o.id }}/estado">
         <input type="hidden" name="estado" value="rechazada" />
+        <input type="hidden" name="volver_a" value="/ofertas?estado={{ filtro_estado }}" />
         <button type="submit" class="boton boton-ghost boton-chico">Rechazada</button>
       </form>
       {% endif %}
+
       <a href="/ofertas/{{ o.id }}/editar" class="boton boton-ghost boton-chico">Editar</a>
+
       {% if o.estado == 'por_postular' %}
       <form method="post" action="/ofertas/{{ o.id }}/estado">
         <input type="hidden" name="estado" value="descartada" />
+        <input type="hidden" name="volver_a" value="/ofertas?estado={{ filtro_estado }}" />
         <button type="submit" class="boton boton-ghost boton-chico">Descartar</button>
       </form>
       {% endif %}
@@ -98,5 +253,17 @@
   {% endfor %}
   {% endif %}
 </div>
+
+<script>
+  // Buscar en cuatro fuentes tarda unos segundos: el boton avisa que esta trabajando
+  // en vez de quedarse mudo, y no se puede disparar dos veces la misma busqueda.
+  document.getElementById('form-buscar').addEventListener('submit', function () {
+    var boton = document.getElementById('boton-buscar');
+    setTimeout(function () {
+      boton.disabled = true;
+      boton.textContent = 'Buscando...';
+    }, 0);
+  });
+</script>
 </body>
 </html>
