@@ -25,6 +25,10 @@
     </div>
     <div class="gap-8">
       <span class="badge badge-{{ 'amarillo' if p.estado == 'borrador' else ('neutro' if p.estado == 'previsualizado' else 'verde') }}">{{ p.estado }}</span>
+      <a href="/publicaciones/{{ p.id }}/editar" class="boton boton-ghost boton-chico">✏️</a>
+      <form method="post" action="/publicaciones/{{ p.id }}/eliminar">
+        <button type="submit" class="boton boton-ghost boton-chico">🗑️</button>
+      </form>
       <a href="/publicaciones/{{ p.id }}/previsualizar" class="boton boton-primario boton-chico">Continuar →</a>
     </div>
   </div>

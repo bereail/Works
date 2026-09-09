@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, String, func
+from sqlalchemy import DateTime, ForeignKey, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -48,4 +48,8 @@ class CuentaConectada(Base):
     nombre_cuenta: Mapped[str] = mapped_column(String(120))
     tipo: Mapped[str] = mapped_column(String(20), default="comercial")
     estado_conexion: Mapped[str] = mapped_column(String(20), default="simulado")  # simulado | conectada | error
+    id_externo: Mapped[str] = mapped_column(String(60), default="")  # page_id (facebook) | ig_business_id (instagram)
+    access_token: Mapped[str] = mapped_column(Text, default="")  # token de larga duración generado en developers.facebook.com
+    url_base_publica: Mapped[str] = mapped_column(String(255), default="")  # solo instagram: base pública desde donde Meta puede descargar el flyer
+    token_actualizado_en: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     creado_en: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

@@ -42,7 +42,7 @@ def generar_flyer(
 
     with sync_playwright() as p:
         navegador = p.chromium.launch()
-        pagina = navegador.new_page(viewport={"width": 1080, "height": 1080})
+        pagina = navegador.new_page(viewport={"width": 1080, "height": 1350})
         pagina.set_content(html)
         pagina.screenshot(path=str(ruta_salida))
         navegador.close()

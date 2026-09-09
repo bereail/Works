@@ -17,7 +17,7 @@ def obtener_usuario_actual(request: Request, sesion: Session) -> Usuario | None:
 
 
 def requiere_login(request: Request) -> RedirectResponse | None:
-    """Devuelve una RedirectResponse a /login si no hay sesión activa, o None si está todo bien."""
-    if not request.session.get("usuario_id"):
-        return RedirectResponse(url="/login", status_code=303)
+    """Login desactivado: la app corre solo en localhost para uso personal de Berenice,
+    así que nunca redirige a /login. Se deja la función (en vez de borrar sus usos en
+    cada router) para poder reactivarla fácil si el día de mañana se expone la app afuera."""
     return None

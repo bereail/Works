@@ -10,6 +10,7 @@
 </div>
 
 {% if guardado %}<div class="mensaje-exito">Cambios guardados.</div>{% endif %}
+{% if error_modo %}<div class="mensaje-error">{{ error_modo }}</div>{% endif %}
 
 <div class="fila-campos" style="align-items:start;">
   <div class="tarjeta">
@@ -22,17 +23,15 @@
     <div class="subtitulo-seccion">Modo de operación</div>
     <div class="lista-fila">
       <span>Simulación / Real</span>
-      <span class="badge badge-simulado">{{ identidad.modo_operacion|capitalize }}</span>
+      <span class="badge badge-{{ 'verde' if identidad.modo_operacion == 'real' else 'simulado' }}">{{ identidad.modo_operacion|capitalize }}</span>
     </div>
     <p class="texto-suave" style="font-size:13px;">El modo Real se habilita recién cuando haya al menos una cuenta de Instagram/Facebook comercial conectada de verdad — no antes.</p>
-
-    <div class="subtitulo-seccion">Cuentas</div>
-    {% for c in cuentas %}
-    <div class="lista-fila">
-      <span><span class="estado-punto {{ c.estado_conexion }}"></span> {{ c.plataforma|capitalize }} — {{ c.nombre_cuenta }}</span>
-      <span class="badge badge-neutro">{{ c.tipo }} · {{ c.estado_conexion }}</span>
-    </div>
-    {% endfor %}
+    <form method="post" action="/configuracion/modo-operacion">
+      <input type="hidden" name="modo" value="{{ 'simulacion' if identidad.modo_operacion == 'real' else 'real' }}" />
+      <button type="submit" class="boton boton-ghost">
+        {{ 'Volver a Simulación' if identidad.modo_operacion == 'real' else 'Pasar a modo Real →' }}
+      </button>
+    </form>
   </div>
 
   <div class="tarjeta">
@@ -56,6 +55,42 @@
       <button type="submit" class="boton boton-primario">Guardar cambios</button>
     </form>
   </div>
+</div>
+
+<div class="subtitulo-seccion">Cuentas conectadas</div>
+<p class="texto-suave" style="font-size:13px; margin-top:-8px;">
+  Facebook sube el flyer directo, sin vueltas. Instagram exige además una URL pública desde donde Meta pueda descargar la imagen (no acepta el archivo directo) — por eso pide un campo más.
+</p>
+
+<div class="fila-campos" style="align-items:start;">
+  {% for c in cuentas %}
+  <div class="tarjeta">
+    <div class="subtitulo-seccion" style="margin-top:0;">
+      {{ c.plataforma|capitalize }} — {{ c.nombre_cuenta }}
+      <span class="badge badge-{{ 'verde' if c.estado_conexion == 'conectada' else ('rojo' if c.estado_conexion == 'error' else 'simulado') }}" style="margin-left:8px;">{{ c.estado_conexion }}</span>
+    </div>
+    <form method="post" action="/configuracion/cuentas/{{ c.id }}" autocomplete="off">
+      <div class="campo">
+        <label for="id_externo_{{ c.id }}">{{ 'ID de la Página de Facebook' if c.plataforma == 'facebook' else 'ID de la cuenta de Instagram Business' }}</label>
+        <input id="id_externo_{{ c.id }}" name="id_externo" value="{{ c.id_externo }}" placeholder="Generado en developers.facebook.com" autocomplete="off" data-lpignore="true" data-1p-ignore data-bwignore />
+      </div>
+      <div class="campo">
+        <label for="access_token_{{ c.id }}">Token de acceso de larga duración</label>
+        <input id="access_token_{{ c.id }}" name="access_token" type="password" value="{{ c.access_token }}" placeholder="Pegalo acá, se guarda solo en tu base local" autocomplete="new-password" data-lpignore="true" data-1p-ignore data-bwignore />
+      </div>
+      {% if c.plataforma == 'instagram' %}
+      <div class="campo">
+        <label for="url_base_publica_{{ c.id }}">URL pública base para las imágenes</label>
+        <input id="url_base_publica_{{ c.id }}" name="url_base_publica" value="{{ c.url_base_publica }}" placeholder="ej. https://ailonline.com.ar/pcfix/media" autocomplete="off" data-lpignore="true" data-1p-ignore data-bwignore />
+      </div>
+      {% endif %}
+      {% if c.token_actualizado_en %}
+        <p class="texto-suave" style="font-size:12px;">Token actualizado: {{ c.token_actualizado_en.strftime('%d/%m/%Y %H:%M') }}</p>
+      {% endif %}
+      <button type="submit" class="boton boton-primario">Guardar credenciales</button>
+    </form>
+  </div>
+  {% endfor %}
 </div>
 
 {% endblock %}

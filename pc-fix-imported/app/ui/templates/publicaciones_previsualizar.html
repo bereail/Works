@@ -35,7 +35,7 @@
   <div class="tarjeta">
     <div class="subtitulo-seccion" style="margin-top:0;">Detalle</div>
     <div class="lista-fila"><span class="texto-suave">Plataforma</span><strong>{{ publicacion.plataforma|capitalize }}</strong></div>
-    <div class="lista-fila"><span class="texto-suave">Cuenta que se usará</span><strong>{{ cuenta.nombre_cuenta if cuenta else '—' }} <span class="badge badge-simulado">{{ cuenta.estado_conexion if cuenta else 'sin cuenta' }}</span></strong></div>
+    <div class="lista-fila"><span class="texto-suave">Cuenta que se usará</span><strong>{{ cuenta.nombre_cuenta if cuenta else '—' }} <span class="badge badge-{{ 'verde' if cuenta and cuenta.estado_conexion == 'conectada' else ('rojo' if cuenta and cuenta.estado_conexion == 'error' else 'simulado') }}">{{ cuenta.estado_conexion if cuenta else 'sin cuenta' }}</span></strong></div>
     <div class="lista-fila"><span class="texto-suave">Fecha</span><strong>{{ publicacion.fecha.strftime('%d/%m/%Y') }}</strong></div>
     <div class="lista-fila"><span class="texto-suave">Hora</span><strong>{{ publicacion.fecha.strftime('%H:%M') }}</strong></div>
     <div class="lista-fila"><span class="texto-suave">Formato</span><strong>{{ publicacion.formato|capitalize }}</strong></div>
@@ -47,9 +47,29 @@
         <form method="post" action="/publicaciones/{{ publicacion.id }}/confirmar-y-publicar">
           <button type="submit" class="boton boton-primario" style="width:100%; justify-content:center; font-size:15px; padding:14px;">✅ Confirmar y publicar</button>
         </form>
-        <p class="texto-suave" style="font-size:12px; margin-top:8px; text-align:center;">Por ahora queda simulada — no sale a ninguna red real (modo Simulación activo).</p>
-      {% elif publicacion.estado in ['simulado', 'publicado'] %}
-        <div class="mensaje-exito">✅ Publicación {{ 'simulada' if publicacion.estado == 'simulado' else 'publicada' }} — no se envió a ninguna cuenta real.</div>
+        {% if identidad.modo_operacion == 'real' %}
+          <p class="texto-suave" style="font-size:12px; margin-top:8px; text-align:center;">Modo Real activo: este click publica de verdad en {{ publicacion.plataforma|capitalize }}.</p>
+        {% else %}
+          <p class="texto-suave" style="font-size:12px; margin-top:8px; text-align:center;">Por ahora queda simulada — no sale a ninguna red real (modo Simulación activo).</p>
+        {% endif %}
+      {% elif publicacion.estado == 'simulado' %}
+        <div class="mensaje-exito">✅ Publicación simulada — no se envió a ninguna cuenta real.</div>
+      {% elif publicacion.estado == 'publicado' %}
+        <div class="mensaje-exito">✅ Publicada de verdad en {{ publicacion.plataforma|capitalize }}{% if publicacion.id_publicacion_externa %} (id {{ publicacion.id_publicacion_externa }}){% endif %}.</div>
+      {% elif publicacion.estado == 'error' %}
+        <div class="mensaje-error">⚠️ No se pudo publicar. Revisá el último intento en Analíticas → Registro de acciones.</div>
+        <form method="post" action="/publicaciones/{{ publicacion.id }}/confirmar-y-publicar" class="mt-24">
+          <button type="submit" class="boton boton-primario" style="width:100%; justify-content:center;">Reintentar</button>
+        </form>
+      {% endif %}
+
+      {% if publicacion.estado in ['borrador', 'previsualizado', 'aprobado'] %}
+        <div class="gap-8" style="margin-top:12px;">
+          <a href="/publicaciones/{{ publicacion.id }}/editar" class="boton boton-ghost" style="flex:1; justify-content:center;">✏️ Editar</a>
+          <form method="post" action="/publicaciones/{{ publicacion.id }}/eliminar" style="flex:1;">
+            <button type="submit" class="boton boton-ghost" style="width:100%; justify-content:center;">🗑️ Eliminar</button>
+          </form>
+        </div>
       {% endif %}
     </div>
   </div>

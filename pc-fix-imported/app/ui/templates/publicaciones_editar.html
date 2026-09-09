@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block titulo %}Editar publicación — PCfix Automation Center{% endblock %}
+{% block contenido %}
+
+<div class="header-pagina">
+  <div>
+    <h1>✏️ Editar antes de publicar</h1>
+    <p>Ajustá lo que necesites. Nada sale a ninguna red hasta que vuelvas a confirmar en la previsualización.</p>
+  </div>
+  <span class="badge badge-neutro">{{ publicacion.plataforma|capitalize }}</span>
+</div>
+
+<div class="tarjeta">
+  <form method="post" action="/publicaciones/{{ publicacion.id }}/editar">
+    <div class="campo">
+      <label for="tema">Tema</label>
+      <input id="tema" type="text" name="tema" value="{{ publicacion.tema }}" required />
+    </div>
+
+    <div class="campo">
+      <label for="texto">Texto de la publicación</label>
+      <textarea id="texto" name="texto" rows="6" required>{{ publicacion.texto }}</textarea>
+    </div>
+
+    <div class="campo">
+      <label for="cta">Llamado a la acción (CTA)</label>
+      <input id="cta" type="text" name="cta" value="{{ publicacion.cta }}" />
+    </div>
+
+    <div class="fila-campos">
+      <div class="campo">
+        <label for="fecha">Fecha</label>
+        <input id="fecha" type="date" name="fecha" value="{{ publicacion.fecha.strftime('%Y-%m-%d') }}" required />
+      </div>
+      <div class="campo">
+        <label for="hora">Hora</label>
+        <input id="hora" type="time" name="hora" value="{{ publicacion.fecha.strftime('%H:%M') }}" required />
+      </div>
+    </div>
+
+    <p class="texto-suave" style="font-size:12px;">La plataforma, el formato y el pilar no se editan acá — si necesitás cambiarlos, descartá esta publicación y creá una nueva desde "✍️ Crear nueva".</p>
+    {% if publicacion.flyers %}
+    <p class="texto-suave" style="font-size:12px;">El flyer (la imagen) ya generado no se actualiza solo — si cambiás el texto, volvé a tocar "🎨 Generar flyer" en la previsualización para que la imagen lo refleje.</p>
+    {% endif %}
+
+    <div class="gap-8 mt-24">
+      <button type="submit" class="boton boton-primario">Guardar cambios →</button>
+      <a href="/publicaciones/{{ publicacion.id }}/previsualizar" class="boton boton-ghost">Cancelar</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
