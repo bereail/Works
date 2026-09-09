@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Freelancer — Berenice</title>
+<link rel="stylesheet" href="/static/estilos.css" />
+<style>
+  .franja-freelancer { max-width: 980px; margin: 0 auto; padding: 40px 24px 80px; }
+  .volver { display: inline-flex; align-items: center; gap: 6px; color: var(--texto-suave); font-size: 13px; margin-bottom: 20px; }
+  .volver:hover { color: var(--texto); }
+  .checklist { display: flex; flex-direction: column; gap: 8px; }
+  .check-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radio-chico); background: var(--superficie); border: 1px solid var(--borde); font-size: 14px; }
+  .check-item.hecho { opacity: 0.75; }
+  .check-item .marca { font-family: monospace; }
+  .proyecto-mini { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--borde); }
+  .proyecto-mini:last-child { border-bottom: none; }
+  .proyecto-mini a { color: var(--texto); font-weight: 600; text-decoration: none; }
+  .proyecto-mini a:hover { color: var(--color-acento); }
+</style>
+</head>
+<body>
+<div class="franja-freelancer">
+  <a class="volver" href="http://127.0.0.1:8001/inicio">🖥️ PC Fix (otra app)</a>
+
+  <div class="header-pagina">
+    <div>
+      <h1>💼 Freelancer</h1>
+      <p>Tu carrera como Full Stack Developer — auditoría, posicionamiento y oferta de servicios ya definidos.</p>
+    </div>
+    <span class="badge badge-simulado">Fase 0-1 completa</span>
+  </div>
+
+  <div class="subtitulo-seccion" style="margin-top:8px;">Employability Score</div>
+  <div class="grilla-tarjetas">
+    <div class="tarjeta metrica-tarjeta"><div class="etiqueta">GitHub / código</div><div class="valor">82<span style="font-size:14px;color:var(--texto-suave);">/100</span></div></div>
+    <div class="tarjeta metrica-tarjeta"><div class="etiqueta">Portfolio / demos</div><div class="valor">75<span style="font-size:14px;color:var(--texto-suave);">/100</span></div></div>
+    <div class="tarjeta metrica-tarjeta"><div class="etiqueta">Prueba técnica</div><div class="valor">88<span style="font-size:14px;color:var(--texto-suave);">/100</span></div></div>
+    <div class="tarjeta metrica-tarjeta"><div class="etiqueta">Posicionamiento freelance</div><div class="valor">70<span style="font-size:14px;color:var(--texto-suave);">/100</span></div></div>
+  </div>
+
+  <div class="subtitulo-seccion">Posicionamiento</div>
+  <div class="tarjeta" style="border-left: 3px solid var(--color-acento);">
+    <p style="margin:0; font-size:16px; font-style:italic;">"Full Stack Developer (Django + React/Node) que ya construye y mantiene sistemas en producción real — no proyectos de práctica."</p>
+  </div>
+
+  <div class="subtitulo-seccion">Oferta de servicios</div>
+  <div class="tarjeta">
+    <div class="lista-fila"><span class="texto-suave">Clientes objetivo</span><strong>PyMEs de Rosario → instituciones → subcontratos</strong></div>
+    <div class="lista-fila"><span class="texto-suave">Capacidad</span><strong>5-10 hs/semana</strong></div>
+    <div class="lista-fila"><span class="texto-suave">Por hora</span><strong>USD 15-25</strong></div>
+    <div class="lista-fila"><span class="texto-suave">Sistema chico a medida</span><strong>USD 600-1.500</strong></div>
+  </div>
+
+  <div class="subtitulo-seccion">Tus 4 proyectos</div>
+  <div class="tarjeta">
+    <div class="proyecto-mini">
+      <a href="https://github.com/bereail/Glicemia-Calculadora" target="_blank" rel="noopener">Glicemia-Calculadora</a>
+      <span class="badge badge-neutro">★ star · case study</span>
+    </div>
+    <div class="proyecto-mini">
+      <a href="https://github.com/bereail/stockTonerDesktop" target="_blank" rel="noopener">stockTonerDesktop</a>
+      <span class="badge badge-neutro">★ star</span>
+    </div>
+    <div class="proyecto-mini">
+      <a href="https://github.com/bereail/VI" target="_blank" rel="noopener">VI</a>
+      <span class="badge badge-verde">keep</span>
+    </div>
+    <div class="proyecto-mini">
+      <a href="https://github.com/bereail/librook" target="_blank" rel="noopener">librook</a>
+      <span class="badge badge-verde">keep</span>
+    </div>
+  </div>
+
+  <div class="subtitulo-seccion">Quick wins</div>
+  <div class="checklist">
+    <div class="check-item hecho"><span class="marca">✅</span> Hireable activado + bio con el posicionamiento</div>
+    <div class="check-item hecho"><span class="marca">✅</span> URL del perfil (ailonline.com.ar)</div>
+    <div class="check-item hecho"><span class="marca">✅</span> Badge de Tests en el README de VI</div>
+    <div class="check-item hecho"><span class="marca">✅</span> Los 4 proyectos fijados en el perfil</div>
+    <div class="check-item hecho"><span class="marca">✅</span> GIF de demo agregado a VI y librook</div>
+    <div class="check-item hecho"><span class="marca">✅</span> LinkedIn revivido (título, bio, experiencia, idiomas, destacados)</div>
+  </div>
+
+  <div class="subtitulo-seccion">Búsqueda de oportunidades</div>
+  <a href="/ofertas" class="tarjeta interactiva" style="display:flex; justify-content:space-between; align-items:center; text-decoration:none; color:inherit;">
+    <div>
+      <p style="margin:0; font-size:16px; font-weight:600;">📋 Ofertas y postulaciones</p>
+      <p class="texto-suave" style="margin:4px 0 0; font-size:13px;">
+        {% if total_ofertas_activas %}{{ total_ofertas_activas }} oferta{{ 's' if total_ofertas_activas != 1 else '' }} en seguimiento activo.{% else %}Todavía no cargaste ninguna oferta — sumalas a mano vos misma (sin scraping, cumpliendo los términos de cada plataforma).{% endif %}
+      </p>
+    </div>
+    <div class="flecha texto-suave">Ver →</div>
+  </a>
+
+  <div class="tarjeta vacio mt-24">
+    <p>Las próximas fases (matching engine, generador de postulaciones, CRM de clientes) todavía no están construidas — se arman de a una, sin scrapear plataformas que lo prohíben en sus términos.</p>
+    <p class="texto-suave" style="font-size:12px;">Fuente completa: <code>FREELANCER_MASTER_CONTEXT.md</code> en este repo.</p>
+  </div>
+</div>
+</body>
+</html>

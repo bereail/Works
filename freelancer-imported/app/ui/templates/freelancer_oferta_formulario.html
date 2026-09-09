@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{ 'Editar oferta' if oferta else 'Nueva oferta' }} — Freelancer</title>
+<link rel="stylesheet" href="/static/estilos.css" />
+<style>
+  .franja-freelancer { max-width: 720px; margin: 0 auto; padding: 40px 24px 80px; }
+  .volver { display: inline-flex; align-items: center; gap: 6px; color: var(--texto-suave); font-size: 13px; margin-bottom: 20px; }
+  .volver:hover { color: var(--texto); }
+</style>
+</head>
+<body>
+<div class="franja-freelancer">
+  <a class="volver" href="/ofertas">← Ofertas</a>
+
+  <div class="header-pagina">
+    <div>
+      <h1>{{ '✏️ Editar oferta' if oferta else '+ Nueva oferta' }}</h1>
+      <p>Cargá lo que encontraste vos misma en la plataforma que sea — LinkedIn, GetOnBoard, un referido, etc.</p>
+    </div>
+  </div>
+
+  <div class="tarjeta">
+    <form method="post" action="{{ '/ofertas/' ~ oferta.id ~ '/editar' if oferta else '/ofertas/nueva' }}">
+      <div class="campo">
+        <label for="titulo">Puesto o proyecto</label>
+        <input id="titulo" name="titulo" type="text" required value="{{ oferta.titulo if oferta else '' }}" placeholder="Ej: Django Developer para sistema de turnos" />
+      </div>
+
+      <div class="campo">
+        <label for="cliente_o_empresa">Empresa o cliente</label>
+        <input id="cliente_o_empresa" name="cliente_o_empresa" type="text" value="{{ oferta.cliente_o_empresa if oferta else '' }}" placeholder="Opcional" />
+      </div>
+
+      <div class="fila-campos">
+        <div class="campo">
+          <label for="fuente">Dónde la encontraste</label>
+          <select id="fuente" name="fuente">
+            {% set fuente_actual = oferta.fuente if oferta else 'otro' %}
+            <option value="linkedin" {{ 'selected' if fuente_actual == 'linkedin' else '' }}>LinkedIn</option>
+            <option value="getonboard" {{ 'selected' if fuente_actual == 'getonboard' else '' }}>GetOnBoard</option>
+            <option value="referido" {{ 'selected' if fuente_actual == 'referido' else '' }}>Referido</option>
+            <option value="otro" {{ 'selected' if fuente_actual == 'otro' else '' }}>Otro</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="tipo">Tipo</label>
+          <select id="tipo" name="tipo">
+            {% set tipo_actual = oferta.tipo if oferta else 'proyecto_freelance' %}
+            <option value="proyecto_freelance" {{ 'selected' if tipo_actual == 'proyecto_freelance' else '' }}>Proyecto freelance</option>
+            <option value="empleo_relacion_dependencia" {{ 'selected' if tipo_actual == 'empleo_relacion_dependencia' else '' }}>Relación de dependencia</option>
+            <option value="subcontrato" {{ 'selected' if tipo_actual == 'subcontrato' else '' }}>Subcontrato</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="url">Link a la publicación</label>
+        <input id="url" name="url" type="url" value="{{ oferta.url if oferta else '' }}" placeholder="Opcional" />
+      </div>
+
+      <div class="campo">
+        <label for="notas">Notas</label>
+        <textarea id="notas" name="notas" rows="4" placeholder="Detalles, presupuesto, contacto, próximos pasos...">{{ oferta.notas if oferta else '' }}</textarea>
+      </div>
+
+      <button type="submit" class="boton boton-primario">{{ 'Guardar cambios' if oferta else 'Cargar oferta' }}</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>
