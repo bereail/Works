@@ -10,7 +10,8 @@ rápido — no duplicar acá el detalle, actualizarlo ahí y linkearlo.
 2. Análisis de mercado Rosario — ✅ completo
 3. Posicionamiento de marca — ✅ completo
 4. Catálogo de servicios y rentabilidad — ✅ completo
-5. Procedimientos operativos — 🔜 próxima etapa a ejecutar
+5. Procedimientos operativos — ✅ completo (el roadmap tenía esto desactualizado
+   como pendiente; se corrigió el 2026-09-09 — ver `historial/decisiones.md`)
 6. Automatizaciones (diseño + infraestructura) — ✅ diseño y decisiones listas,
    **implementación real en curso** (ver más abajo)
 7. Web + SEO — ⏸ en pausa por decisión propia
@@ -54,8 +55,6 @@ no es un proyecto nuevo a arrancar de cero:
   llamada HTTP mockeada.
 
 ## Pendientes / próximos pasos
-- Etapa 5 (procedimientos operativos): documentar el flujo recepción → entrega antes
-  de automatizarlo del todo.
 - Confirmar dirección de atención al público (Olive 1200 vs 1300 en Meta Business) —
   pendiente menor en `pc-fix/17-Backlog/IDEAS-PENDIENTES.md`.
 - Agregar tests para `meta_api.py` (ver debilidad detectada el 2026-09-09).

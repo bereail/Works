@@ -51,9 +51,9 @@ Regla de avance: cada fase se ejecuta sin pedir autorización, salvo que dependa
 - **Prioridad:** alta.
 - **Tiempo estimado:** 1–2 sesiones.
 - **Impacto esperado:** sin este paso, automatizar es automatizar el caos.
-- **Checklist:** manual por etapa del flujo · criterios de calidad · política de garantía.
+- **Checklist:** manual por etapa del flujo ✔ · criterios de calidad ✔ · política de garantía ✔
 - **Dependencias:** Etapa 4.
-- **Estado:** 🔜 Próxima fase automática.
+- **Estado:** ✅ Completo — ver `../14-Procedimientos/MANUAL-FLUJO-OPERATIVO.md`. Este roadmap no se había actualizado cuando se cerró (detectado y corregido el 2026-09-09); el manual ya era, de hecho, la base sobre la que se diseñó la Etapa 6.
 - **Resultado esperado:** manuales en `14-Procedimientos/`.
 
 ## Etapa 6 — Diseño de automatizaciones (especificación)

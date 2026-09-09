@@ -6,6 +6,19 @@ decisiones específicas de cada negocio viven en su propia memoria
 
 ---
 
+## 2026-09-09 — PC FIX: corregido el roadmap, la Etapa 5 ya estaba completa
+
+`00-Estrategia/00-ROADMAP.md` marcaba la Etapa 5 (procedimientos operativos) como
+"próxima fase automática", pero `14-Procedimientos/MANUAL-FLUJO-OPERATIVO.md` ya
+existía completo (11 pasos, con nota de automatización futura en cada uno) y de hecho
+es la base sobre la que se diseñó la Etapa 6, que sí figuraba completa. El roadmap
+nunca se actualizó cuando se cerró la Etapa 5. Se corrigió el estado en el roadmap.
+**Lección:** el roadmap puede estar desfasado respecto del contenido real de las
+carpetas — antes de dar por "pendiente" una etapa, revisar si ya existe el archivo
+resultado esperado.
+
+---
+
 ## 2026-09-09 — PC FIX: Instagram no se conecta vía API
 
 Berenice confirmó que **no quiere conectar Instagram a la Graph API de Meta**. El
