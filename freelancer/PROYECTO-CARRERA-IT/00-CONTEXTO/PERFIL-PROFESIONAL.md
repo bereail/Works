@@ -1,3 +1,8 @@
+> ⚠️ **HISTÓRICO — parcialmente superado por `freelancer/FREELANCER_MASTER_CONTEXT.md`
+> desde el 2026-08-20.** Este detalle repo-por-repo sigue siendo útil como respaldo de
+> evidencia para el CV; el resumen activo del stack y las fortalezas está en el master
+> context.
+
 # PERFIL PROFESIONAL DE BERENICE
 
 > Datos reales, verificados en esta sesión o en memoria previa. Esta es la fuente de verdad

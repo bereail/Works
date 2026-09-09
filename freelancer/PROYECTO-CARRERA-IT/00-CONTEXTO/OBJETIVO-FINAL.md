@@ -1,3 +1,6 @@
+> ⚠️ **HISTÓRICO — superado por `freelancer/FREELANCER_MASTER_CONTEXT.md` desde el
+> 2026-08-20.** Ver nota completa en `../MEMORIA-PROYECTO.md`.
+
 # OBJETIVO FINAL
 
 Transformar el GitHub de Berenice en un perfil que pueda ser revisado por recruiters,

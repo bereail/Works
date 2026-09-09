@@ -1,3 +1,6 @@
+> ⚠️ **HISTÓRICO — superado por `freelancer/FREELANCER_MASTER_CONTEXT.md` desde el
+> 2026-08-20.** Ver nota completa en `../MEMORIA-PROYECTO.md`.
+
 # LOG DE DECISIONES
 
 Registro cronológico de decisiones importantes tomadas durante el proyecto. Cada entrada:

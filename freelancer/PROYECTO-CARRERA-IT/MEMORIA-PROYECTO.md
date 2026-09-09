@@ -1,3 +1,9 @@
+> ⚠️ **HISTÓRICO — superado por `freelancer/FREELANCER_MASTER_CONTEXT.md` desde el
+> 2026-08-20.** Este archivo documenta la auditoría de GitHub (Etapa 1 del plan
+> original de 8 etapas). Esa auditoría ya está resumida y absorbida en el master
+> context actual. Se conserva como detalle histórico de cómo se llegó a esas
+> conclusiones — no leer esto como el estado actual del proyecto.
+
 # MEMORIA DEL PROYECTO — Carrera IT de Berenice
 
 > Este archivo se lee PRIMERO al retomar el proyecto. Contiene el estado exacto para poder
