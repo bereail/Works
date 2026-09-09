@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Career Master Memory — Berenice Solohaga</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e2229; --border:#2a2f3a;
+    --text:#e8e9ec; --muted:#9aa1ad; --accent:#5eb0ef; --green:#3fbf6f;
+    --amber:#e0a63c; --red:#e0563c; --grey:#5a6272;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg); color:var(--text); font-family:-apple-system,Segoe UI,Roboto,sans-serif; margin:0; line-height:1.5;}
+  .wrap{max-width:1100px; margin:0 auto; padding:32px 20px 80px;}
+  h1{font-size:1.7rem; margin:0 0 4px;}
+  h2{font-size:1.25rem; margin:40px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border);}
+  h3{font-size:1.02rem; margin:20px 0 8px; color:var(--accent);}
+  .subtitle{color:var(--muted); margin:0 0 24px;}
+  .meta{color:var(--muted); font-size:0.85rem;}
+  .panel{background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:18px 20px; margin-bottom:14px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:16px 0;}
+  .score{background:var(--panel2); border:1px solid var(--border); border-radius:10px; padding:14px 16px; text-align:center;}
+  .score .num{font-size:1.6rem; font-weight:700;}
+  .score .label{font-size:0.78rem; color:var(--muted); margin-top:4px;}
+  .score.high .num{color:var(--green)}
+  .score.mid .num{color:var(--amber)}
+  .score.low .num{color:var(--red)}
+  .score.na .num{color:var(--grey)}
+  table{width:100%; border-collapse:collapse; font-size:0.92rem;}
+  th,td{text-align:left; padding:8px 10px; border-bottom:1px solid var(--border); vertical-align:top;}
+  th{color:var(--muted); font-weight:600; font-size:0.78rem; text-transform:uppercase; letter-spacing:.03em;}
+  tr:last-child td{border-bottom:none;}
+  .tag{display:inline-block; background:var(--panel2); border:1px solid var(--border); border-radius:5px; padding:2px 8px; font-size:0.78rem; margin:2px 4px 2px 0;}
+  .badge{display:inline-block; padding:2px 9px; border-radius:20px; font-size:0.75rem; font-weight:600;}
+  .b-verificado{background:rgba(63,191,111,.15); color:var(--green); border:1px solid rgba(63,191,111,.3);}
+  .b-inferido{background:rgba(224,166,60,.15); color:var(--amber); border:1px solid rgba(224,166,60,.3);}
+  .b-pendiente{background:rgba(90,98,114,.2); color:var(--grey); border:1px solid rgba(90,98,114,.4);}
+  .b-critico{background:rgba(224,86,60,.15); color:var(--red); border:1px solid rgba(224,86,60,.3);}
+  .prio1{border-left:4px solid var(--red);}
+  .prio2{border-left:4px solid var(--amber);}
+  .prio3{border-left:4px solid #d6c93c;}
+  .prio4{border-left:4px solid var(--grey);}
+  .status-enviada{color:var(--accent);}
+  .status-sin-respuesta{color:var(--muted);}
+  .status-expirada{color:var(--grey); text-decoration:line-through;}
+  code{background:var(--panel2); padding:1px 6px; border-radius:4px; font-size:0.85rem;}
+  .flag{background:rgba(224,86,60,.1); border:1px solid rgba(224,86,60,.35); border-radius:8px; padding:12px 16px; margin:10px 0;}
+  .flag b{color:var(--red);}
+  .toc{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px;}
+  .toc a{color:var(--accent); text-decoration:none; font-size:0.85rem; background:var(--panel2); border:1px solid var(--border); border-radius:6px; padding:5px 10px;}
+  .toc a:hover{border-color:var(--accent);}
+  ul{margin:8px 0; padding-left:20px;}
+  li{margin-bottom:4px;}
+  .updated{color:var(--muted); font-size:0.8rem; text-align:right; margin-top:-6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Career Master Memory — Berenice Solohaga</h1>
+<p class="subtitle">Backend Developer · Python/Django · Full Stack complementario (React/Node) · Rosario, Argentina</p>
+<p class="meta">Última actualización: 01/09/2026 · Fuente: auditoría en vivo (CV, GitHub, LinkedIn) + historial de <code>busqueda-laboral-notas.md</code></p>
+
+<div class="toc">
+  <a href="#dashboard">Dashboard</a>
+  <a href="#perfil">Perfil</a>
+  <a href="#skills">Skills</a>
+  <a href="#experiencia">Experiencia</a>
+  <a href="#proyectos">Proyectos</a>
+  <a href="#auditoria">Auditoría</a>
+  <a href="#fortalezas">Fortalezas / Debilidades</a>
+  <a href="#objetivo">Objetivo laboral</a>
+  <a href="#puestos">Puestos objetivo</a>
+  <a href="#pipeline">Pipeline de postulaciones</a>
+  <a href="#estrategia">Estrategia 90 días</a>
+  <a href="#hoy">Qué hacer hoy</a>
+  <a href="#changelog">Changelog</a>
+</div>
+
+<div class="flag">
+  <b>✅ Conflicto resuelto (01/09/2026):</b> Berenice definió que su disponibilidad real es
+  <b>part-time / freelance / por proyecto</b>, preferentemente de tarde, y que NO se debe
+  priorizar full-time salvo que lo pida explícitamente — pero decidió <b>sostener las 5
+  postulaciones full-time ya enviadas</b> (Sophilabs, BC Tecnología ×2, InvGate, Alluxi) para
+  ver si responden. Si alguna avanza a entrevista, negociar modalidad part-time/freelance en
+  ese momento. De acá en adelante, las postulaciones <b>nuevas</b> priorizan freelance/part-time
+  salvo pedido explícito de considerar full-time.
+</div>
+
+<div class="flag">
+  <b>🔴 Hallazgo operativo (01/09/2026, confirmado por curl directo, no es un glitch del
+  navegador):</b> el portfolio <code>ailonline.com.ar</code> y la IP cruda del VPS
+  (<code>138.36.238.175</code>) están <b>totalmente caídos</b> — timeout tanto por HTTPS como por
+  la IP directa. Esto no es solo el portfolio: la instancia real de Glicemia (usada a diario en
+  la UCI del hospital) vive en el mismo servidor. Cualquier recruiter que visite el portfolio
+  ahora ve un error de conexión. <b>Acción de Berenice, no de Claude:</b> revisar el estado del
+  VPS con el proveedor de hosting. El código con Turnero ya está listo y commiteado
+  (`HostingAilonline` commit `e7415c86`) para desplegar apenas el servidor responda.
+</div>
+
+<h2 id="dashboard">📊 Dashboard de carrera</h2>
+<div class="grid">
+  <div class="score mid"><div class="num">72</div><div class="label">Career Readiness</div></div>
+  <div class="score high"><div class="num">85</div><div class="label">CV Score</div></div>
+  <div class="score mid"><div class="num">80</div><div class="label">LinkedIn Score</div></div>
+  <div class="score mid"><div class="num">78</div><div class="label">GitHub Score</div></div>
+  <div class="score na"><div class="num">N/D</div><div class="label">Portfolio Score (caído hoy)</div></div>
+  <div class="score mid"><div class="num">65</div><div class="label">Market Fit (full-time)</div></div>
+  <div class="score mid"><div class="num">55</div><div class="label">Market Fit (part-time/freelance)</div></div>
+  <div class="score high"><div class="num">80</div><div class="label">Technical Readiness</div></div>
+  <div class="score mid"><div class="num">65</div><div class="label">Interview Readiness</div></div>
+</div>
+<p class="meta">Market Fit se divide en dos porque la disponibilidad real (part-time/freelance) tiene
+mucha menos oferta formal medible que full-time — no es que el perfil técnico sea peor, es que el
+mercado de vacantes "part-time developer" publicadas es chico comparado con full-time. Ver sección Estrategia.</p>
+
+<h2 id="perfil">👤 Perfil profesional</h2>
+<div class="panel">
+<p><b>Resumen (tal como está en el CV, verificado):</b> "Diseño, desarrollo, pruebo y mantengo
+software en producción real. Backend developer con foco en Python/Django y APIs REST: en el
+Hospital Eva Perón sostengo dos sistemas propios de uso diario, con autenticación, testing y
+reportes, y mantenimiento continuo. Complemento esto con experiencia Full Stack (React, Node.js,
+TypeScript) en clientes freelance reales y proyectos propios con CI/CD."</p>
+<p><b>Ubicación:</b> Rosario, Santa Fe, Argentina · <span class="badge b-verificado">VERIFICADO</span></p>
+<p><b>Idiomas:</b> Español nativo · Inglés básico/intermedio (autodeclarado en CV) <span class="badge b-verificado">VERIFICADO</span></p>
+<p><b>Educación:</b> Tecnicatura Universitaria en Programación, UTN Rosario — en curso <span class="badge b-verificado">VERIFICADO</span></p>
+<p><b>Contacto:</b> bereailsolohaga@hotmail.com · +54 341 318 4829 · github.com/bereail · linkedin.com/in/berenice-solohaga</p>
+</div>
+
+<h2 id="skills">🛠️ Skills</h2>
+<h3>Demostradas (con evidencia real en código/producción)</h3>
+<div class="panel">
+<p><b>Backend:</b> <span class="tag">Python</span><span class="tag">Django</span><span class="tag">Django REST Framework</span><span class="tag">APIs REST</span><span class="tag">ORM</span><span class="tag">arquitectura en capas</span><span class="tag">Node.js/Express</span></p>
+<p><b>Frontend:</b> <span class="tag">React 19</span><span class="tag">TypeScript</span><span class="tag">JavaScript</span><span class="tag">Tailwind CSS</span><span class="tag">Vite (PWA)</span></p>
+<p><b>Bases de datos:</b> <span class="tag">PostgreSQL</span><span class="tag">SQLite</span></p>
+<p><b>Testing:</b> <span class="tag">Django TestCase</span><span class="tag">Vitest</span><span class="tag">Jest+Supertest</span><span class="tag">Playwright E2E</span> — evidencia concreta: 108 tests (METANUTRIC), 70 (StockFlow), 128+E2E (VI), 10 (Turnero)</p>
+<p><b>Deploy/DevOps:</b> <span class="tag">Git</span><span class="tag">Linux</span><span class="tag">VPS propio (SSH/rsync/systemd)</span><span class="tag">GitHub Actions CI/CD</span><span class="tag">Docker/docker-compose</span><span class="tag">PyInstaller</span></p>
+<p><b>Auth/seguridad:</b> <span class="tag">JWT+bcrypt</span><span class="tag">control de acceso por rol</span><span class="tag">validación de webhooks server-side (Mercado Pago)</span></p>
+<p class="meta">Docker es reciente (Turnero, última semana) — todavía no está en el CV. Sumarlo.</p>
+</div>
+<h3>En desarrollo / mencionadas pero sin evidencia pública fuerte</h3>
+<div class="panel">
+<p><span class="tag">WordPress</span> (adaptación de sitio para cliente Ultracor, no build propio) ·
+<span class="tag">AWS</span> <span class="badge b-pendiente">NO VERIFICADO — no aparece en CV/GitHub</span> ·
+<span class="tag">Kubernetes</span> <span class="badge b-pendiente">NO TIENE</span> ·
+<span class="tag">FastAPI</span> <span class="badge b-inferido">INFERIDO — mencionado en postulación a BC Tecnología como "proyecto personal de la facultad", no en CV ni GitHub público</span></p>
+</div>
+
+<h2 id="experiencia">💼 Experiencia</h2>
+<div class="panel">
+<table>
+<tr><th>Rol</th><th>Empresa</th><th>Período</th><th>Detalle verificado</th></tr>
+<tr>
+  <td>Desarrollo de Software<br><span class="meta">(cargo formal: Analista de Sistemas)</span></td>
+  <td>Hospital Eva Perón, Rosario</td>
+  <td>2018 — actualidad</td>
+  <td>Diseña, desarrolla y mantiene METANUTRIC (control de glicemia UCI, 108 tests) y StockFlow
+  (inventario IT, app de escritorio, 70 tests). Soporte técnico y administración de usuarios/dispositivos.</td>
+</tr>
+<tr>
+  <td>Desarrolladora Full Stack</td>
+  <td>Freelance</td>
+  <td>2022 — actualidad</td>
+  <td>Clientes reales: build completo en React para Unipack S.A.; adaptación de sitio WordPress para
+  Ultracor SAS. Proyectos propios full-stack (React+Node/Express+PostgreSQL) con CI/CD real.</td>
+</tr>
+</table>
+</div>
+
+<h2 id="proyectos">🚀 Proyectos</h2>
+<div class="panel">
+<table>
+<tr><th>Proyecto</th><th>Stack</th><th>Estado</th><th>Nota</th></tr>
+<tr><td><b>METANUTRIC</b> (Glicemia-Calculadora)</td><td>Django, SQLite/PostgreSQL, Chart.js, reportlab</td><td>En uso real, UCI Hospital Eva Perón</td><td>108 tests. Demo pública con datos ficticios. Público en GitHub.</td></tr>
+<tr><td><b>StockFlow</b></td><td>Django embebido, PyWebview, PyInstaller</td><td>En uso real, mismo hospital</td><td>70 tests. App de escritorio empaquetada. Público en GitHub.</td></tr>
+<tr><td><b>VI</b></td><td>React 19, Node/Express, PostgreSQL, JWT+bcrypt</td><td>Producción (proyecto personal)</td><td>128 tests + E2E Playwright, CI/CD GitHub Actions. ailonline.com.ar/vi</td></tr>
+<tr><td><b>Librook</b></td><td>React 19, TypeScript, Vite (PWA), Node/Express, PostgreSQL</td><td>Producción (proyecto personal)</td><td>Nueva función: registro por voz/lenguaje natural (Web Speech API), publicado hace 4 días.</td></tr>
+<tr><td><b>Turnero</b> <span class="badge b-inferido">EN GITHUB, NO PINEADO. NO ESTÁ EN CV NI EN PORTFOLIO</span></td><td>Django+React/TS/Vite, Docker/docker-compose, Mercado Pago Checkout Pro</td><td>Repo público confirmado: github.com/bereail/turnero</td><td>10 tests aislados. Primer proyecto containerizado. Webhook validado server-side. Repo existe y es público (verificado 01/09) pero no está entre los 5 destacados del perfil de GitHub, ni en CV, ni en portfolio.</td></tr>
+<tr><td><b>StatuApp</b></td><td>Next.js, Django REST</td><td>Repo público (hecho público 28/08)</td><td>Catálogo de monumentos de Rosario. Demo en Netlify.</td></tr>
+<tr><td>Bebi</td><td>—</td><td>Repo privado, no tocar</td><td>Tiene credenciales reales filtradas en el historial de git — <b>nunca hacer público sin purgar el historial primero</b>.</td></tr>
+</table>
+</div>
+
+<h2 id="auditoria">🔍 Auditoría por plataforma</h2>
+
+<h3>CV — 85/100</h3>
+<div class="panel">
+<p><b>¿La entrevistaría?</b> Sí, para un puesto Backend Python/Django semi senior. El CV es honesto,
+específico y con evidencia numérica (cantidad de tests, sistemas reales en uso), no genérico. Nombra
+clientes freelance reales. No infla seniority ni tecnologías.</p>
+<p><b>A favor:</b> diferencial real y verificable (sistemas de producción en un hospital), sin buzzwords,
+estructura clara, ATS-friendly (texto plano, sin tablas complejas de imagen).</p>
+<p><b>En contra:</b> (1) no menciona disponibilidad part-time/freelance explícitamente — un recruiter
+asume full-time por defecto; (2) no incluye Docker ni Turnero (proyecto más nuevo y más sofisticado
+técnicamente, containerizado); (3) inglés declarado "básico/intermedio" filtra fuera roles con
+requisito de inglés fluido — correcto ser honesto, pero vale la pena precisar mejor el nivel real
+(¿lee documentación técnica sin problema? ¿puede sostener una call?) en vez de dejarlo ambiguo.</p>
+</div>
+
+<h3>GitHub (github.com/bereail) — 78/100</h3>
+<div class="panel">
+<p><b>¿Qué demuestra cada proyecto pinneado?</b></p>
+<ul>
+<li><b>Glicemia-Calculadora:</b> capacidad de modelar lógica clínica compleja en Django, testing serio (108 tests) — el proyecto más fuerte para un puesto backend.</li>
+<li><b>librook:</b> integración con APIs externas (OpenLibrary), features modernas (reconocimiento de voz), buen criterio de producto ("nunca inventar" en el parser).</li>
+<li><b>StockFlow:</b> capacidad de resolver un problema de negocio real con una solución poco común (Django embebido en app de escritorio) — diferencial técnico interesante, no todos los candidatos muestran esto.</li>
+<li><b>VI:</b> stack full-stack completo con testing E2E — cubre el lado frontend/full-stack del perfil.</li>
+<li><b>statuapp:</b> Next.js + Django REST, proyecto más chico, correcto como quinto destacado.</li>
+</ul>
+<p><b>A favor:</b> bio clara y correcta, 0 issues abiertos, licencias MIT, READMEs completos (según
+auditoría previa: problema → funcionalidad → capturas → arquitectura → seguridad), sin secretos filtrados
+en los repos públicos.</p>
+<p><b>En contra:</b> Turnero —su proyecto técnicamente más nuevo (Docker, seguridad de webhooks)— no
+aparece pinneado ni confirmado como público. Si el repo existe pero no está pinneado, es la primera
+corrección a hacer; si no existe repo público todavía, hay que crearlo. Esto es exactamente el tipo de
+proyecto que un Tech Lead evaluando el perfil quiere ver (containerización, seguridad de pagos).</p>
+</div>
+
+<h3>LinkedIn — 80/100</h3>
+<div class="panel">
+<p><b>¿Qué cambiaría?</b> El headline y el "Open to Work" están bien configurados y coherentes con el
+CV. Los 3 posts técnicos recientes (METANUTRIC, Librook, Turnero) son el punto más fuerte: contenido
+técnico real, con decisiones de diseño explicadas, no autopromoción vacía — exactamente lo que un
+recruiter técnico valora al ver un perfil.</p>
+<p><b>A favor:</b> headline con diferenciador real ("sistemas en producción real, incl. una UCI
+hospitalaria"), "Disponible para freelance" ya mencionado en el headline — esto sí está alineado con
+la nueva prioridad part-time/freelance, a diferencia del CV.</p>
+<p><b>Dato a verificar:</b> en esta revisión en vivo la página mostró <b>29 contactos / 29 seguidores</b>
+— si es una cifra real (no un glitch de carga), es baja para maximizar alcance de las postulaciones y
+del "Open to Work". <span class="badge b-pendiente">VERIFICAR manualmente — pudo ser un problema de
+carga parcial de la página al momento de revisar</span>.</p>
+</div>
+
+<h3>Portfolio (ailonline.com.ar) — sin score hoy</h3>
+<div class="panel">
+<p><b>Estado 01/09/2026:</b> <span class="badge b-critico">CAÍDO</span> — no conecta. Score anterior
+(auditoría previa, sitio funcionando): 60/100, con el hallazgo de que el código local ya tenía una
+versión mejorada (bio, footer, contacto) supuestamente ya mergeada a <code>main</code>. No se puede
+confirmar el estado visual actual hasta que el sitio vuelva a estar arriba.</p>
+</div>
+
+<h2 id="fortalezas">💪 Top 5 fortalezas a explotar</h2>
+<div class="panel">
+<ol>
+<li><b>Sistemas reales en producción crítica, con métricas concretas.</b> No es "hice un proyecto de
+práctica" — es "sostengo un sistema que un equipo de UCI usa todos los días, con 108 tests". Esto es
+raro en candidatas semi senior y hay que repetirlo en cada instancia (CV, LinkedIn, entrevistas).</li>
+<li><b>Honestidad técnica verificable.</b> El CV y las postulaciones no inflan experiencia (declaró
+honestamente que FastAPI es de un proyecto de facultad, que no tiene Angular/AWS en otra postulación).
+Esto genera confianza real en el recruiter, que es más valioso que parecer "perfecta" en el papel.</li>
+<li><b>Contenido técnico propio y reciente en LinkedIn.</b> 3 posts en 8 días con explicación de
+decisiones de diseño (no solo "hice X") — pocos candidatos semi senior publican esto, y funciona como
+prueba social pasiva de seniority técnica.</li>
+<li><b>Cobertura full-stack real, no solo declarada.</b> Backend fuerte (Django) + frontend moderno
+(React 19, TypeScript, Vite) + testing en ambos lados + CI/CD + deploy en VPS propio. El ciclo completo
+está cubierto, con evidencia en cada capa.</li>
+<li><b>Progresión técnica visible en el tiempo.</b> De Django tradicional (METANUTRIC) a features más
+sofisticadas (parser de lenguaje natural en Librook, containerización y seguridad de webhooks en
+Turnero) en cuestión de semanas — esto se lee como una persona que sigue subiendo el nivel técnico de
+lo que construye, no que se estancó.</li>
+</ol>
+</div>
+
+<h2 id="fortalezas2">🔴 Top 5 problemas que hoy pueden estar costando entrevistas</h2>
+<div class="panel">
+<ol>
+<li><b>Portfolio caído ahora mismo.</b> Si cualquier link en el CV/LinkedIn a ailonline.com.ar se
+sigue durante estos días, el recruiter ve un error. Impacto directo e inmediato.</li>
+<li><b>Desalineación entre disponibilidad real y lo que se está postulando.</b> El CV y la mayoría de
+postulaciones recientes apuntan a full-time, pero la disponibilidad real es part-time/freelance de
+tarde. Esto genera dos problemas: (a) candidaturas a puestos que probablemente no puede sostener en la
+práctica, (b) el mercado real de "part-time developer" es más chico y requiere una búsqueda distinta
+(más directa a agencias/clientes freelance que a portales de empleo tradicional).</li>
+<li><s><b>Turnero no integrado en los activos formales</b></s> — <span class="badge b-verificado">RESUELTO 01/09</span>: ya está pineado en GitHub, sumado al CV (reemplazando la card de
+StockFlow) y agregado al código del portfolio (pendiente solo el deploy por el VPS caído).</li>
+<li><b>Nivel de inglés como filtro binario en varias vacantes de calidad</b> (Sophilabs, Alluxi ya
+postuladas con este riesgo conocido). No es solucionable de un día para el otro, pero conviene decidir
+si vale la pena invertir tiempo estructurado en inglés técnico dado que aparece repetidamente como
+requisito en las mejores ofertas remotas.</li>
+<li><b>Red de contactos en LinkedIn posiblemente chica</b> (29, a verificar) para una búsqueda activa
+con "Open to Work" — reduce el alcance orgánico de los posts técnicos y la visibilidad ante recruiters
+de segundo grado.</li>
+</ol>
+</div>
+
+<h2 id="objetivo">🎯 Objetivo laboral (actualizado 01/09/2026)</h2>
+<div class="panel">
+<p><b>Regla prioritaria de disponibilidad (definida por Berenice, reemplaza cualquier supuesto anterior):</b></p>
+<ol>
+<li>🥇 Freelance / proyecto / entregables + remoto</li>
+<li>🥈 Part-time remoto con horario flexible</li>
+<li>🥉 Part-time remoto con horario fijo compatible (preferentemente de tarde)</li>
+<li>Full-time remoto — <b>solo si se pide explícitamente considerar esta opción</b></li>
+</ol>
+<p>Rangos de horas de interés: 5–10, 10–15, 15–20 hs/semana, trabajo por entregables, mantenimiento
+evolutivo, desarrollo de features/APIs, corrección de bugs, proyectos chicos (landing pages,
+integraciones, automatizaciones) incluso de bajo presupuesto ($300–$1500 USD) si el scope es claro y
+puede sumar como referencia o cliente recurrente.</p>
+<p><b>Puestos objetivo (título):</b> Backend Developer (Python/Django), Full Stack Developer con foco
+backend, Freelance Python/Django Developer, Contract/Project-based Developer, Part-Time Developer.</p>
+<p><b>Industrias de interés:</b> sin restricción definida explícitamente aún — el diferencial actual
+(salud/hospitalario) es fuerte para health-tech, pero no debe limitarse solo a ese rubro.</p>
+</div>
+
+<h2 id="puestos">🧭 Puestos: dónde es competitiva hoy</h2>
+<div class="panel">
+<h3>🟢 Competitiva HOY</h3>
+<ul>
+<li>Backend Developer Python/Django, semi senior, remoto — full-time o freelance/contrato.</li>
+<li>Full Stack Developer con foco backend (Django+React), remoto.</li>
+<li>Proyectos freelance de desarrollo/mantenimiento de aplicaciones Django o React de alcance chico-mediano.</li>
+</ul>
+<h3>🟡 Competitiva con mejoras chicas</h3>
+<ul>
+<li>Roles que piden Docker/contenedores — ya tiene evidencia real (Turnero) pero no está visible en
+CV/portfolio todavía. Actualizar esos activos resuelve esto en una sesión.</li>
+<li>Roles con inglés "intermedio" (no "fluido") como requisito — su nivel declarado podría alcanzar,
+conviene no autodescartarse de estas.</li>
+</ul>
+<h3>🔴 No lista todavía (sin evidencia suficiente)</h3>
+<ul>
+<li>Roles Senior con 4+ años formales explícitos como filtro duro.</li>
+<li>Roles con AWS/Azure/GCP hands-on como requisito excluyente — no hay evidencia de cloud provider
+gestionado en ningún proyecto (usa VPS propio, no servicios cloud gestionados).</li>
+<li>Roles de IA/ML/LLM en producción como núcleo del puesto (distinto de "usar" reconocimiento de voz
+nativo del browser, que sí hizo) — no hay evidencia de trabajar con modelos, fine-tuning, ni
+orquestación de LLMs en ningún proyecto público.</li>
+<li>Roles que piden Kubernetes — no hay evidencia, solo Docker/docker-compose.</li>
+</ul>
+</div>
+
+<h2 id="pipeline">📋 Pipeline de postulaciones</h2>
+<div class="panel">
+<table>
+<tr><th>Empresa / puesto</th><th>Modalidad</th><th>Vía</th><th>Enviada</th><th>Estado</th></tr>
+<tr><td>Crossing Hurdles — Full Stack Developer</td><td>Contrato remoto, $65-120/h, 10-40 hs/sem</td><td>LinkedIn Easy Apply</td><td>28/08</td><td class="status-sin-respuesta">Enviada, no vista aún (4 días)</td></tr>
+<tr><td>InvGate — Software Engineer Python/Django</td><td class="badge b-critico">Full-time</td><td>Greenhouse</td><td>31/08</td><td class="status-sin-respuesta">Enviada, confirmación recibida, sin novedad (sin portal de seguimiento)</td></tr>
+<tr><td>BC Tecnología — Back-end Python+FastAPI</td><td class="badge b-critico">Full-time</td><td>Get on Board</td><td>31/08</td><td class="status-enviada">ENVIADA, 0 mensajes</td></tr>
+<tr><td>Alluxi — Full-Stack Python/React</td><td class="badge b-critico">Full-time</td><td>Get on Board</td><td>31/08</td><td class="status-enviada">ENVIADA, 0 mensajes. Riesgo inglés conocido.</td></tr>
+<tr><td>BC Tecnología — Full-Stack Python Node.js</td><td class="badge b-critico">Full-time</td><td>Get on Board</td><td>31/08</td><td class="status-enviada">ENVIADA, 0 mensajes. Fit más débil (pide Angular/AWS que no tiene).</td></tr>
+<tr><td>Sophilabs — Fullstack Python/Django Developer</td><td class="badge b-critico">Full-time</td><td>Formulario directo (sophilabs.com)</td><td>01/09</td><td class="status-enviada">Confirmada por la empresa ("submitted successfully"). Riesgo inglés conocido. Mejor señal de fit de la tanda.</td></tr>
+<tr><td>Talana — Back-end Developer Python</td><td>Remoto Chile</td><td>Get on Board</td><td>anterior a este tracking</td><td class="status-expirada">EXPIRADA</td></tr>
+<tr><td>Workana — Desarrollador Full-Stack (React+Python/FastAPI o Django), cliente ítalo-americano (Alex V.)</td><td>Freelance, 20-30 hs/semana, remoto — <b>primera postulación freelance/part-time de la nueva estrategia</b></td><td>Workana (propuesta directa)</td><td>01/09</td><td class="status-enviada">ENVIADA — AR$21.000/hora, proyectos destacados: METANUTRIC + VI, mencionó también Turnero en el texto. Proceso: propuesta → call 30min → prueba paga 6-8hs → hitos mensuales.</td></tr>
+</table>
+<p class="meta">6 postulaciones activas esta semana (meta 3-5 cumplida y superada). 5 de 6 son full-time — ver flag de conflicto arriba.</p>
+</div>
+
+<h2 id="estrategia">🗺️ Estrategia 90 días</h2>
+<div class="panel">
+<h3>Decisión tomada (01/09/2026)</h3>
+<p>Berenice decidió sostener las 5 postulaciones full-time activas tal cual están, sin retirarlas,
+y evaluar según respuesta (negociar part-time/freelance si alguna avanza a entrevista). A partir de
+ahora, toda postulación <b>nueva</b> prioriza freelance/part-time por default.</p>
+
+<h3>Días 1-15 — Higiene de activos (aplica en cualquier escenario)</h3>
+<ul>
+<li>Confirmar que ailonline.com.ar vuelva a estar online y verificar cómo quedó (crítico, bloquea todo lo demás).</li>
+<li>Publicar/pinnear Turnero en GitHub si no está público; sumarlo al portfolio.</li>
+<li>Decidir si se actualiza el CV para reflejar disponibilidad part-time/freelance explícitamente, o
+si se mantiene un CV "full-time" y se usa un mensaje/carta distinta para postulaciones freelance.</li>
+<li>Verificar el número real de contactos en LinkedIn (29 visto hoy) y, si es real, empezar a conectar
+deliberadamente con recruiters técnicos y devs de su stack.</li>
+</ul>
+
+<h3>Patrón de mercado detectado (01/09/2026)</h3>
+<p>Búsqueda dirigida en LinkedIn con filtro real de tipo de empleo (Part-time/Contract) para
+Python/Django/React: la gran mayoría de resultados etiquetados "part time" o "contract" en LinkedIn
+para este stack en realidad piden perfil <b>Senior con 6+ años formales, inglés avanzado/fluido
+(C1) obligatorio y AWS/cloud hands-on</b> — no son roles accesibles para su nivel real aunque el
+tipo de contrato encaje. Confirma la hipótesis de la estrategia: <b>Workana rinde mejor que
+LinkedIn para conseguir freelance/part-time genuino en su nivel actual</b> — ahí sí apareció un
+match real (Match general 82/100) en la primera búsqueda dirigida. Prioridad de canal actualizada:
+Workana > Upwork/contacto directo > LinkedIn (para freelance/part-time específicamente; LinkedIn
+sigue siendo el canal principal para las full-time que se sostienen).</p>
+
+<h3>Días 15-45 — Doble vía</h3>
+<p><b>Seguimiento pasivo de las 5 full-time activas:</b> no se retiran, se espera respuesta. Seguir
+el ritmo de seguimiento ya iniciado (LinkedIn, Get on Board), sin invertir más tiempo activo en
+buscar full-time nuevas.</p>
+<p><b>Búsqueda activa nueva, orientada a freelance/part-time:</b> shift de canales — menos LinkedIn
+Jobs/Get on Board (mayormente full-time) y más búsqueda directa en Upwork/Workana (ya en curso, ver
+<code>workana_perfil_optimizacion.md</code>), contacto directo con agencias digitales chicas,
+ofrecer mantenimiento evolutivo a clientes existentes (Unipack, Ultracor) como semilla de cartera
+recurrente. Seguir sumando 2-3 mensajes a recruiters/semana (3 ya enviados esta semana, cupo mensual
+de LinkedIn agotado hasta el próximo ciclo).</p>
+
+<h3>Días 45-90 — Consolidar</h3>
+<ul>
+<li>Evaluar qué canal dio más respuestas reales (no solo aplicaciones) y concentrar esfuerzo ahí.</li>
+<li>Si hay entrevistas: registrar feedback acá para detectar patrones de rechazo.</li>
+<li>Revisar si el inglés se volvió un cuello de botella recurrente y decidir si vale invertir en mejorarlo.</li>
+</ul>
+</div>
+
+<h2 id="hoy">⏱️ Si hoy solo hay 2 horas</h2>
+<div class="panel prio1" style="padding-left:16px;">
+<p><b>🔴 Prioridad 1 — impacto inmediato en probabilidad de entrevista:</b></p>
+<ol>
+<li>Confirmar si ailonline.com.ar volvió a estar online.</li>
+<li>Resolver la decisión de modalidad (full-time vs part-time/freelance) — sin esto, cualquier
+postulación nueva corre el riesgo de repetir el mismo desalineamiento.</li>
+</ol>
+</div>
+
+<h2 id="changelog">📝 Changelog</h2>
+<div class="panel">
+<table>
+<tr><th>Fecha</th><th>Cambio</th></tr>
+<tr><td>01/09/2026</td><td><b>CV actualizado</b> (`CV_Berenice_Solohaga_2026.html/.pdf` en Descargas):
+Turnero sumado como proyecto destacado, reemplazando la card de StockFlow (StockFlow sigue
+descripto en el bloque de Experiencia, solo salió de "Proyectos destacados" para mantener el CV
+en 1 página). Regenerado con Chrome headless (`--print-to-pdf`) tras ajustar el CSS de impresión
+para que 4 proyectos completos entren en una hoja A4.<br>
+<b>GitHub:</b> Turnero pineado entre los 6 destacados del perfil (github.com/bereail), ya
+tenía README completo, licencia MIT y descripción propia — solo faltaba el pin.<br>
+<b>Portfolio:</b> Turnero agregado al grid de proyectos en el código
+(`HostingAilonline/src/pages/Home/Home.jsx`, commit `e7415c86`), enlaza a GitHub igual que
+StockFlow (no tiene demo pública propia). Build local verificado ("Compiled successfully").
+<b>No desplegado todavía</b> — el servidor (ailonline.com.ar / 138.36.238.175) sigue caído,
+confirmado también por curl directo (no es un problema del navegador). Pendiente: Berenice
+revisa el estado del VPS con su proveedor; una vez que vuelva, hacer el deploy manual según el
+proceso documentado en `busqueda-laboral-notas.md` (build → subir con pscp → rsync →
+verificar). Esto afecta más que el portfolio: la instancia real de Glicemia también está
+alojada ahí.</td></tr>
+<tr><td>01/09/2026</td><td>Creado este Career Master Memory (primera versión). Regla de disponibilidad
+part-time/freelance definida como prioritaria por Berenice, aplicable a postulaciones nuevas.
+Decisión: las 5 postulaciones full-time ya enviadas se sostienen sin retirarlas, evaluando según
+respuesta. Detectado: portfolio caído, Turnero no integrado a CV/GitHub pinneado/portfolio.</td></tr>
+<tr><td>01/09/2026</td><td>Foto de perfil subida a Workana (bloqueante de meses resuelto), perfil llegó a 100%.
+Primera postulación freelance/part-time de la nueva estrategia enviada: proyecto de
+colaboración remota a largo plazo (20-30 hs/sem) para cliente ítalo-americano vía Workana,
+AR$21.000/hora, destacando Turnero/METANUTRIC/VI.</td></tr>
+<tr><td>01/09/2026</td><td>Postulación enviada: Sophilabs — Fullstack Python/Django Developer (full-time).</td></tr>
+<tr><td>31/08/2026</td><td>3 postulaciones vía Get on Board (BC Tecnología ×2, Alluxi), todas full-time.</td></tr>
+<tr><td>31/08/2026</td><td>Postulación InvGate vía Greenhouse (full-time), CV actualizado tras auditoría completa.</td></tr>
+<tr><td>28/08/2026</td><td>Postulación Crossing Hurdles vía LinkedIn (contrato, 10-40hs/sem). GitHub
+limpiado (nombre, bio), StatuApp hecho público, "Random" sacado del portfolio, LinkedIn "Open to
+Work" activado.</td></tr>
+</table>
+</div>
+
+</div>
+</body>
+</html>

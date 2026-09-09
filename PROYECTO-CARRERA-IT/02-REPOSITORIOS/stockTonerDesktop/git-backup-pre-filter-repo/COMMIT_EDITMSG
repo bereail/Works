@@ -1,0 +1,11 @@
+feat: unifica la paginación de listados en un componente reutilizable
+
+12 vistas paginaban con Paginator en el backend, pero cada template
+reimplementaba a mano los links "Anterior/Siguiente" con estilos inline
+duplicados, sin usar el componente .pagination que ya existía en el CSS.
+
+Agrega _pagination.html (soporta más de un paginador por página, como en
+PCs con page/page_pat) y un template tag para el rango de páginas con
+elipsis, y lo aplica en las 17 listas del sistema.
+
+Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>

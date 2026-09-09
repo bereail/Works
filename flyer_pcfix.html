@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Arial, sans-serif; }
+  html, body { width:100%; height:100%; background:#0a0a0a; }
+  body { display:flex; align-items:center; justify-content:center; }
+  .canvas {
+    width:100vmin; height:100vmin;
+    background:#0a0a0a;
+    color:#ffffff;
+    display:flex; flex-direction:column;
+    padding:6% 7%;
+  }
+  .brand { display:flex; align-items:center; gap:14px; }
+  .brand-icon {
+    width:52px; height:52px; border-radius:10px;
+    background:#0a0a0a; border:2px solid #39e639;
+    display:flex; align-items:center; justify-content:center;
+    color:#39e639; font-weight:800; font-size:20px; font-family:monospace;
+  }
+  .brand-name { font-size:26px; font-weight:800; letter-spacing:1px; }
+  .brand-name span { color:#39e639; }
+
+  .headline {
+    margin-top:6vmin;
+    font-size:44px; font-weight:800; line-height:1.15;
+    color:#ffffff;
+  }
+  .headline em { color:#39e639; font-style:normal; }
+
+  .cards { margin-top:6vmin; display:flex; flex-direction:column; gap:22px; }
+  .card {
+    border:1px solid #2a2a2a;
+    border-left:4px solid #39e639;
+    border-radius:4px;
+    padding:28px 36px;
+    display:flex; justify-content:space-between; align-items:center;
+    background:#111111;
+  }
+  .card .left { display:flex; align-items:center; gap:22px; }
+  .icon { flex:none; }
+  .card .name { font-size:22px; font-weight:700; color:#ffffff; }
+  .card .desc { font-size:15px; color:#9a9a9a; margin-top:6px; }
+  .card .price { font-size:28px; font-weight:800; color:#39e639; white-space:nowrap; margin-left:20px; }
+
+  .footer {
+    margin-top:auto;
+    display:flex; justify-content:space-between; align-items:flex-end;
+  }
+  .foot-text { font-size:16px; color:#9a9a9a; line-height:1.6; }
+  .foot-text b { color:#ffffff; }
+  .cta {
+    font-size:18px; font-weight:800; color:#0a0a0a;
+    background:#39e639; padding:14px 24px; border-radius:6px;
+  }
+  .location { margin-top:8px; font-size:14px; color:#666; }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="brand">
+    <div class="brand-icon">&lt;/&gt;</div>
+    <div class="brand-name">PC <span>FIX</span> INFORMÁTICA</div>
+  </div>
+
+  <div class="headline">Repotenciá tu <em>PC</em> o <em>notebook</em></div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="left">
+        <svg class="icon" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#39e639" stroke-width="1.6">
+          <rect x="3" y="8" width="18" height="10" rx="1.5"/>
+          <circle cx="12" cy="13" r="2.2"/>
+          <path d="M7 8V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/>
+        </svg>
+        <div>
+          <div class="name">SSD 240GB Kingston A400</div>
+          <div class="desc">Instalación de Windows en segundos</div>
+        </div>
+      </div>
+      <div class="price">$138.000</div>
+    </div>
+    <div class="card">
+      <div class="left">
+        <svg class="icon" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#39e639" stroke-width="1.6">
+          <rect x="4" y="7" width="16" height="10" rx="1"/>
+          <path d="M7 7V4M12 7V4M17 7V4M7 20v-3M12 20v-3M17 20v-3"/>
+        </svg>
+        <div>
+          <div class="name">RAM DDR4 8GB 3200MHz</div>
+          <div class="desc">Multitarea sin trabas ni cuelgues</div>
+        </div>
+      </div>
+      <div class="price">$118.600</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div>
+      <div class="foot-text"><b>Stock limitado</b><br>Instalación incluida en el service</div>
+      <div class="location">📍 Rosario</div>
+    </div>
+    <div class="cta">Consultá sin cargo</div>
+  </div>
+</div>
+</body>
+</html>

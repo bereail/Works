@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Optimización de Perfil — Workana</title>
+<style>
+  :root {
+    --bg: #03070d;
+    --panel: #0f131be0;
+    --panel-soft: #141922d1;
+    --card: #171c25eb;
+    --card-strong: #1e2430f5;
+    --text: #f7f7fb;
+    --muted: #a7adba;
+    --border: #ffffff14;
+    --accent: #7367ff;
+    --shadow: #0000006b;
+    --btn-bg: #ffffff0b;
+    --pill-bg: #05070cb8;
+    --pill-text: #ffffff;
+    --warn: #e0a052;
+    --page-bg: radial-gradient(circle at 20% 0%, #7367ff2e, transparent 32%), linear-gradient(180deg, #02050a 0%, #03070d 100%);
+    --shell-bg: radial-gradient(circle at 85% 8%, #ffffff0e, transparent 28%), linear-gradient(135deg, #10151ef5, #0a0e16f5);
+
+    --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f4f4f2; --panel: #ffffffdb; --panel-soft: #ffffffb8; --card: #ffffffe6; --card-strong: #fffffff5;
+      --text: #0b0b0b; --muted: #616161; --border: #0f0f0f14; --shadow: #00000014;
+      --btn-bg: #0000000b; --pill-bg: #ffffffe6; --pill-text: #111111;
+      --page-bg: radial-gradient(circle at 20% 0%, #fffffff2, transparent 34%), linear-gradient(180deg, #f7f7f6 0%, #eeeeec 100%);
+      --shell-bg: radial-gradient(circle at 85% 8%, #ffffffe6, transparent 28%), linear-gradient(135deg, #ffffffc7, #eeeeece6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #03070d; --panel: #0f131be0; --panel-soft: #141922d1; --card: #171c25eb; --card-strong: #1e2430f5;
+    --text: #f7f7fb; --muted: #a7adba; --border: #ffffff14; --shadow: #0000006b;
+    --btn-bg: #ffffff0b; --pill-bg: #05070cb8; --pill-text: #ffffff;
+    --page-bg: radial-gradient(circle at 20% 0%, #7367ff2e, transparent 32%), linear-gradient(180deg, #02050a 0%, #03070d 100%);
+    --shell-bg: radial-gradient(circle at 85% 8%, #ffffff0e, transparent 28%), linear-gradient(135deg, #10151ef5, #0a0e16f5);
+  }
+  :root[data-theme="light"] {
+    --bg: #f4f4f2; --panel: #ffffffdb; --panel-soft: #ffffffb8; --card: #ffffffe6; --card-strong: #fffffff5;
+    --text: #0b0b0b; --muted: #616161; --border: #0f0f0f14; --shadow: #00000014;
+    --btn-bg: #0000000b; --pill-bg: #ffffffe6; --pill-text: #111111;
+    --page-bg: radial-gradient(circle at 20% 0%, #fffffff2, transparent 34%), linear-gradient(180deg, #f7f7f6 0%, #eeeeec 100%);
+    --shell-bg: radial-gradient(circle at 85% 8%, #ffffffe6, transparent 28%), linear-gradient(135deg, #ffffffc7, #eeeeece6);
+  }
+
+  * { box-sizing: border-box; }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; } }
+
+  html, body { margin: 0; min-height: 100vh; color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  body { background: var(--page-bg); transition: background 0.35s, color 0.35s; }
+
+  .page { padding: clamp(0px, 4vw, 42px); }
+  .shell { max-width: 960px; margin: 0 auto; border: 1px solid var(--border); background: var(--shell-bg); border-radius: 22px; overflow: hidden; box-shadow: 0 30px 80px var(--shadow), inset 0 1px #ffffff0f; }
+  @media (max-width: 720px) { .page { padding: 0; } .shell { border-radius: 0; } }
+
+  .navbar { display: flex; align-items: center; justify-content: space-between; height: 84px; padding: 0 clamp(24px, 5vw, 56px); border-bottom: 1px solid var(--border); }
+  .brand { display: inline-flex; align-items: center; letter-spacing: 0.34em; font-size: 11px; font-weight: 900; text-transform: uppercase; }
+  .dot { background: var(--accent); border-radius: 999px; width: 6px; height: 6px; margin-left: 10px; display: inline-block; box-shadow: 0 0 18px #7367ffe6; }
+
+  .content { padding: clamp(28px, 5vw, 48px) clamp(24px, 5vw, 56px) 48px; display: flex; flex-direction: column; gap: 44px; }
+
+  .intro-section { display: flex; flex-direction: column; gap: 10px; }
+  .eyebrow { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-weight: 900; letter-spacing: -0.04em; font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.1rem); line-height: 1.15; margin: 0; text-wrap: balance; }
+  .lede { max-width: 62ch; color: var(--muted); font-size: 0.98rem; margin: 4px 0 0; }
+
+  section { display: flex; flex-direction: column; gap: 16px; }
+  .section-header { display: flex; align-items: center; }
+  h2 { font-weight: 900; letter-spacing: -0.03em; font-size: 1.2rem; margin: 0; text-wrap: balance; }
+  .section-intro { color: var(--muted); margin: -6px 0 2px; max-width: 62ch; font-size: 0.92rem; }
+
+  .diag-list { display: flex; flex-direction: column; gap: 10px; }
+  .diag-item {
+    display: grid; grid-template-columns: 20px 1fr; gap: 12px; align-items: start;
+    background: var(--panel-soft); border: 1px solid var(--border); border-radius: 12px; padding: 13px 16px;
+  }
+  .diag-item::before {
+    content: "!"; color: var(--warn); font-weight: 900; font-size: 13px;
+    border: 1px solid var(--border); border-radius: 50%; width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center; background: var(--card-strong); margin-top: 1px;
+  }
+  .diag-item p { margin: 0; font-size: 0.92rem; color: var(--muted); }
+  .diag-item p strong { color: var(--text); }
+
+  .field-block {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 22px;
+    display: flex; flex-direction: column; gap: 12px;
+    box-shadow: 0 22px 55px var(--shadow), inset 0 1px 0 #ffffff0f;
+  }
+  .field-label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .field-block .text { font-size: 0.95rem; color: var(--text); white-space: pre-wrap; line-height: 1.65; }
+  .field-block .actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+  button.copy-btn, a.visit-btn {
+    font-family: var(--font-body); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.01em; text-decoration: none;
+    color: var(--text); background: var(--btn-bg); border: 1px solid var(--border); border-radius: 999px;
+    padding: 10px 16px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+    white-space: nowrap; transition: background 0.25s, border-color 0.25s, transform 0.25s;
+  }
+  button.copy-btn:hover, a.visit-btn:hover { background: #7367ff24; border-color: #7367ff61; transform: translateY(-2px); }
+  button.copy-btn:active, a.visit-btn:active { transform: translateY(0); }
+  button.copy-btn:focus-visible, a.visit-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  button.copy-btn[data-copied="true"] { background: #7367ff33; border-color: #7367ff7a; }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: var(--font-mono); font-size: 0.78rem; color: var(--text); background: var(--card-strong);
+    border: 1px solid var(--border); border-radius: 999px; padding: 7px 13px;
+  }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+  .card {
+    position: relative; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px;
+    display: flex; flex-direction: column; gap: 10px;
+    box-shadow: 0 22px 55px var(--shadow), inset 0 1px 0 #ffffff0f;
+    transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
+  }
+  .card:hover { transform: translateY(-6px); border-color: #7367ff5c; box-shadow: 0 28px 75px #0000008c, inset 0 1px #ffffff17; }
+  .icon-badge { width: 44px; height: 44px; border-radius: 14px; background: var(--card-strong); display: grid; place-items: center; font-size: 18px; box-shadow: 0 16px 36px #00000047, inset 0 1px #ffffff14; margin-bottom: 2px; }
+  .price-pill {
+    position: absolute; top: 16px; right: 16px; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    background: var(--pill-bg); color: var(--pill-text); letter-spacing: -0.02em; border-radius: 999px;
+    padding: 7px 12px; font-size: 10px; font-weight: 850; box-shadow: 0 8px 24px #00000038;
+  }
+  .card .tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+  .card h3 { font-weight: 800; letter-spacing: -0.02em; font-size: 1.05rem; margin: 0; text-wrap: balance; }
+  .card p.desc { margin: 0; color: var(--muted); font-size: 0.9rem; }
+  .footer-row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--border); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  .footer-row .value { color: var(--text); font-weight: 800; font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-transform: none; letter-spacing: 0; }
+  .raw-text { display: none; white-space: pre-wrap; }
+
+  .note {
+    font-size: 0.85rem; color: var(--warn); background: #e0a05214; border: 1px dashed #e0a05255;
+    border-radius: 10px; padding: 10px 14px;
+  }
+
+  .steps { display: flex; flex-direction: column; gap: 12px; counter-reset: step; }
+  .step { display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start; }
+  .step::before {
+    counter-increment: step; content: counter(step); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;
+    color: var(--accent); background: var(--card-strong); border: 1px solid var(--border); border-radius: 50%;
+    width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+  }
+  .step p { margin: 0; font-size: 0.92rem; color: var(--muted); }
+  .step p strong { color: var(--text); }
+
+  .page-footer { border-top: 1px solid var(--border); padding-top: 20px; color: var(--muted); font-size: 0.82rem; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="shell">
+
+    <header class="navbar">
+      <span class="brand">Automatizaciones · B.S.<span class="dot" aria-hidden="true"></span></span>
+    </header>
+
+    <main class="content">
+
+      <section class="intro-section">
+        <span class="eyebrow">Optimización de perfil</span>
+        <h1>Tu perfil de Workana, reforzado</h1>
+        <p class="lede">No tengo sesión iniciada en tu cuenta de Workana, así que no pude pegar esto directamente — el contenido está listo para copiar campo por campo. Cada bloque tiene su botón de copiar.</p>
+      </section>
+
+      <section aria-labelledby="diag-h">
+        <div class="section-header"><h2 id="diag-h">Lo que encontré<span class="dot" aria-hidden="true"></span></h2></div>
+        <div class="diag-list">
+          <div class="diag-item"><p><strong>Biografía vacía.</strong> Es lo primero que lee un cliente y hoy no dice nada.</p></div>
+          <div class="diag-item"><p><strong>Título genérico</strong> ("Freelancer experto en Programación y Tecnología") — es el default de Workana, no te diferencia de nadie.</p></div>
+          <div class="diag-item"><p><strong>Solo 3 habilidades cargadas</strong> (Python, React Native, Programación Web) — sin palabras clave de automatización, aparecés en menos búsquedas.</p></div>
+          <div class="diag-item"><p><strong>Historia laboral vacía.</strong></p></div>
+          <div class="diag-item"><p><strong>Un solo idioma</strong> (Español) — sin inglés cargado, quedás afuera de clientes internacionales.</p></div>
+          <div class="diag-item"><p><strong>0 certificaciones, 0 proyectos en portafolio, 0 servicios publicados.</strong></p></div>
+          <div class="diag-item"><p><strong>Foto de perfil genérica</strong> — el ícono por default de Workana, no una foto real tuya.</p></div>
+          <div class="diag-item"><p><strong>Nivel "IRON"</strong> (el más bajo del ranking Workana) — sube completando el perfil y ganando tu primer proyecto.</p></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="titulo-h">
+        <div class="section-header"><h2 id="titulo-h">Título profesional<span class="dot" aria-hidden="true"></span></h2></div>
+        <p class="section-intro">Reemplaza el genérico "Freelancer experto en Programación y Tecnología".</p>
+        <div class="field-block">
+          <span class="field-label">Opción principal</span>
+          <p class="text" id="text-titulo1">Automatizaciones a medida con Python · Bots, reportes e integraciones</p>
+          <div class="actions"><button class="copy-btn" data-target="text-titulo1" type="button">Copiar</button></div>
+        </div>
+        <div class="field-block">
+          <span class="field-label">Opción corta (si el campo tiene límite de caracteres)</span>
+          <p class="text" id="text-titulo2">Desarrolladora Python · Automatizaciones, bots y APIs</p>
+          <div class="actions"><button class="copy-btn" data-target="text-titulo2" type="button">Copiar</button></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="bio-h">
+        <div class="section-header"><h2 id="bio-h">Biografía<span class="dot" aria-hidden="true"></span></h2></div>
+        <div class="field-block">
+          <span class="field-label">Texto completo para pegar</span>
+          <p class="text" id="text-bio">Soy desarrolladora Full Stack especializada en Python y React Native, con foco en un problema muy concreto: el tiempo que las empresas pierden en tareas repetitivas.
+
+Diseño y desarrollo automatizaciones a medida — bots de WhatsApp que responden y toman pedidos solos, reportes que se arman sin cargar nada a mano, e integraciones que conectan sistemas que hoy no se hablan entre sí. El objetivo siempre es el mismo: que dejes de hacer manualmente lo que un programa puede hacer por vos.
+
+Trabajo con Python para automatización y backend, y con React Native cuando el proyecto necesita una app. Antes de empezar, me tomo el tiempo de entender bien el flujo de trabajo actual para automatizar lo que realmente hace falta, no lo que parece más vistoso.
+
+Si tenés un proceso manual que se repite todas las semanas, probablemente se pueda automatizar. Contame cómo funciona hoy y te digo qué se puede hacer.</p>
+          <div class="actions"><button class="copy-btn" data-target="text-bio" type="button">Copiar biografía</button></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="skills-h">
+        <div class="section-header"><h2 id="skills-h">Habilidades para agregar<span class="dot" aria-hidden="true"></span></h2></div>
+        <p class="section-intro">Sumalas a las 3 que ya tenés (Python, React Native, Programación Web) — son las palabras clave por las que un cliente te encuentra en el buscador de Workana.</p>
+        <div class="field-block">
+          <div class="chip-row">
+            <span class="chip">Automatización de Procesos</span>
+            <span class="chip">Chatbots</span>
+            <span class="chip">WhatsApp Business API</span>
+            <span class="chip">APIs REST</span>
+            <span class="chip">Integración de Sistemas</span>
+            <span class="chip">JavaScript</span>
+            <span class="chip">Node.js</span>
+            <span class="chip">Google Sheets</span>
+            <span class="chip">Web Scraping</span>
+            <span class="chip">Bases de Datos SQL</span>
+          </div>
+          <p class="text" id="text-skills" style="display:none;">Automatización de Procesos, Chatbots, WhatsApp Business API, APIs REST, Integración de Sistemas, JavaScript, Node.js, Google Sheets, Web Scraping, Bases de Datos SQL</p>
+          <div class="actions"><button class="copy-btn" data-target="text-skills" type="button">Copiar lista</button></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="servicios-h">
+        <div class="section-header"><h2 id="servicios-h">Servicios para publicar<span class="dot" aria-hidden="true"></span></h2></div>
+        <p class="section-intro">Para la sección "Vender servicios" de tu perfil — cada uno como un servicio separado.</p>
+        <div class="cards">
+
+          <article class="card">
+            <span class="price-pill">USD 150+</span>
+            <div class="icon-badge">🤖</div>
+            <span class="tag">Chatbots / Automatización</span>
+            <h3>Bot de WhatsApp para tomar pedidos</h3>
+            <p class="desc">Respuestas automáticas y toma de pedidos, sin que el cliente tenga que anotar nada a mano.</p>
+            <div class="footer-row"><span>Entrega</span><span class="value">3–5 días</span></div>
+            <button class="copy-btn" data-target="text-serv1" type="button">Copiar texto</button>
+            <div class="raw-text" id="text-serv1">Bot de WhatsApp para tomar pedidos
+
+¿Perdés tiempo respondiendo siempre las mismas preguntas o anotando pedidos a mano? Te armo un bot de WhatsApp que responde automáticamente, toma pedidos y te los organiza en una planilla o panel simple.
+
+Incluye:
+- Respuestas automáticas a preguntas frecuentes (horarios, precios, ubicación)
+- Toma de pedidos con confirmación automática
+- Los pedidos se guardan ordenados en Google Sheets
+- Configuración inicial + 7 días de ajustes gratis
+
+Desde USD 150 · Entrega en 3-5 días</div>
+          </article>
+
+          <article class="card">
+            <span class="price-pill">USD 100+</span>
+            <div class="icon-badge">📊</div>
+            <span class="tag">Automatización de datos</span>
+            <h3>Automatización de reportes</h3>
+            <p class="desc">El mismo reporte de siempre, armado solo, sin copiar y pegar nada a mano.</p>
+            <div class="footer-row"><span>Entrega</span><span class="value">2–4 días</span></div>
+            <button class="copy-btn" data-target="text-serv2" type="button">Copiar texto</button>
+            <div class="raw-text" id="text-serv2">Automatización de reportes
+
+Si todas las semanas armás el mismo reporte copiando y pegando datos, eso se puede automatizar. Conecto tus fuentes de datos (ventas, formularios, otra planilla, un sistema) y te genero el reporte listo, actualizado solo.
+
+Incluye:
+- Automatización de la carga y cálculo de datos
+- Reporte final en Excel o Google Sheets, con formato prolijo
+- Se actualiza solo (diario/semanal, a definir)
+- Instructivo simple para que cualquiera lo entienda
+
+Desde USD 100 · Entrega en 2-4 días</div>
+          </article>
+
+          <article class="card">
+            <span class="price-pill">USD 200+</span>
+            <div class="icon-badge">🔗</div>
+            <span class="tag">Integraciones / APIs</span>
+            <h3>Conexión entre sistemas / APIs</h3>
+            <p class="desc">Dos herramientas que no se hablan, conectadas para que la información pase sola.</p>
+            <div class="footer-row"><span>Entrega</span><span class="value">4–7 días</span></div>
+            <button class="copy-btn" data-target="text-serv3" type="button">Copiar texto</button>
+            <div class="raw-text" id="text-serv3">Conexión entre sistemas / APIs
+
+¿Usás dos sistemas que no se hablan entre ellos (por ejemplo tu tienda online y tu contabilidad, o un formulario y tu CRM)? Los conecto para que la información pase automáticamente, sin que tengas que cargarla dos veces.
+
+Incluye:
+- Conexión automática entre las dos herramientas que uses
+- Sincronización de datos (pedidos, contactos, pagos, etc.)
+- Prueba y ajuste hasta que funcione en tu flujo real
+- Documentación simple de cómo funciona
+
+Desde USD 200 · Entrega en 4-7 días</div>
+          </article>
+
+        </div>
+      </section>
+
+      <section aria-labelledby="portfolio-h">
+        <div class="section-header"><h2 id="portfolio-h">Portafolio sugerido<span class="dot" aria-hidden="true"></span></h2></div>
+        <p class="section-intro">Ideas de proyectos de práctica para documentar y subir — un perfil sin portafolio genera desconfianza. La descripción está lista, pero las capturas y el proyecto en sí los tenés que armar vos: no puedo inventar un caso real que no existe.</p>
+        <div class="cards">
+          <article class="card">
+            <div class="icon-badge">🤖</div>
+            <h3>Bot de WhatsApp — Toma de pedidos</h3>
+            <p class="desc" id="text-port1">Bot desarrollado en Python que responde consultas frecuentes y registra pedidos automáticamente en una planilla de Google Sheets, sin intervención manual. Incluye confirmación automática al cliente y organización de pedidos por fecha.</p>
+            <button class="copy-btn" data-target="text-port1" type="button">Copiar descripción</button>
+          </article>
+          <article class="card">
+            <div class="icon-badge">📊</div>
+            <h3>Dashboard de reportes automáticos</h3>
+            <p class="desc" id="text-port2">Sistema que centraliza datos de ventas desde múltiples fuentes y genera un reporte semanal automático en Google Sheets, con gráficos actualizados sin intervención manual.</p>
+            <button class="copy-btn" data-target="text-port2" type="button">Copiar descripción</button>
+          </article>
+          <article class="card">
+            <div class="icon-badge">🔗</div>
+            <h3>Integración formulario web ↔ CRM</h3>
+            <p class="desc" id="text-port3">Conexión vía API entre un formulario de contacto y un CRM, para que cada nuevo lead se registre automáticamente sin carga manual de datos.</p>
+            <button class="copy-btn" data-target="text-port3" type="button">Copiar descripción</button>
+          </article>
+        </div>
+        <p class="note">Importante: subí capturas de pantalla reales de cada proyecto cuando lo tengas andando. Un portafolio con descripción pero sin imágenes genera casi la misma desconfianza que no tener portafolio.</p>
+      </section>
+
+      <section aria-labelledby="otros-h">
+        <div class="section-header"><h2 id="otros-h">Idiomas e historia laboral<span class="dot" aria-hidden="true"></span></h2></div>
+        <div class="field-block">
+          <span class="field-label">Idiomas</span>
+          <p class="text">Hoy solo tenés Español cargado. Si tenés algún nivel de inglés (aunque sea intermedio), agregalo — abre las búsquedas de clientes que filtran por idioma. No inventes un nivel que no tenés: cargá el real.</p>
+        </div>
+        <div class="field-block">
+          <span class="field-label">Historia laboral — plantilla</span>
+          <p class="text" id="text-historia">[Nombre de la empresa, cliente o "Freelance independiente"] — [Tu rol]
+[Mes/Año inicio] – [Mes/Año fin o "Actualidad"]
+Descripción breve (1-2 líneas) de qué hiciste ahí y con qué tecnologías.</p>
+          <div class="actions"><button class="copy-btn" data-target="text-historia" type="button">Copiar plantilla</button></div>
+        </div>
+        <p class="note">Esta parte no la puedo redactar por vos con datos inventados — completala con tu experiencia real (changas, proyectos personales y trabajos previos cuentan).</p>
+      </section>
+
+      <section aria-labelledby="checklist-h">
+        <div class="section-header"><h2 id="checklist-h">Orden para publicar<span class="dot" aria-hidden="true"></span></h2></div>
+        <div class="steps">
+          <div class="step"><p><strong>Cambiá el título</strong> por la opción principal de arriba.</p></div>
+          <div class="step"><p><strong>Pegá la biografía</strong> completa.</p></div>
+          <div class="step"><p><strong>Agregá las 10 habilidades</strong> nuevas a tu perfil.</p></div>
+          <div class="step"><p><strong>Publicá los 3 servicios</strong> en la sección "Vender servicios".</p></div>
+          <div class="step"><p><strong>Subí 1-2 proyectos de portafolio</strong> con capturas reales.</p></div>
+          <div class="step"><p><strong>Completá idiomas e historia laboral</strong> con datos reales.</p></div>
+          <div class="step"><p><strong>Subí una foto de perfil real</strong> — hoy tenés el ícono genérico de Workana.</p></div>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        No pude iniciar sesión en tu cuenta de Workana para pegar esto directamente — hacelo vos con los botones de copiar de cada bloque.
+      </footer>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var targetId = btn.getAttribute('data-target');
+      var source = document.getElementById(targetId);
+      var text = source.tagName === 'DIV' || source.tagName === 'P' ? source.textContent : source.value;
+      var done = function () {
+        var original = btn.textContent;
+        btn.textContent = 'Copiado ✓';
+        btn.setAttribute('data-copied', 'true');
+        setTimeout(function () {
+          btn.textContent = original;
+          btn.removeAttribute('data-copied');
+        }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () { fallbackCopy(text, done); });
+      } else {
+        fallbackCopy(text, done);
+      }
+    });
+  });
+
+  function fallbackCopy(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    done();
+  }
+</script>
+</body>
+</html>

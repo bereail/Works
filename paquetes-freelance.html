@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kit de Freelance — Paquetes de Automatización</title>
+<style>
+  :root {
+    --bg: #03070d;
+    --panel: #0f131be0;
+    --panel-soft: #141922d1;
+    --card: #171c25eb;
+    --card-strong: #1e2430f5;
+    --text: #f7f7fb;
+    --muted: #a7adba;
+    --border: #ffffff14;
+    --accent: #7367ff;
+    --shadow: #0000006b;
+    --btn-bg: #ffffff0b;
+    --pill-bg: #05070cb8;
+    --pill-text: #ffffff;
+    --page-bg: radial-gradient(circle at 20% 0%, #7367ff2e, transparent 32%), linear-gradient(180deg, #02050a 0%, #03070d 100%);
+    --shell-bg: radial-gradient(circle at 85% 8%, #ffffff0e, transparent 28%), linear-gradient(135deg, #10151ef5, #0a0e16f5);
+
+    --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f4f4f2;
+      --panel: #ffffffdb;
+      --panel-soft: #ffffffb8;
+      --card: #ffffffe6;
+      --card-strong: #fffffff5;
+      --text: #0b0b0b;
+      --muted: #616161;
+      --border: #0f0f0f14;
+      --shadow: #00000014;
+      --btn-bg: #0000000b;
+      --pill-bg: #ffffffe6;
+      --pill-text: #111111;
+      --page-bg: radial-gradient(circle at 20% 0%, #fffffff2, transparent 34%), linear-gradient(180deg, #f7f7f6 0%, #eeeeec 100%);
+      --shell-bg: radial-gradient(circle at 85% 8%, #ffffffe6, transparent 28%), linear-gradient(135deg, #ffffffc7, #eeeeece6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #03070d;
+    --panel: #0f131be0;
+    --panel-soft: #141922d1;
+    --card: #171c25eb;
+    --card-strong: #1e2430f5;
+    --text: #f7f7fb;
+    --muted: #a7adba;
+    --border: #ffffff14;
+    --shadow: #0000006b;
+    --btn-bg: #ffffff0b;
+    --pill-bg: #05070cb8;
+    --pill-text: #ffffff;
+    --page-bg: radial-gradient(circle at 20% 0%, #7367ff2e, transparent 32%), linear-gradient(180deg, #02050a 0%, #03070d 100%);
+    --shell-bg: radial-gradient(circle at 85% 8%, #ffffff0e, transparent 28%), linear-gradient(135deg, #10151ef5, #0a0e16f5);
+  }
+  :root[data-theme="light"] {
+    --bg: #f4f4f2;
+    --panel: #ffffffdb;
+    --panel-soft: #ffffffb8;
+    --card: #ffffffe6;
+    --card-strong: #fffffff5;
+    --text: #0b0b0b;
+    --muted: #616161;
+    --border: #0f0f0f14;
+    --shadow: #00000014;
+    --btn-bg: #0000000b;
+    --pill-bg: #ffffffe6;
+    --pill-text: #111111;
+    --page-bg: radial-gradient(circle at 20% 0%, #fffffff2, transparent 34%), linear-gradient(180deg, #f7f7f6 0%, #eeeeec 100%);
+    --shell-bg: radial-gradient(circle at 85% 8%, #ffffffe6, transparent 28%), linear-gradient(135deg, #ffffffc7, #eeeeece6);
+  }
+
+  * { box-sizing: border-box; }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  html, body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background: var(--page-bg);
+    transition: background 0.35s, color 0.35s;
+  }
+
+  .page { padding: clamp(0px, 4vw, 42px); }
+
+  .shell {
+    max-width: 960px;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+    background: var(--shell-bg);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px var(--shadow), inset 0 1px #ffffff0f;
+  }
+  @media (max-width: 720px) {
+    .page { padding: 0; }
+    .shell { border-radius: 0; }
+  }
+
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 84px;
+    padding: 0 clamp(24px, 5vw, 56px);
+    border-bottom: 1px solid var(--border);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    letter-spacing: 0.34em;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+  .dot {
+    background: var(--accent);
+    border-radius: 999px;
+    width: 6px;
+    height: 6px;
+    margin-left: 10px;
+    display: inline-block;
+    box-shadow: 0 0 18px #7367ffe6;
+  }
+
+  .content {
+    padding: clamp(28px, 5vw, 48px) clamp(24px, 5vw, 56px) 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .intro-section { display: flex; flex-direction: column; gap: 10px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  h1 {
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.3rem);
+    line-height: 1.15;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .lede { max-width: 58ch; color: var(--muted); font-size: 1rem; margin: 4px 0 0; }
+
+  section { display: flex; flex-direction: column; gap: 18px; }
+  .section-header { display: flex; align-items: center; }
+  h2 {
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    font-size: 1.3rem;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .section-intro { color: var(--muted); margin: -8px 0 4px; max-width: 60ch; font-size: 0.95rem; }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+
+  .card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 22px 55px var(--shadow), inset 0 1px 0 #ffffff0f;
+    transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    border-color: #7367ff5c;
+    box-shadow: 0 28px 75px #0000008c, inset 0 1px #ffffff17;
+  }
+  .icon-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: var(--card-strong);
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    box-shadow: 0 16px 36px #00000047, inset 0 1px #ffffff14;
+    margin-bottom: 2px;
+  }
+  .icon-badge.small { width: 34px; height: 34px; border-radius: 10px; font-size: 14px; font-weight: 900; }
+  .price-pill {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    background: var(--pill-bg);
+    color: var(--pill-text);
+    letter-spacing: -0.02em;
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 10px;
+    font-weight: 850;
+    box-shadow: 0 8px 24px #00000038;
+  }
+  .card .tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .card h3 { font-weight: 800; letter-spacing: -0.02em; font-size: 1.1rem; margin: 0; text-wrap: balance; }
+  .card p.desc { margin: 0; color: var(--muted); font-size: 0.92rem; }
+  .card ul {
+    margin: 0;
+    padding-left: 1.1em;
+    font-size: 0.87rem;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
+  }
+  .footer-row .value {
+    color: var(--text);
+    font-weight: 800;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  button.copy-btn, a.visit-btn {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    color: var(--text);
+    background: var(--btn-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 10px 16px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: background 0.25s, border-color 0.25s, transform 0.25s;
+  }
+  button.copy-btn:hover, a.visit-btn:hover { background: #7367ff24; border-color: #7367ff61; transform: translateY(-2px); }
+  button.copy-btn:active, a.visit-btn:active { transform: translateY(0); }
+  button.copy-btn:focus-visible, a.visit-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  button.copy-btn[data-copied="true"] { background: #7367ff33; border-color: #7367ff7a; }
+
+  .raw-text { display: none; white-space: pre-wrap; }
+
+  .steps { display: flex; flex-direction: column; gap: 12px; counter-reset: step; }
+  .step { display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start; }
+  .step::before {
+    counter-increment: step;
+    content: counter(step);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--card-strong);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step p { margin: 0; font-size: 0.92rem; color: var(--muted); }
+  .step p strong { color: var(--text); }
+
+  .platforms { display: flex; flex-direction: column; gap: 18px; }
+  .platform {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 22px 55px var(--shadow), inset 0 1px 0 #ffffff0f;
+    transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
+  }
+  .platform:hover { transform: translateY(-4px); border-color: #7367ff5c; }
+  .rank-pill {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--pill-bg);
+    color: var(--pill-text);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 999px;
+    padding: 6px 11px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 850;
+    box-shadow: 0 8px 24px #00000038;
+  }
+  .platform-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-right: 56px; }
+  .platform-title { display: flex; align-items: center; gap: 12px; }
+  .platform-title h3 { margin: 0; font-weight: 800; letter-spacing: -0.02em; font-size: 1.1rem; }
+  .platform .what { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+  .message-block {
+    background: var(--panel-soft);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 18px 45px var(--shadow), inset 0 1px 0 #ffffff0d;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+  .message-block .text { font-size: 0.95rem; color: var(--text); white-space: pre-wrap; line-height: 1.6; }
+  .message-block .actions { display: flex; justify-content: flex-end; }
+
+  .checklist { display: flex; flex-direction: column; gap: 10px; }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.93rem;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--panel-soft);
+  }
+  .check-item input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--accent); flex-shrink: 0; }
+  .check-item label { cursor: pointer; }
+  .check-item.done label { color: var(--muted); text-decoration: line-through; }
+
+  .page-footer {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  @media (max-width: 480px) {
+    .platform-head { padding-right: 0; }
+    .rank-pill { position: static; align-self: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="shell">
+
+    <header class="navbar">
+      <span class="brand">Automatizaciones · B.S.<span class="dot" aria-hidden="true"></span></span>
+    </header>
+
+    <main class="content">
+
+      <section class="intro-section">
+        <span class="eyebrow">Kit de freelance</span>
+        <h1>Paquetes listos para publicar</h1>
+        <p class="lede">Tres servicios con precio fijo, pensados para copiar y pegar en Workana, Upwork o donde publiques. Cada tarjeta tiene el texto completo y un botón para copiarlo tal cual.</p>
+      </section>
+
+      <section aria-labelledby="paquetes-h">
+        <div class="section-header"><h2 id="paquetes-h">Los paquetes<span class="dot" aria-hidden="true"></span></h2></div>
+        <div class="cards">
+
+          <article class="card">
+            <span class="price-pill">USD 150+</span>
+            <div class="icon-badge">🤖</div>
+            <span class="tag">Servicio · Mensajería</span>
+            <h3>Bot de WhatsApp para tomar pedidos</h3>
+            <p class="desc">Respuestas automáticas y toma de pedidos, sin que el cliente tenga que anotar nada a mano.</p>
+            <ul>
+              <li>Respuestas automáticas (horarios, precios, ubicación)</li>
+              <li>Toma de pedidos con confirmación automática</li>
+              <li>Pedidos guardados ordenados en Google Sheets</li>
+              <li>Configuración inicial + 7 días de ajustes gratis</li>
+            </ul>
+            <div class="footer-row"><span>Entrega</span><span class="value">3–5 días</span></div>
+            <button class="copy-btn" data-target="text-bot" type="button">Copiar texto</button>
+            <div class="raw-text" id="text-bot">🤖 Bot de WhatsApp para tu negocio
+¿Perdés tiempo respondiendo siempre las mismas preguntas o anotando pedidos a mano? Te armo un bot de WhatsApp que responde automáticamente, toma pedidos y te los organiza en una planilla o panel simple.
+
+Incluye:
+- Respuestas automáticas a preguntas frecuentes (horarios, precios, ubicación)
+- Toma de pedidos con confirmación automática
+- Los pedidos se guardan ordenados en Google Sheets
+- Configuración inicial + 7 días de ajustes gratis
+
+💰 Desde $150 USD · ⏱️ Entrega en 3-5 días</div>
+          </article>
+
+          <article class="card">
+            <span class="price-pill">USD 100+</span>
+            <div class="icon-badge">📊</div>
+            <span class="tag">Servicio · Datos</span>
+            <h3>Automatización de reportes</h3>
+            <p class="desc">El mismo reporte de siempre, armado solo, sin copiar y pegar nada a mano.</p>
+            <ul>
+              <li>Automatización de carga y cálculo de datos</li>
+              <li>Reporte final en Excel o Google Sheets, prolijo</li>
+              <li>Se actualiza solo (diario/semanal, a definir)</li>
+              <li>Instructivo simple para cualquiera del equipo</li>
+            </ul>
+            <div class="footer-row"><span>Entrega</span><span class="value">2–4 días</span></div>
+            <button class="copy-btn" data-target="text-reportes" type="button">Copiar texto</button>
+            <div class="raw-text" id="text-reportes">📊 Reportes automáticos, sin cargar nada a mano
+Si todas las semanas armás el mismo reporte copiando y pegando datos, eso se puede automatizar. Conecto tus fuentes de datos (ventas, formularios, otra planilla, un sistema) y te genero el reporte listo, actualizado solo.
+
+Incluye:
+- Automatización de la carga y cálculo de datos
+- Reporte final en Excel o Google Sheets, con formato prolijo
+- Se actualiza solo (diario/semanal, a definir)
+- Instructivo simple para que cualquiera lo entienda
+
+💰 Desde $100 USD · ⏱️ Entrega en 2-4 días</div>
+          </article>
+
+          <article class="card">
+            <span class="price-pill">USD 200+</span>
+            <div class="icon-badge">🔗</div>
+            <span class="tag">Servicio · Integraciones</span>
+            <h3>Conexión entre sistemas / APIs</h3>
+            <p class="desc">Dos herramientas que no se hablan, conectadas para que la información pase sola.</p>
+            <ul>
+              <li>Conexión automática entre las dos herramientas</li>
+              <li>Sincronización de datos (pedidos, contactos, pagos)</li>
+              <li>Prueba y ajuste sobre tu flujo real</li>
+              <li>Documentación simple de cómo funciona</li>
+            </ul>
+            <div class="footer-row"><span>Entrega</span><span class="value">4–7 días</span></div>
+            <button class="copy-btn" data-target="text-integracion" type="button">Copiar texto</button>
+            <div class="raw-text" id="text-integracion">🔗 Conectá tus herramientas entre sí
+¿Usás dos sistemas que no se hablan entre ellos (por ejemplo tu tienda online y tu contabilidad, o un formulario y tu CRM)? Los conecto para que la información pase automáticamente, sin que tengas que cargarla dos veces.
+
+Incluye:
+- Conexión automática entre las dos herramientas que uses
+- Sincronización de datos (pedidos, contactos, pagos, etc.)
+- Prueba y ajuste hasta que funcione en tu flujo real
+- Documentación simple de cómo funciona
+
+💰 Desde $200 USD · ⏱️ Entrega en 4-7 días</div>
+          </article>
+
+        </div>
+      </section>
+
+      <section aria-labelledby="publicar-h">
+        <div class="section-header"><h2 id="publicar-h">Top 5 para conseguir trabajo en Argentina<span class="dot" aria-hidden="true"></span></h2></div>
+        <p class="section-intro">Ordenados por lo más directo para empezar sin experiencia previa en freelance. Cada uno tiene el link y los pasos exactos para arrancar hoy.</p>
+        <div class="platforms">
+
+          <div class="platform">
+            <span class="rank-pill">#1</span>
+            <div class="platform-head">
+              <div class="platform-title"><div class="icon-badge small">W</div><h3>Workana</h3></div>
+              <a class="visit-btn" href="https://www.workana.com" target="_blank" rel="noopener">Visitar ↗</a>
+            </div>
+            <p class="what">La plataforma freelance más grande en español, con montones de pymes y emprendedores argentinos publicando proyectos todos los días. Es el punto de partida más simple.</p>
+            <div class="steps">
+              <div class="step"><p>Entrá al link de arriba y creá tu cuenta (podés usar tu Google directamente).</p></div>
+              <div class="step"><p>Completá el perfil con foto real y cargá "Automatización", "Bots" y "Desarrollo" como habilidades.</p></div>
+              <div class="step"><p>Andá a la sección de servicios y subí cada uno de los 3 paquetes de arriba como un servicio separado.</p></div>
+              <div class="step"><p>Todos los días entrá a "Proyectos" y postulate a 3-5 usando el texto del paquete que más se parezca a lo que pide el cliente.</p></div>
+            </div>
+          </div>
+
+          <div class="platform">
+            <span class="rank-pill">#2</span>
+            <div class="platform-head">
+              <div class="platform-title"><div class="icon-badge small">In</div><h3>LinkedIn</h3></div>
+              <a class="visit-btn" href="https://www.linkedin.com" target="_blank" rel="noopener">Visitar ↗</a>
+            </div>
+            <p class="what">En Argentina, muchas pymes contratan freelance por mensaje directo, no por posteos públicos. Es el canal con menos competencia y donde tu perfil de programadora ya suma.</p>
+            <div class="steps">
+              <div class="step"><p>Actualizá tu título de perfil a algo como "Desarrolladora freelance · Automatizaciones y bots".</p></div>
+              <div class="step"><p>Publicá un posteo corto contando los 3 servicios que ofrecés (usá los textos de arriba, adaptados).</p></div>
+              <div class="step"><p>Buscá dueños de pymes por rubro (gastronomía, indumentaria, inmobiliarias) y mandales un mensaje corto y directo, sin ser invasiva.</p></div>
+              <div class="step"><p>Sumate a grupos de LinkedIn de emprendedores y comunidades de developers en Argentina.</p></div>
+            </div>
+          </div>
+
+          <div class="platform">
+            <span class="rank-pill">#3</span>
+            <div class="platform-head">
+              <div class="platform-title"><div class="icon-badge small">Gb</div><h3>Get on Board</h3></div>
+              <a class="visit-btn" href="https://www.getonbrd.com" target="_blank" rel="noopener">Visitar ↗</a>
+            </div>
+            <p class="what">Portal de empleos tech muy usado en Argentina y el resto de Latinoamérica, con filtro específico para trabajos freelance y remotos.</p>
+            <div class="steps">
+              <div class="step"><p>Entrá al link y creá tu perfil de talento (podés registrarte con LinkedIn).</p></div>
+              <div class="step"><p>En el buscador, filtrá por "freelance" o "part-time" en vez de full-time.</p></div>
+              <div class="step"><p>Postulate directo desde la plataforma con un mensaje corto mencionando tus 3 paquetes.</p></div>
+            </div>
+          </div>
+
+          <div class="platform">
+            <span class="rank-pill">#4</span>
+            <div class="platform-head">
+              <div class="platform-title"><div class="icon-badge small">U</div><h3>Upwork</h3></div>
+              <a class="visit-btn" href="https://www.upwork.com" target="_blank" rel="noopener">Visitar ↗</a>
+            </div>
+            <p class="what">La plataforma freelance más grande del mundo. Está en inglés y tarda un poco más en aprobar el perfil, pero tiene clientes de USA/Europa que pagan mejor.</p>
+            <div class="steps">
+              <div class="step"><p>Entrá a upwork.com/signup y elegí la opción "trabajar como freelancer".</p></div>
+              <div class="step"><p>Completá el perfil en inglés (traducí tus 3 paquetes) y esperá la aprobación (1-2 días).</p></div>
+              <div class="step"><p>Usá tus "connects" gratis para postularte a proyectos chicos primero — son más fáciles de ganar sin reseñas todavía.</p></div>
+            </div>
+          </div>
+
+          <div class="platform">
+            <span class="rank-pill">#5</span>
+            <div class="platform-head">
+              <div class="platform-title"><div class="icon-badge small">F</div><h3>Freelancer.com</h3></div>
+              <a class="visit-btn" href="https://www.freelancer.com" target="_blank" rel="noopener">Visitar ↗</a>
+            </div>
+            <p class="what">Otro marketplace global grande, buena alternativa mientras esperás la aprobación de Upwork o si ese perfil no te aprueban a la primera.</p>
+            <div class="steps">
+              <div class="step"><p>Entrá al link y registrate como freelancer (gratis).</p></div>
+              <div class="step"><p>Hacé alguno de los tests de habilidades cortos que ofrece la plataforma — suman credibilidad a tu perfil.</p></div>
+              <div class="step"><p>Postulate a proyectos de las categorías "Automation" o "Web Scraping".</p></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section aria-labelledby="red-h">
+        <div class="section-header"><h2 id="red-h">Mensaje para tu red de contactos<span class="dot" aria-hidden="true"></span></h2></div>
+        <p class="section-intro">Un mensaje corto, sin venta directa, para activar referidos entre gente que ya te conoce.</p>
+        <div class="message-block">
+          <p class="text" id="text-red">Che, arranqué a ofrecer automatizaciones a medida (bots de WhatsApp, reportes automáticos, integraciones entre sistemas). Si conocés a alguien que le pueda servir, ¿le pasás mi contacto? Cualquier cosa te paso más detalles.</p>
+          <div class="actions">
+            <button class="copy-btn" data-target="text-red" type="button">Copiar mensaje</button>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="checklist-h">
+        <div class="section-header"><h2 id="checklist-h">Checklist — primera semana<span class="dot" aria-hidden="true"></span></h2></div>
+        <div class="checklist" id="checklist">
+          <div class="check-item">
+            <input type="checkbox" id="chk-1">
+            <label for="chk-1">Definir los paquetes con precio (ya está, arriba)</label>
+          </div>
+          <div class="check-item">
+            <input type="checkbox" id="chk-2">
+            <label for="chk-2">Armar perfil en Workana y/o Upwork</label>
+          </div>
+          <div class="check-item">
+            <input type="checkbox" id="chk-3">
+            <label for="chk-3">Mandar el mensaje a la red cercana</label>
+          </div>
+          <div class="check-item">
+            <input type="checkbox" id="chk-4">
+            <label for="chk-4">Sumarte a 3–4 grupos de PyMEs / emprendedores</label>
+          </div>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        Guardado localmente — editá este archivo cuando quieras ajustar precios o textos.
+      </footer>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var targetId = btn.getAttribute('data-target');
+      var source = document.getElementById(targetId);
+      var text = source.tagName === 'DIV' || source.tagName === 'P' ? source.textContent : source.value;
+      var done = function () {
+        var original = btn.textContent;
+        btn.textContent = 'Copiado ✓';
+        btn.setAttribute('data-copied', 'true');
+        setTimeout(function () {
+          btn.textContent = original;
+          btn.removeAttribute('data-copied');
+        }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () { fallbackCopy(text, done); });
+      } else {
+        fallbackCopy(text, done);
+      }
+    });
+  });
+
+  function fallbackCopy(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    done();
+  }
+
+  document.querySelectorAll('.checklist input[type="checkbox"]').forEach(function (cb) {
+    var key = 'kit-freelance-' + cb.id;
+    var saved = localStorage.getItem(key);
+    if (saved === 'true') {
+      cb.checked = true;
+      cb.closest('.check-item').classList.add('done');
+    }
+    cb.addEventListener('change', function () {
+      localStorage.setItem(key, cb.checked);
+      cb.closest('.check-item').classList.toggle('done', cb.checked);
+    });
+  });
+</script>
+</body>
+</html>

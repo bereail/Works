@@ -1,0 +1,26 @@
+ * Serving Flask app 'main'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5001
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 106-630-797
+127.0.0.1 - - [03/Aug/2026 11:09:47] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:09:55] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:10:15] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:10:15] "GET /static/chat.css HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:10:15] "GET /static/chat.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:10:16] "GET /historial/+54%209%2011%209984-3108 HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:10:16] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [03/Aug/2026 11:10:16] "GET /saludo/+54%209%2011%209984-3108 HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:10:44] "POST /mensaje HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:11:02] "POST /mensaje HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:11:04] "POST /mensaje HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:11:06] "POST /mensaje HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:11:08] "POST /mensaje HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:11:10] "POST /mensaje HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:11:12] "POST /mensaje HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:11:14] "POST /mensaje HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:11:55] "POST /mensaje HTTP/1.1" 200 -
+127.0.0.1 - - [03/Aug/2026 11:12:54] "GET / HTTP/1.1" 200 -
