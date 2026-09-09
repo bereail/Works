@@ -6,6 +6,16 @@ decisiones específicas de cada negocio viven en su propia memoria
 
 ---
 
+## 2026-09-09 — PC FIX: Instagram no se conecta vía API
+
+Berenice confirmó que **no quiere conectar Instagram a la Graph API de Meta**. El
+flujo querido es: el sistema genera el mismo contenido para ambas redes, pero se
+publica por separado — Facebook vía la automatización ya conectada (funcionando desde
+el 3-sep-2026), Instagram publicado a mano por ella. No volver a proponer conectar
+Instagram salvo que lo pida explícitamente. Detalle en `memoria/PC_FIX.md`.
+
+---
+
 ## 2026-09-09 — Auditoría y reorganización completa del repositorio
 
 Berenice pidió tratar `Works` como proyecto persistente compartido entre PC FIX y

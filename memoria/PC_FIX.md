@@ -40,9 +40,12 @@ no es un proyecto nuevo a arrancar de cero:
   expiración, scopes correctos), verificado con una llamada real de solo lectura a la
   Graph API. Ya publicó de verdad al menos una vez: publicación #29, 3-sep-2026,
   `id_publicacion_externa = 725615510632047_122200756442938008`.
-- **Instagram: todavía en modo simulado.** Falta cargar `access_token`/`id_externo`
-  en Configuración, y además falta `url_base_publica` (Instagram exige URL pública
-  para descargar el flyer, no acepta subida directa como Facebook).
+- **Instagram: todavía en modo simulado — y así se queda, a propósito.** Berenice
+  confirmó (2026-09-09) que **no quiere conectar Instagram vía API**. El flujo
+  querido es: se genera el mismo contenido para las dos redes, pero se publica por
+  separado en cada una — Facebook vía la automatización ya conectada, Instagram
+  publicado manualmente por ella. No proponer de nuevo conectar Instagram salvo que
+  ella lo pida.
 - El resto de publicaciones marcadas "publicado" en la base (17 de 18) son datos de
   prueba sembrados el 20-21 de agosto (`origen_datos='simulado'`), sin ID externo
   real — no confundir con actividad real.
@@ -55,9 +58,6 @@ no es un proyecto nuevo a arrancar de cero:
   de automatizarlo del todo.
 - Confirmar dirección de atención al público (Olive 1200 vs 1300 en Meta Business) —
   pendiente menor en `pc-fix/17-Backlog/IDEAS-PENDIENTES.md`.
-- Conectar Instagram de verdad: cargar `access_token`/`id_externo` en Configuración y
-  definir `url_base_publica` para que pueda publicar (hoy solo Facebook está
-  conectado).
 - Agregar tests para `meta_api.py` (ver debilidad detectada el 2026-09-09).
 - Contenido/borradores sueltos que vivían en la raíz de `Works` ahora están en
   `pc-fix/contenido/` — revisar si siguen vigentes o ya se publicaron.
