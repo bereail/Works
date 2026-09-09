@@ -51,14 +51,22 @@ no es un proyecto nuevo a arrancar de cero:
 - El resto de publicaciones marcadas "publicado" en la base (17 de 18) son datos de
   prueba sembrados el 20-21 de agosto (`origen_datos='simulado'`), sin ID externo
   real — no confundir con actividad real.
-- **Sin tests automatizados** para `meta_api.py` ni para el flujo de publicación real
-  (`pc-fix/tests/` no existe). Prioridad media: agregar al menos un test con la
-  llamada HTTP mockeada.
+- **Tests agregados el 2026-09-09** (`pc-fix/tests/test_meta_api.py`,
+  `test_publicar_de_verdad.py`): 14 tests, cubren `publicar_en_facebook`/
+  `publicar_en_instagram` (éxito y error de Meta, HTTP mockeado) y toda la lógica de
+  bloqueo de `_publicar_de_verdad` (sin cuenta conectada, sin flyer, archivo
+  faltante, falta URL pública de Instagram, camino feliz, error de Meta → estado
+  `error`). Ninguno sale a internet. Correr con
+  `pc-fix/venv/Scripts/python.exe -m pytest tests/` desde `pc-fix/`.
 
 ## Pendientes / próximos pasos
-- Agregar tests para `meta_api.py` (ver debilidad detectada el 2026-09-09).
 - Contenido/borradores sueltos que vivían en la raíz de `Works` ahora están en
   `pc-fix/contenido/` — revisar si siguen vigentes o ya se publicaron.
+
+## Nota técnica
+`pc-fix/venv/` hay que recrearlo si no existe (no se versiona): `python -m venv
+pc-fix/venv` y después `pc-fix/venv/Scripts/python.exe -m pip install -r
+pc-fix/requirements.txt pytest`.
 
 ## Bloqueos activos
 Ninguno crítico.
