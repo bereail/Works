@@ -33,18 +33,32 @@ no es un proyecto nuevo a arrancar de cero:
   estado `previsualizado`, un solo click para confirmar.
 - Diseño de 3 agentes (Atención / Contenido / Análisis) en
   `pc-fix/13-IA/AGENTES-DE-IA.md` — el de Contenido nunca publica solo.
-- **En curso al 2026-09-09** (trabajo sin commitear rescatado en la reorganización del
-  repo): integración con Meta API (`app/services/meta_api.py`, migraciones alembic
-  para credenciales de cuentas) — falta confirmar si ya está conectada de verdad o
-  solo el scaffolding.
+
+### Integración con Meta API — verificada el 2026-09-09
+
+- **Facebook: conectada de verdad y funcionando.** Token de página válido (sin
+  expiración, scopes correctos), verificado con una llamada real de solo lectura a la
+  Graph API. Ya publicó de verdad al menos una vez: publicación #29, 3-sep-2026,
+  `id_publicacion_externa = 725615510632047_122200756442938008`.
+- **Instagram: todavía en modo simulado.** Falta cargar `access_token`/`id_externo`
+  en Configuración, y además falta `url_base_publica` (Instagram exige URL pública
+  para descargar el flyer, no acepta subida directa como Facebook).
+- El resto de publicaciones marcadas "publicado" en la base (17 de 18) son datos de
+  prueba sembrados el 20-21 de agosto (`origen_datos='simulado'`), sin ID externo
+  real — no confundir con actividad real.
+- **Sin tests automatizados** para `meta_api.py` ni para el flujo de publicación real
+  (`pc-fix/tests/` no existe). Prioridad media: agregar al menos un test con la
+  llamada HTTP mockeada.
 
 ## Pendientes / próximos pasos
 - Etapa 5 (procedimientos operativos): documentar el flujo recepción → entrega antes
   de automatizarlo del todo.
 - Confirmar dirección de atención al público (Olive 1200 vs 1300 en Meta Business) —
   pendiente menor en `pc-fix/17-Backlog/IDEAS-PENDIENTES.md`.
-- Confirmar estado real de la integración Meta API (recién rescatada del trabajo sin
-  commitear, no verificada en esta sesión).
+- Conectar Instagram de verdad: cargar `access_token`/`id_externo` en Configuración y
+  definir `url_base_publica` para que pueda publicar (hoy solo Facebook está
+  conectado).
+- Agregar tests para `meta_api.py` (ver debilidad detectada el 2026-09-09).
 - Contenido/borradores sueltos que vivían en la raíz de `Works` ahora están en
   `pc-fix/contenido/` — revisar si siguen vigentes o ya se publicaron.
 
