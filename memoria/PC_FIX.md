@@ -22,8 +22,9 @@ rápido — no duplicar acá el detalle, actualizarlo ahí y linkearlo.
 ## Decisiones de infraestructura ya resueltas (5 ago 2026)
 1-5 hs/semana disponibles · dominio `ailonline.com.ar/pcfix` · hosting en PC propia ·
 WhatsApp con Evolution API self-hosted · sin monotributo todavía (números internos,
-no oficiales) · $0 de presupuesto de ads · atención en punto fijo (Olive 1200,
-Rosario — *pendiente confirmar si coincide con Meta Business*). Detalle:
+no oficiales) · $0 de presupuesto de ads · atención en punto fijo, dirección
+confirmada **Olive 1200, Rosario** (no está cargada en Meta Business todavía — en
+pausa a pedido de Berenice, ver `pc-fix/17-Backlog/IDEAS-PENDIENTES.md`). Detalle:
 `pc-fix/00-Estrategia/DECISIONES-PENDIENTES.md`.
 
 ## El sistema de automatización de contenido — YA EXISTE
@@ -55,8 +56,6 @@ no es un proyecto nuevo a arrancar de cero:
   llamada HTTP mockeada.
 
 ## Pendientes / próximos pasos
-- Confirmar dirección de atención al público (Olive 1200 vs 1300 en Meta Business) —
-  pendiente menor en `pc-fix/17-Backlog/IDEAS-PENDIENTES.md`.
 - Agregar tests para `meta_api.py` (ver debilidad detectada el 2026-09-09).
 - Contenido/borradores sueltos que vivían en la raíz de `Works` ahora están en
   `pc-fix/contenido/` — revisar si siguen vigentes o ya se publicaron.

@@ -11,4 +11,4 @@
 
 ## Pendiente menor de Decisiones
 
-- ~~Confirmar si el punto fijo de retiro/entrega (decisión #7) es la misma dirección ya cargada en Meta Business (Olive 1300, Barrio Arroyito) u otra~~ — **verificado el 2026-09-09 vía Graph API: Meta Business no tenía ninguna dirección cargada** (ni la 1200 ni la 1300, todos los campos de `location` vacíos). Berenice confirmó que la correcta es **Olive 1200**. Falta cargarla: el token conectado no tiene el permiso `pages_manage_metadata` necesario para escribir ese campo — pendiente regenerar el token con ese scope, o cargarla manualmente desde Meta Business Suite.
+- ~~Confirmar si el punto fijo de retiro/entrega (decisión #7) es la misma dirección ya cargada en Meta Business (Olive 1300, Barrio Arroyito) u otra~~ — **verificado el 2026-09-09 vía Graph API: Meta Business no tenía ninguna dirección cargada** (ni la 1200 ni la 1300, todos los campos de `location` vacíos). Berenice confirmó que la correcta es **Olive 1200**. Cargarla por API requiere el permiso `pages_manage_metadata`, que el token actual no tiene. **En pausa a pedido de Berenice (2026-09-09)** — no es prioridad ahora, no retomar salvo que ella lo pida.
