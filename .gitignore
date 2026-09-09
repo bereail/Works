@@ -1,0 +1,15 @@
+# Entornos y dependencias
+venv/
+__pycache__/
+*.pyc
+node_modules/
+
+# Datos y estado local (no es código, es lo que generan las apps al correr)
+*.db
+*.sqlite3
+.env
+.clave_sesion
+
+# Logs y cachés
+*.log
+.pytest_cache/
