@@ -4,6 +4,20 @@ Leer este archivo primero al empezar cualquier sesión. Después, solo los archi
 puntuales que hagan falta (`memoria/PC_FIX.md` o `memoria/FREELANCE.md` según el
 contexto activado).
 
+## El objetivo de fondo de todo este repo (aclarado por Berenice, 2026-09-11)
+
+Todo `Works` existe para **generar ingresos**, y eso se divide en tres patas que no
+se mezclan entre sí:
+1. **PC FIX** (`pc-fix/`) — servicio técnico de PCs en Rosario.
+2. **Buscar trabajo como programadora** (`freelancer/app/`) — empleo en relación de
+   dependencia o part-time remoto, vía la ingesta automática de ofertas.
+3. **Trabajos freelance** (`freelancer/clientes-freelance/`) — conseguir clientes
+   que paguen por un servicio de desarrollo puntual (bugs, mantenimiento, mejoras).
+
+2 y 3 viven las dos dentro de la carpeta `freelancer/`, pero son objetivos distintos
+(que la contraten vs. que le paguen un trabajo chico) — separadas en carpetas
+distintas a propósito para no mezclarlas.
+
 **Última actualización:** 2026-09-11
 
 ## Área activa
@@ -27,8 +41,12 @@ construir. Detalle: `memoria/PC_FIX.md`.
 
 ## Estado de FREELANCE
 Perfil, LinkedIn y GitHub ya optimizados (Fases 0-1). Ingesta automática de ofertas
-de 4 fuentes públicas ya funcionando (Fase 2b, terminada hoy mismo). Matching Engine
-real (Fase 3) todavía no arrancó. Detalle: `memoria/FREELANCE.md`.
+de 4 fuentes públicas ya funcionando y corregida para detectar freelance/part-time
+(Fase 2b). Matching Engine real (Fase 3) todavía no arrancó. **Nuevo (2026-09-11):**
+sprint de captación de clientes freelance pagos (ARS 100k-300k en 48hs) — estrategia,
+paquetes con precio y textos de contacto ya armados en
+`freelancer/clientes-freelance/`, ejecución (mandar los mensajes) en manos de
+Berenice. Detalle: `memoria/FREELANCE.md`.
 
 ## Últimas decisiones (ver `historial/decisiones.md` para el detalle completo)
 - **2026-09-11 (más reciente):** revisando publicaciones generadas en vivo, Berenice
@@ -50,6 +68,10 @@ real (Fase 3) todavía no arrancó. Detalle: `memoria/FREELANCE.md`.
   sincronizar todo entre las dos computadoras.
 
 ## Tareas pendientes / próximos pasos
+- **FREELANCE, urgente (48hs desde 2026-09-11):** Berenice tiene que efectivamente
+  mandar los mensajes de `freelancer/clientes-freelance/mensajes-contacto.md` — el
+  material está listo, falta la ejecución humana (WhatsApp/Instagram/LinkedIn/
+  Workana no son canales donde Claude pueda mandar mensajes en su nombre).
 - **PC FIX, prioridad alta:** construir la publicación real de Instagram vía
   automatización de navegador para el botón "Publicar" — decisión ya tomada, hacerlo
   con Berenice presente (primer login/posteo real). Ver `memoria/PC_FIX.md` y memoria
