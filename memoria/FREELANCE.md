@@ -4,6 +4,23 @@ Fuente de verdad completa: `freelancer/FREELANCER_MASTER_CONTEXT.md` — no dupl
 acá el detalle, actualizarlo ahí y linkearlo. Este archivo es solo el resumen para
 arrancar rápido.
 
+## 🔴 PRIORIDAD ACTIVA: sprint de 48hs para conseguir dinero YA (desde 2026-09-11)
+
+Berenice pausó esta sesión en medio del sprint — **al retomar FREELANCE, empezar
+acá, no desde cero.** Objetivo: al menos un cliente pago (ARS 100.000-300.000) lo
+antes posible. No es estrategia de marca a largo plazo — es conseguir plata ahora.
+Detalle completo del estado y los próximos 4 pasos exactos en la memoria global de
+Claude (`freelance_sprint_generar_dinero.md`) y en
+`freelancer/clientes-freelance/oportunidades-hoy.md`. Resumen:
+- Ya armado y listo: oferta, 3 paquetes con precio, mensajes por canal, y 2
+  propuestas concretas para avisos reales de Workana — **verificar primero si ya
+  las mandó** antes de buscar algo nuevo.
+- Workana y el directorio "Guía Comercial Rosario" ya se revisaron a fondo el
+  2026-09-11 — no repetir esas búsquedas de entrada.
+- El cuello de botella es ejecución, no investigación. El próximo canal a trabajar
+  es su red personal (pedir referidos a 5-10 contactos) — no requiere más
+  investigación, solo armar la lista con ella y el mensaje.
+
 ## Dos patas distintas dentro de FREELANCE — no mezclar (aclarado 2026-09-11)
 
 Berenice separó explícitamente el objetivo de "conseguir ingresos" en tres negocios

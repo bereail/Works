@@ -40,13 +40,19 @@ automatización de navegador (un solo click real de su lado) — es el próximo 
 construir. Detalle: `memoria/PC_FIX.md`.
 
 ## Estado de FREELANCE
-Perfil, LinkedIn y GitHub ya optimizados (Fases 0-1). Ingesta automática de ofertas
-de 4 fuentes públicas ya funcionando y corregida para detectar freelance/part-time
-(Fase 2b). Matching Engine real (Fase 3) todavía no arrancó. **Nuevo (2026-09-11):**
-sprint de captación de clientes freelance pagos (ARS 100k-300k en 48hs) — estrategia,
-paquetes con precio y textos de contacto ya armados en
-`freelancer/clientes-freelance/`, ejecución (mandar los mensajes) en manos de
-Berenice. Detalle: `memoria/FREELANCE.md`.
+🔴 **Sesión pausada en medio de un sprint activo de 48hs — al retomar, leer
+`memoria/FREELANCE.md` primero, empieza con un checkpoint marcado 🔴.** Prioridad
+de Berenice: conseguir un cliente pago (ARS 100k-300k) lo antes posible, no
+estrategia a largo plazo. Ya está todo armado (oferta, paquetes, mensajes, 2
+propuestas concretas para avisos reales de Workana) en
+`freelancer/clientes-freelance/` — falta que Berenice ejecute (mandar los
+mensajes) y, después, armar con ella la lista de contactos personales para pedir
+referidos. No volver a investigar ni armar estrategia desde cero.
+
+Aparte de este sprint: Perfil, LinkedIn y GitHub ya optimizados (Fases 0-1).
+Ingesta automática de ofertas de 4 fuentes públicas ya funcionando y corregida
+para detectar freelance/part-time (Fase 2b). Matching Engine real (Fase 3)
+todavía no arrancó. Detalle: `memoria/FREELANCE.md`.
 
 ## Últimas decisiones (ver `historial/decisiones.md` para el detalle completo)
 - **2026-09-11 (más reciente):** revisando publicaciones generadas en vivo, Berenice
@@ -68,10 +74,14 @@ Berenice. Detalle: `memoria/FREELANCE.md`.
   sincronizar todo entre las dos computadoras.
 
 ## Tareas pendientes / próximos pasos
-- **FREELANCE, urgente (48hs desde 2026-09-11):** Berenice tiene que efectivamente
-  mandar los mensajes de `freelancer/clientes-freelance/mensajes-contacto.md` — el
-  material está listo, falta la ejecución humana (WhatsApp/Instagram/LinkedIn/
-  Workana no son canales donde Claude pueda mandar mensajes en su nombre).
+- **FREELANCE, urgente y primer paso al retomar:** verificar si Berenice ya mandó
+  las 2 propuestas de Workana en `freelancer/clientes-freelance/oportunidades-hoy.md`
+  (Claude no puede mandarlas — necesita su sesión logueada). Si no, es lo primero.
+  Después: armar con ella la lista priorizada de 5-10 contactos personales para
+  pedir referidos (ella aporta los nombres, no inventar ni usar contactos de PC
+  FIX) y el mensaje de WhatsApp correspondiente. Detalle completo en
+  `memoria/FREELANCE.md` y memoria global de Claude
+  (`freelance_sprint_generar_dinero`).
 - **PC FIX, prioridad alta:** construir la publicación real de Instagram vía
   automatización de navegador para el botón "Publicar" — decisión ya tomada, hacerlo
   con Berenice presente (primer login/posteo real). Ver `memoria/PC_FIX.md` y memoria
