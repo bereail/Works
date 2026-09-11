@@ -27,6 +27,25 @@ FIX) > instituciones > subcontratos. Mercado local/español, inglés técnico b�
 no priorizar plataformas internacionales todavía. Precio orientativo: USD 15-25/hora
 para arrancar. Detalle completo en el master context, sección "Oferta de servicios".
 
+**Alcance aclarado el 2026-09-11 — no olvidar:** lo que le sirve no es solo proyecto
+freelance puntual — **también empleo part-time remoto** cuenta como oportunidad
+válida. Full-time fijo/presencial no. Al filtrar o puntuar ofertas (`relevancia.py`,
+futura Fase 3), no descartar algo solo por venir etiquetado
+`empleo_relacion_dependencia` — revisar si es part-time/flexible antes de asumir que
+no calza. Detalle en la memoria global de Claude (`freelance_alcance_busqueda.md`).
+
+**Ingesta automática mejorada el 2026-09-11:** al revisar la bandeja con Berenice se
+detectó que **ninguna de las 46 ofertas ingeridas era freelance/part-time** — no
+porque no existieran, sino porque el código no leía el dato. Get on Board expone un
+campo `modality` (Full time/Part time/Freelance/Internship) sin usar; Remote OK trae
+tags sueltos ("part time", "contract") también sin usar. Se corrigió:
+`fuentes/getonbrd.py` y `fuentes/remoteok.py` ahora resuelven ese dato y marcan
+`tipo="proyecto_freelance"`; `relevancia.py` suma 20 puntos cuando ese tipo viene
+confirmado por la fuente (antes solo detectaba la palabra suelta en el texto libre).
+Verificado contra la API real: ~10% de los avisos de programming de Get on Board son
+Part time/Freelance. 7 tests nuevos (65 en total). No hizo falta sumar ninguna fuente
+externa nueva — el dato ya estaba en las 4 conectadas, solo faltaba leerlo.
+
 ## Pendientes / próximos pasos
 - Definir y arrancar Fase 3 (Matching Engine) — hoy el filtro de relevancia de la
   Fase 2b es un adelanto mínimo (palabras clave), no el motor completo.

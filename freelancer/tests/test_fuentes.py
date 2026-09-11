@@ -31,6 +31,16 @@ class TestRemoteOk:
         monkeypatch.setattr(remoteok, "pedir_json", lambda *a, **k: [{"id": "1", "position": "Dev"}])
         assert remoteok.obtener()[0].salario == ""
 
+    def test_un_tag_de_part_time_se_marca_como_proyecto_freelance(self, monkeypatch):
+        respuesta = [{"id": "1", "position": "Dev", "tags": ["python", "Part Time"]}]
+        monkeypatch.setattr(remoteok, "pedir_json", lambda *a, **k: respuesta)
+        assert remoteok.obtener()[0].tipo == "proyecto_freelance"
+
+    def test_sin_tag_de_contrato_queda_como_relacion_de_dependencia(self, monkeypatch):
+        respuesta = [{"id": "1", "position": "Dev", "tags": ["python", "senior"]}]
+        monkeypatch.setattr(remoteok, "pedir_json", lambda *a, **k: respuesta)
+        assert remoteok.obtener()[0].tipo == "empleo_relacion_dependencia"
+
 
 class TestRemotive:
     def test_mapea_el_aviso(self, monkeypatch):
@@ -96,6 +106,29 @@ class TestGetOnBoard:
         monkeypatch.setattr(getonbrd, "pedir_json", contar)
         getonbrd.obtener()
         assert len(llamadas) == 1
+
+    def test_modalidad_freelance_se_marca_como_proyecto_freelance(self, monkeypatch):
+        respuesta = self._respuesta(modality={"data": {"id": 3, "type": "modality"}})
+        monkeypatch.setattr(getonbrd, "pedir_json", lambda *a, **k: respuesta)
+
+        oferta = getonbrd.obtener()[0]
+        assert oferta.tipo == "proyecto_freelance"
+        assert "Freelance" in oferta.etiquetas
+
+    def test_modalidad_part_time_tambien_se_marca_como_proyecto_freelance(self, monkeypatch):
+        respuesta = self._respuesta(modality={"data": {"id": 2, "type": "modality"}})
+        monkeypatch.setattr(getonbrd, "pedir_json", lambda *a, **k: respuesta)
+        assert getonbrd.obtener()[0].tipo == "proyecto_freelance"
+
+    def test_modalidad_full_time_queda_como_relacion_de_dependencia(self, monkeypatch):
+        respuesta = self._respuesta(modality={"data": {"id": 1, "type": "modality"}})
+        monkeypatch.setattr(getonbrd, "pedir_json", lambda *a, **k: respuesta)
+        assert getonbrd.obtener()[0].tipo == "empleo_relacion_dependencia"
+
+    def test_sin_modalidad_no_rompe_y_queda_como_relacion_de_dependencia(self, monkeypatch):
+        respuesta = self._respuesta()  # sin "modality" en los atributos
+        monkeypatch.setattr(getonbrd, "pedir_json", lambda *a, **k: respuesta)
+        assert getonbrd.obtener()[0].tipo == "empleo_relacion_dependencia"
 
 
 class TestWeWorkRemotely:

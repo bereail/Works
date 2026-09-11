@@ -176,6 +176,12 @@ def calcular_puntaje(oferta: OfertaExterna, fuente: str = "") -> int:
             if contiene(termino, texto):
                 puntaje += peso
 
+    # Señal estructurada (no depende de que la palabra aparezca en el texto libre):
+    # algunas fuentes exponen el tipo de contrato en su propio campo de datos, ya
+    # resuelto en app/services/fuentes/*.py — más confiable que buscar palabras.
+    if oferta.tipo == "proyecto_freelance":
+        puntaje += 20
+
     for termino, penalidad in SENIORITY_ALTA.items():
         if contiene(termino, titulo):
             puntaje -= penalidad

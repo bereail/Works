@@ -14,6 +14,10 @@ HORAS_ENTRE_CONSULTAS = 6
 
 URL_API = "https://remoteok.com/api"
 
+# Remote OK no tiene un campo de tipo de contrato separado — a veces lo delata un
+# tag suelto entre los que ya trae el aviso ("part time", "contract", etc).
+TAGS_FREELANCE = {"part time", "part-time", "freelance", "contract", "contractor"}
+
 
 def obtener() -> list[OfertaExterna]:
     datos = pedir_json(URL_API)
@@ -27,6 +31,7 @@ def obtener() -> list[OfertaExterna]:
         etiquetas = aviso.get("tags") or []
         if isinstance(etiquetas, str):
             etiquetas = [etiquetas]
+        etiquetas = [str(e) for e in etiquetas]
 
         ofertas.append(OfertaExterna(
             id_externo=str(aviso["id"]),
@@ -36,10 +41,15 @@ def obtener() -> list[OfertaExterna]:
             descripcion=limpiar_html(aviso.get("description") or ""),
             ubicacion=aviso.get("location") or "Remoto",
             salario=_armar_salario(aviso),
-            etiquetas=[str(e) for e in etiquetas],
+            etiquetas=etiquetas,
             fecha_publicacion=fecha_desde_epoch(aviso.get("epoch")),
+            tipo="proyecto_freelance" if _es_freelance(etiquetas) else "empleo_relacion_dependencia",
         ))
     return ofertas
+
+
+def _es_freelance(etiquetas: list[str]) -> bool:
+    return any(etiqueta.strip().lower() in TAGS_FREELANCE for etiqueta in etiquetas)
 
 
 def _armar_salario(aviso: dict) -> str:

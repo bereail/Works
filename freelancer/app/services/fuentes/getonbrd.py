@@ -16,6 +16,11 @@ CATEGORIAS = ["programming"]
 AVISOS_POR_PAGINA = 50
 PAGINAS = 2
 
+# Catálogo fijo de https://www.getonbrd.com/api/v0/modalities (son 4, no cambian
+# seguido — no vale la pena una consulta extra por cada aviso para resolverlo).
+NOMBRES_MODALIDAD = {1: "Full time", 2: "Part time", 3: "Freelance", 4: "Internship"}
+MODALIDADES_FREELANCE = {2, 3}  # Part time y Freelance — lo que le sirve a Berenice además de full-time
+
 
 def obtener() -> list[OfertaExterna]:
     ofertas = []
@@ -36,6 +41,8 @@ def _convertir(aviso: dict) -> OfertaExterna:
     atributos = aviso.get("attributes", {})
     identificador = str(aviso.get("id", ""))
 
+    modalidad_id = _modalidad_id(atributos)
+
     return OfertaExterna(
         id_externo=identificador,
         titulo=atributos.get("title") or "",
@@ -44,9 +51,19 @@ def _convertir(aviso: dict) -> OfertaExterna:
         descripcion=limpiar_html(atributos.get("description") or ""),
         ubicacion=_armar_ubicacion(atributos),
         salario=_armar_salario(atributos),
-        etiquetas=_armar_etiquetas(atributos),
+        etiquetas=_armar_etiquetas(atributos, modalidad_id),
         fecha_publicacion=fecha_desde_epoch(atributos.get("published_at")),
+        tipo="proyecto_freelance" if modalidad_id in MODALIDADES_FREELANCE else "empleo_relacion_dependencia",
     )
+
+
+def _modalidad_id(atributos: dict) -> int | None:
+    """Get on Board expone la modalidad de contrato (Full time/Part time/Freelance/
+    Internship) como relación JSON:API — acá solo hace falta el id, no expandirla."""
+    try:
+        return int(((atributos.get("modality") or {}).get("data") or {}).get("id"))
+    except (TypeError, ValueError):
+        return None
 
 
 def _nombre_empresa(atributos: dict) -> str:
@@ -75,12 +92,15 @@ def _armar_salario(atributos: dict) -> str:
         return ""
 
 
-def _armar_etiquetas(atributos: dict) -> list[str]:
+def _armar_etiquetas(atributos: dict, modalidad_id: int | None) -> list[str]:
     etiquetas = []
     if atributos.get("category_name"):
         etiquetas.append(str(atributos["category_name"]))
     if atributos.get("remote_modality") == "fully_remote":
         etiquetas.append("remote")
+    nombre_modalidad = NOMBRES_MODALIDAD.get(modalidad_id)
+    if nombre_modalidad:
+        etiquetas.append(nombre_modalidad)
     for beneficio in (atributos.get("perks") or [])[:4]:
         etiquetas.append(str(beneficio).replace("_", " "))
     return etiquetas

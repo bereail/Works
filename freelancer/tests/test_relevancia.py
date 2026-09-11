@@ -6,7 +6,7 @@ from app.services import relevancia
 from app.services.fuentes.base import OfertaExterna
 
 
-def oferta(titulo, descripcion="", etiquetas=None, ubicacion="", empresa=""):
+def oferta(titulo, descripcion="", etiquetas=None, ubicacion="", empresa="", tipo="empleo_relacion_dependencia"):
     return OfertaExterna(
         id_externo="1",
         titulo=titulo,
@@ -14,6 +14,7 @@ def oferta(titulo, descripcion="", etiquetas=None, ubicacion="", empresa=""):
         descripcion=descripcion,
         ubicacion=ubicacion,
         etiquetas=etiquetas or [],
+        tipo=tipo,
     )
 
 
@@ -53,6 +54,13 @@ class TestPuntaje:
         completo = relevancia.calcular_puntaje(oferta("Django Developer full time"))
         parcial = relevancia.calcular_puntaje(oferta("Django Developer part-time"))
         assert parcial > completo
+
+    def test_el_tipo_freelance_estructurado_suma_aunque_no_lo_diga_el_texto(self):
+        """Algunas fuentes (Get on Board, Remote OK) resuelven el tipo de contrato
+        desde su propio dato, sin que la palabra aparezca en el título/descripción."""
+        sin_marcar = relevancia.calcular_puntaje(oferta("Django Developer"))
+        marcado = relevancia.calcular_puntaje(oferta("Django Developer", tipo="proyecto_freelance"))
+        assert marcado > sin_marcar
 
     def test_latam_suma_frente_al_mercado_en_ingles(self):
         argentina = relevancia.calcular_puntaje(oferta("Django Developer", ubicacion="Argentina"))
