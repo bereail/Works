@@ -62,6 +62,22 @@ class TestPuntaje:
         marcado = relevancia.calcular_puntaje(oferta("Django Developer", tipo="proyecto_freelance"))
         assert marcado > sin_marcar
 
+    def test_ser_freelance_no_alcanza_para_colar_un_rol_ajeno(self):
+        """Bug real detectado el 2026-09-11: un puesto de atención al cliente
+        part-time terminaba en la bandeja solo porque el bonus de freelance tapaba
+        la penalidad de rol ajeno. Rol o stack ajeno tienen que ser un descarte
+        efectivo, sea o no freelance."""
+        puntaje = relevancia.calcular_puntaje(
+            oferta("Customer Service Representative", etiquetas=["part time", "customer support"], tipo="proyecto_freelance")
+        )
+        assert puntaje < relevancia.PUNTAJE_MINIMO
+
+    def test_ser_freelance_no_alcanza_para_colar_un_stack_ajeno(self):
+        puntaje = relevancia.calcular_puntaje(
+            oferta("Consultor SAP Fi Power", ubicacion="Chile", tipo="proyecto_freelance")
+        )
+        assert puntaje < relevancia.PUNTAJE_MINIMO
+
     def test_latam_suma_frente_al_mercado_en_ingles(self):
         argentina = relevancia.calcular_puntaje(oferta("Django Developer", ubicacion="Argentina"))
         sin_ubicacion = relevancia.calcular_puntaje(oferta("Django Developer"))

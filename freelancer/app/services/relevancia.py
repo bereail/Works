@@ -176,11 +176,13 @@ def calcular_puntaje(oferta: OfertaExterna, fuente: str = "") -> int:
             if contiene(termino, texto):
                 puntaje += peso
 
-    # Señal estructurada (no depende de que la palabra aparezca en el texto libre):
-    # algunas fuentes exponen el tipo de contrato en su propio campo de datos, ya
-    # resuelto en app/services/fuentes/*.py — más confiable que buscar palabras.
+    # Señal estructurada extra, pequeña a propósito: algunas fuentes (Get on Board,
+    # Remote OK) ya escriben la palabra "Freelance"/"Part time" en las etiquetas, así
+    # que MODALIDAD_COMPATIBLE arriba ya la suma — esto es solo un empujón para el
+    # caso en que la fuente lo sepa (Remotive) pero no quede como palabra suelta en
+    # ningún lado. Si fuera tan alto como esa tabla, terminaba pesando el doble.
     if oferta.tipo == "proyecto_freelance":
-        puntaje += 20
+        puntaje += 8
 
     for termino, penalidad in SENIORITY_ALTA.items():
         if contiene(termino, titulo):
@@ -188,13 +190,19 @@ def calcular_puntaje(oferta: OfertaExterna, fuente: str = "") -> int:
 
     # El stack y el rol ajenos se miran también en las etiquetas: un aviso de
     # marketing puede tener un título neutro ("Social Comms") y delatarse ahí.
+    # Se tratan como descarte efectivo (ver el cap más abajo) — que sea freelance o
+    # part-time no alcanza para colar un puesto de SAP, ventas o atención al cliente.
+    hay_stack_ajeno = False
     for termino, penalidad in STACK_AJENO.items():
         if contiene(termino, encabezado):
             puntaje -= penalidad
+            hay_stack_ajeno = True
 
+    hay_rol_ajeno = False
     for termino, penalidad in ROLES_AJENOS.items():
         if contiene(termino, encabezado):
             puntaje -= penalidad
+            hay_rol_ajeno = True
 
     if _es_frontend_puro(encabezado):
         puntaje -= 10
@@ -202,7 +210,10 @@ def calcular_puntaje(oferta: OfertaExterna, fuente: str = "") -> int:
     if fuente in FUENTES_INTERNACIONALES:
         puntaje -= 5
 
-    return max(0, min(100, puntaje))
+    puntaje = max(0, min(100, puntaje))
+    if hay_stack_ajeno or hay_rol_ajeno:
+        puntaje = min(puntaje, PUNTAJE_MINIMO - 1)
+    return puntaje
 
 
 def _es_frontend_puro(encabezado: str) -> bool:
