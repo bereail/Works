@@ -126,3 +126,69 @@ red) en cada corrida.
 sistema solo compone flyers estáticos vía plantilla HTML/Playwright, no genera video;
 quedaría como una automatización nueva y más cara de construir, no una mejora al
 generador actual.
+
+---
+
+## 2026-09-11 — PC FIX: el botón "Publicar" de Instagram debe publicar de verdad vía navegador, no ser un kit manual
+
+Al mostrarle a Berenice las publicaciones generadas el mismo día, preguntó por qué el
+botón de Instagram no publicaba de verdad. Aclaración importante sobre la decisión
+del 2026-09-09: **no querer conectar Instagram por la API oficial de Meta no
+significaba querer publicar a mano** — Berenice pidió explícitamente que el botón
+"Publicar" automatice el navegador (Chrome, usando su sesión de Instagram ya
+logueada, sin que el sistema toque su contraseña en ningún momento) para publicar la
+imagen y el texto de verdad, y que **el único click manual de su lado sea ese botón**
+— nada de copiar texto o subir la imagen a mano en Instagram.
+
+Se le explicó el riesgo antes de construirlo: Instagram no ofrece esto como función
+soportada, y las cuentas que publican vía automatización de navegador (en vez de la
+app o la API oficial) pueden ser detectadas y restringidas. Berenice lo tomó en
+cuenta y sostuvo la decisión — no volver a preguntarle, solo documentarle el riesgo
+la primera vez que se implemente de verdad.
+
+**Qué se implementó ya (2026-09-11), como paso intermedio:** el kit de "copiar texto +
+hashtags" / "descargar imagen" en la previsualización (ver entrada anterior de este
+mismo día). Sigue siendo útil como respaldo manual, pero **no es el diseño final** del
+botón "Publicar" de Instagram.
+
+**Qué falta:** construir el flujo de automatización de navegador (subir imagen a
+Instagram, pegar el texto, click en "Compartir") disparado por el botón "Publicar" de
+PCfix, con confirmación de Berenice en el momento antes del click final en Instagram
+(por ser una acción pública e irreversible en una red real). Guardado también en la
+memoria global de Claude (`pcfix_boton_publicar_instagram.md`) para que no se pierda
+entre sesiones ni se vuelva a preguntar si quiere este enfoque.
+
+**De paso, ajuste de voz de marca:** Berenice corrigió "no digas 'en criollo', queda
+mal" sobre el copy generado — se sacó esa frase de `generador_copy.py` (quedan
+variantes tipo "en palabras simples"). También pidió contenido con info real ("algún
+tip", ejemplo "que anda lenta") en vez de copy promocional genérico — se agregó
+`PLANTILLAS_TIP_CRITERIO_TECNICO` con tips reales (SSD vs. procesador, mito del
+formateo, etc.) para el pilar "criterio_tecnico". Guardado en la memoria global de
+Claude (`pcfix_voz_de_marca_copy.md`).
+
+---
+
+## 2026-09-11 — Accesos directos del escritorio rotos desde la reorganización del 09-sep
+
+Berenice pidió un ícono de escritorio para PC FIX (de un solo click, junto al de
+Freelancer) y avisó que no lo encontraba. Both `PCfix Automation Center.lnk` y
+`Buscador de Trabajo (Freelancer).lnk` **ya existían en el escritorio**, pero
+apuntaban a la ruta vieja de antes del aplanamiento del 2026-09-09
+(`...\GIT\work\PCFIX\` y `...\GIT\work\Freelancer\`, con minúscula y sin el `Works\`
+intermedio) — carpetas que ya no existen. Nadie los había actualizado al mover
+`pc-fix/` y `freelancer/` a `Works/`.
+
+**Arreglado:** los dos accesos directos ahora apuntan a
+`Works\pc-fix\iniciar_silencioso.vbs` y `Works\freelancer\iniciar_silencioso.vbs`
+respectivamente (mismo patrón de lanzador silencioso que Freelancer ya tenía: si el
+servidor no está corriendo lo levanta oculto, espera a que responda, y recién ahí
+abre el navegador — un solo click, sin ventana de consola). A PC FIX le faltaba ese
+lanzador silencioso (solo tenía `iniciar.bat`, que muestra consola y abre el
+navegador antes de que el servidor esté listo) — se creó `iniciar_oculto.bat` +
+`iniciar_silencioso.vbs` calcados del patrón de Freelancer, puerto 8001, healthcheck
+contra `/inicio`.
+
+**De paso:** el `venv` de `freelancer/` no existía (no se versiona) — se recreó e
+instalaron las dependencias de `requirements.txt`, si no el ícono nunca iba a
+levantar el servidor. Los dos accesos directos se probaron de verdad (un click cada
+uno) y ambos levantaron el servidor y abrieron el navegador correctamente.

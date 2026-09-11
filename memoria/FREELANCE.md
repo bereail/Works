@@ -37,6 +37,12 @@ para arrancar. Detalle completo en el master context, sección "Oferta de servic
   marcada como histórico — sigue teniendo valor como respaldo de evidencia para el
   CV, no como memoria activa.
 
+## Nota técnica
+`freelancer/venv/` hay que recrearlo si no existe (no se versiona) — se recreó el
+2026-09-11 porque el acceso directo del escritorio no arrancaba el servidor sin él:
+`python -m venv freelancer/venv` y después `freelancer/venv/Scripts/python.exe -m
+pip install -r freelancer/requirements.txt`.
+
 ## Bloqueos activos
 Ninguno crítico. Pendientes menores sin bloquear nada: foto de perfil de Workana (a
 la espera de que Berenice la traiga), verificación de identidad de LinkedIn (requiere

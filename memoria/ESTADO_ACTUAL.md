@@ -7,17 +7,23 @@ contexto activado).
 **Última actualización:** 2026-09-11
 
 ## Área activa
-PC FIX activo: investigación de Instagram (propio + competencia de Rosario) e
-implementación de mejoras al generador de contenido, recién terminada. Ver
-`memoria/PC_FIX.md`.
+PC FIX: investigación de Instagram + mejoras al generador de contenido, revisadas en
+vivo con Berenice (ajuste de voz de marca, iteración de publicaciones de prueba).
+Pendiente de arrancar: publicación real de Instagram vía automatización de
+navegador (prioridad alta, ver `memoria/PC_FIX.md`). De paso, se arreglaron los
+accesos directos del escritorio de PC FIX y Freelancer (apuntaban a una ruta vieja
+desde la reorganización del 09-sep).
 
 ## Estado de PC FIX
 Estrategia (etapas 1-4) y diseño de automatizaciones (etapas 6, 9) completos. El
 sistema de generación de contenido con aprobación humana **ya está construido**
-(`pc-fix/app/agents/agente_negocio.py`) y ahora genera Instagram y Facebook juntas
-en cada corrida, con hashtags y CTA adaptados por red. Facebook publica de verdad con
-un click; Instagram tiene un kit de publicación manual (copiar texto + descargar
-imagen) porque Berenice decidió no conectarlo por API. Detalle: `memoria/PC_FIX.md`.
+(`pc-fix/app/agents/agente_negocio.py`) y genera Instagram y Facebook juntas en cada
+corrida, con hashtags y CTA adaptados por red, sin la frase "en criollo" y con tips
+reales para el pilar técnico. Facebook publica de verdad con un click. Instagram
+**todavía no** — tiene un kit de publicación manual como paso intermedio, pero
+Berenice pidió que el botón "Publicar" termine publicando de verdad vía
+automatización de navegador (un solo click real de su lado) — es el próximo paso a
+construir. Detalle: `memoria/PC_FIX.md`.
 
 ## Estado de FREELANCE
 Perfil, LinkedIn y GitHub ya optimizados (Fases 0-1). Ingesta automática de ofertas
@@ -25,12 +31,17 @@ de 4 fuentes públicas ya funcionando (Fase 2b, terminada hoy mismo). Matching E
 real (Fase 3) todavía no arrancó. Detalle: `memoria/FREELANCE.md`.
 
 ## Últimas decisiones (ver `historial/decisiones.md` para el detalle completo)
+- **2026-09-11 (más reciente):** revisando publicaciones generadas en vivo, Berenice
+  aclaró que el botón "Publicar" de Instagram tiene que publicar de verdad
+  automatizando el navegador con su sesión ya logueada — el kit manual (copiar/
+  descargar) fue un paso intermedio, no el diseño final. Corrigió también la voz de
+  marca ("no digas 'en criollo'") y pidió contenido con tips reales, no solo copy
+  promocional. Se arreglaron además los accesos directos del escritorio de PC FIX y
+  Freelancer, rotos desde la reorganización del repo del 09-sep.
 - **2026-09-11:** investigación de Instagram (propio + 6 competidores de Rosario) →
   el botón único del dashboard generaba publicaciones solo para Instagram, nunca para
   Facebook (el canal ya 100% automatizado) — corregido. Se sumaron hashtags curados
-  por pilar (solo Instagram) y CTA adaptado por plataforma. Instagram pasó a tener un
-  kit de publicación manual (copiar texto + descargar imagen) en vez de un intento de
-  publicación real que nunca iba a poder completarse.
+  por pilar (solo Instagram) y CTA adaptado por plataforma.
 - **2026-09-09:** auditoría completa del repo + reorganización. Se corrigió una
   fuga de credenciales (contraseña del VPS de Glicemia, ya rotada por Berenice) y se
   sacaron del repo dos carpetas con datos reales del Hospital Eva Perón que nunca
@@ -39,6 +50,10 @@ real (Fase 3) todavía no arrancó. Detalle: `memoria/FREELANCE.md`.
   sincronizar todo entre las dos computadoras.
 
 ## Tareas pendientes / próximos pasos
+- **PC FIX, prioridad alta:** construir la publicación real de Instagram vía
+  automatización de navegador para el botón "Publicar" — decisión ya tomada, hacerlo
+  con Berenice presente (primer login/posteo real). Ver `memoria/PC_FIX.md` y memoria
+  global de Claude (`pcfix_boton_publicar_instagram`).
 - Confirmar con Berenice si `freelancer/notas/career-master-memory-2026-09-01.html`
   sigue teniendo valor o se puede dejar de generar (ver nota en
   `historial/decisiones.md`).

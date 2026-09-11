@@ -4,6 +4,11 @@ de no sumar costo de API todavía — ver plan de arquitectura).
 Cada plantilla está atada a un objetivo comercial y usa el tagline real de
 marca ("Se entiende lo que te arreglan.", 01-Marca/FASE-3-POSICIONAMIENTO.md).
 
+El pilar "criterio_tecnico" usa un set de plantillas aparte (tip/mito real,
+con info concreta) en vez del copy promocional genérico — es el pilar
+educativo del plan de contenidos (05-Redes/PLAN-DE-CONTENIDOS.md) y tiene que
+aportar algo útil, no solo vender.
+
 El texto base es el mismo para Instagram y Facebook (mismo contenido, cross-post
 — ver 05-Redes/PLAN-DE-CONTENIDOS.md), pero el CTA y los hashtags se adaptan por
 plataforma: Facebook tiene un público más adulto y con más peso de dueños de
@@ -18,9 +23,9 @@ TAGLINE = "Se entiende lo que te arreglan."
 
 PLANTILLAS_POR_OBJETIVO = {
     "generar_consultas": [
-        "¿Tu equipo tiene que ver con {servicio}? Te lo explicamos en criollo antes de tocarlo. {tagline}",
+        "¿Tu equipo tiene que ver con {servicio}? Te contamos qué tiene antes de tocarlo. {tagline}",
         "Antes de gastar de más: capaz tu problema se resuelve con {servicio}. Te lo confirmamos sin compromiso.",
-        "{servicio}, con diagnóstico real — no a prueba y error. Te contamos qué tiene tu equipo, en criollo.",
+        "{servicio}, con diagnóstico real — no a prueba y error. Te contamos qué tiene tu equipo, en palabras simples.",
     ],
     "generar_confianza": [
         "En PCfix el presupuesto de {servicio} sale siempre por escrito, sin letra chica. {tagline}",
@@ -29,13 +34,20 @@ PLANTILLAS_POR_OBJETIVO = {
     ],
     "reconocimiento": [
         "{tagline} Así encaramos cada trabajo de {servicio}.",
-        "Un poco de cómo trabajamos {servicio} en PCfix — criterio técnico real, explicado en criollo.",
+        "Un poco de cómo trabajamos {servicio} en PCfix — criterio técnico real, explicado simple.",
         "En PCfix el diagnóstico se hace con criterio técnico real, no a prueba y error. Así se nota en cada {servicio}.",
     ],
     "recuperar_clientes": [
         "¿Hace tiempo no le hacés mantenimiento a tu equipo? {servicio} puede ser justo lo que necesita.",
     ],
 }
+
+PLANTILLAS_TIP_CRITERIO_TECNICO = [
+    "¿Tu PC tarda cada vez más en prender? No siempre hay que cambiarla entera — la mayoría de las veces el cuello de botella está en el disco, no en el procesador. Con {servicio} lo confirmamos antes de gastar de más.",
+    "Tip real: si tu compu anda lenta, primero hay que ver cuánta RAM libre tenés y qué disco usa — pasar a SSD cambia el arranque de minutos a segundos. Para eso sirve {servicio}.",
+    "Mito: \"formatear arregla todo\". A veces sí, a veces el problema sigue después — porque no era de software. Con {servicio} diagnosticamos primero, así no repetís el gasto.",
+    "Antes de resignarte a que \"la PC ya fue\": muchas veces lo que se ve como lentitud generalizada es un solo componente viejo. {servicio} apunta justo a eso.",
+]
 
 CTA_POR_OBJETIVO_INSTAGRAM = {
     "generar_consultas": "Escribinos por mensaje y te contamos cómo sigue.",
@@ -81,7 +93,10 @@ def generar_hashtags(pilar: str) -> str:
 
 
 def generar_copy(servicio_nombre: str, objetivo: str, plataforma: str = "instagram", pilar: str = "") -> CopyGenerado:
-    plantillas = PLANTILLAS_POR_OBJETIVO.get(objetivo, PLANTILLAS_POR_OBJETIVO["reconocimiento"])
+    if pilar == "criterio_tecnico":
+        plantillas = PLANTILLAS_TIP_CRITERIO_TECNICO
+    else:
+        plantillas = PLANTILLAS_POR_OBJETIVO.get(objetivo, PLANTILLAS_POR_OBJETIVO["reconocimiento"])
     indice = hash(servicio_nombre) % len(plantillas)
     texto = plantillas[indice].format(servicio=servicio_nombre, tagline=TAGLINE)
 

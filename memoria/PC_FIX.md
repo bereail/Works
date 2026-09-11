@@ -42,12 +42,15 @@ no es un proyecto nuevo a arrancar de cero:
   expiración, scopes correctos), verificado con una llamada real de solo lectura a la
   Graph API. Ya publicó de verdad al menos una vez: publicación #29, 3-sep-2026,
   `id_publicacion_externa = 725615510632047_122200756442938008`.
-- **Instagram: todavía en modo simulado — y así se queda, a propósito.** Berenice
-  confirmó (2026-09-09) que **no quiere conectar Instagram vía API**. El flujo
-  querido es: se genera el mismo contenido para las dos redes, pero se publica por
-  separado en cada una — Facebook vía la automatización ya conectada, Instagram
-  publicado manualmente por ella. No proponer de nuevo conectar Instagram salvo que
-  ella lo pida.
+- **Instagram: todavía en modo simulado.** Berenice confirmó (2026-09-09) que no
+  quiere conectar Instagram por la **API oficial de Meta** (exige verificación de
+  negocio + URL pública para la imagen). **Aclarado el 2026-09-11: eso no significa
+  que quiera publicar a mano.** El botón "Publicar" de Instagram tiene que terminar
+  publicando de verdad, automatizando el navegador (Chrome, sesión ya logueada de
+  ella, sin que el sistema maneje su contraseña) en vez de usar la API — ver
+  `[[pcfix_boton_publicar_instagram]]` en la memoria global de Claude y el detalle
+  completo más abajo. Todavía no está implementado — el kit de copiar/descargar que
+  se armó el 2026-09-11 es un paso intermedio, no el diseño final.
 - El resto de publicaciones marcadas "publicado" en la base (17 de 18) son datos de
   prueba sembrados el 20-21 de agosto (`origen_datos='simulado'`), sin ID externo
   real — no confundir con actividad real.
@@ -72,10 +75,34 @@ que sí está 100% automatizado). Cambios ya implementados:
 - Instagram ya no intenta publicar por API en la previsualización — en su lugar hay
   un **kit de publicación manual**: botón "copiar texto + hashtags" y botón
   "descargar imagen", más un botón "Ya la publiqué en Instagram" que solo confirma el
-  estado. Esto es intencional — ver la decisión de no conectar Instagram más abajo.
+  estado. Esto es un paso intermedio, no el diseño final — ver "Pendientes" más abajo.
 - Facebook sigue publicando de verdad con un solo click, sin cambios.
+- Ajuste de voz de marca (mismo día, al revisar publicaciones generadas con
+  Berenice): sacada la frase "en criollo" del copy (quedaba mal, corregido a pedido
+  de ella) y agregado `PLANTILLAS_TIP_CRITERIO_TECNICO` — tips reales (SSD vs.
+  procesador, mito del formateo) en vez de copy promocional genérico para el pilar
+  "criterio_tecnico". Guardado en memoria global de Claude
+  (`pcfix_voz_de_marca_copy`).
+
+### Acceso directo del escritorio — arreglado el 2026-09-11
+
+`PCfix Automation Center.lnk` ya existía en el escritorio pero apuntaba a la ruta
+vieja de antes del aplanamiento del repo (09-sep) y ya no abría nada. Se corrigió
+para apuntar a `Works\pc-fix\iniciar_silencioso.vbs` (nuevo, mismo patrón que ya
+tenía Freelancer: si el servidor no está corriendo lo levanta oculto y recién
+entonces abre el navegador en `/inicio` — un solo click). Probado de verdad, funciona.
+Detalle completo (incluye el mismo arreglo para el ícono de Freelancer) en
+`historial/decisiones.md`.
 
 ## Pendientes / próximos pasos
+- **Prioridad alta:** implementar la publicación real de Instagram vía automatización
+  de navegador — el botón "Publicar" debe ser el único click manual de Berenice; todo
+  lo demás (subir imagen a Instagram, pegar texto, click en "Compartir" ahí) lo hace
+  la automatización disparada por ese click. Decisión tomada el 2026-09-11, detalle
+  completo en `historial/decisiones.md` y en la memoria global de Claude
+  (`pcfix_boton_publicar_instagram`). Riesgo conocido a documentarle a Berenice antes
+  de la primera publicación real por esta vía: Instagram puede detectar y restringir
+  cuentas que publican por automatización de navegador en vez de la app/web oficial.
 - Contenido/borradores sueltos que vivían en la raíz de `Works` ahora están en
   `pc-fix/contenido/` — revisar si siguen vigentes o ya se publicaron.
 - Fuera de alcance de este avance: contenido en video/reels. El sistema solo compone
