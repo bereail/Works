@@ -59,9 +59,34 @@ no es un proyecto nuevo a arrancar de cero:
   `error`). Ninguno sale a internet. Correr con
   `pc-fix/venv/Scripts/python.exe -m pytest tests/` desde `pc-fix/`.
 
+### Generación de contenido — mejorada el 2026-09-11 (investigación de Instagram)
+
+Investigación breve de `@pcfix.informatica` y 6 competidores de Rosario (detalle en
+`historial/decisiones.md`): la cuenta propia no usaba hashtags y el botón único del
+dashboard solo generaba publicaciones para Instagram, nunca para Facebook (el canal
+que sí está 100% automatizado). Cambios ya implementados:
+- `generar_publicacion_automatica` ahora crea **Instagram y Facebook juntas** en cada
+  corrida (mismo servicio, mismo flyer, copy adaptado por red).
+- Hashtags curados por pilar, solo en Instagram (campo nuevo `Publicacion.hashtags`).
+- CTA distinto por plataforma (Facebook más formal/PyME, Instagram más directo).
+- Instagram ya no intenta publicar por API en la previsualización — en su lugar hay
+  un **kit de publicación manual**: botón "copiar texto + hashtags" y botón
+  "descargar imagen", más un botón "Ya la publiqué en Instagram" que solo confirma el
+  estado. Esto es intencional — ver la decisión de no conectar Instagram más abajo.
+- Facebook sigue publicando de verdad con un solo click, sin cambios.
+
 ## Pendientes / próximos pasos
 - Contenido/borradores sueltos que vivían en la raíz de `Works` ahora están en
   `pc-fix/contenido/` — revisar si siguen vigentes o ya se publicaron.
+- Fuera de alcance de este avance: contenido en video/reels. El sistema solo compone
+  flyers estáticos (plantilla HTML + Playwright); video sería una automatización
+  nueva, no una mejora del generador actual. La competencia local de mejor desempeño
+  en Rosario (`@rosarioblackam`, ~3.000 seguidores) crece justamente con video corto
+  de reparaciones reales — quedaría como próxima oportunidad si Berenice quiere
+  invertir tiempo en grabar.
+- Cuenta de Instagram con ratio de seguidos invertido (57 seguidores / sigue a 332)
+  — no es algo que se resuelva por código, queda anotado para que Berenice lo revise
+  cuando tenga un rato.
 
 ## Nota técnica
 `pc-fix/venv/` hay que recrearlo si no existe (no se versiona): `python -m venv

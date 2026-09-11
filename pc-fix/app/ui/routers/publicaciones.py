@@ -94,13 +94,13 @@ def procesar_crear(
 
     servicio = sesion.get(Servicio, servicio_id)
     agente = AgentePCfix(sesion)
-    copy = agente.herramienta_generar_copy(servicio.nombre, objetivo)
+    copy = agente.herramienta_generar_copy(servicio.nombre, objetivo, plataforma=plataforma, pilar=pilar)
 
     fecha_hora = datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
     publicacion = Publicacion(
         plataforma=plataforma, fecha=fecha_hora, formato=formato, pilar=pilar, objetivo=objetivo,
         tema=f"{servicio.nombre} — {objetivo.replace('_', ' ')}",
-        texto=copy.texto, cta=copy.cta, estado="borrador", origen_datos="simulado",
+        texto=copy.texto, cta=copy.cta, hashtags=copy.hashtags, estado="borrador", origen_datos="simulado",
         servicio_id=servicio.id,
     )
     sesion.add(publicacion)
@@ -142,6 +142,7 @@ def procesar_editar(
     tema: str = Form(...),
     texto: str = Form(...),
     cta: str = Form(""),
+    hashtags: str = Form(""),
     fecha: str = Form(...),
     hora: str = Form(...),
     sesion: Session = Depends(obtener_sesion),
@@ -155,6 +156,8 @@ def procesar_editar(
     publicacion.tema = tema
     publicacion.texto = texto
     publicacion.cta = cta
+    if publicacion.plataforma == "instagram":
+        publicacion.hashtags = hashtags
     publicacion.fecha = datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
     sesion.add(RegistroAccion(
         herramienta="editar_publicacion", datos_utilizados=f"publicacion_id={publicacion.id}",
@@ -250,12 +253,36 @@ def confirmar_y_publicar(publicacion_id: int, request: Request, sesion: Session 
 
 @router.post("/generar-automatico")
 def generar_automatico(request: Request, sesion: Session = Depends(obtener_sesion)):
-    """El botón único: analiza, elige qué publicar, arma texto e imagen, y deja todo
-    listo para que Berenice lo vea y lo confirme con un solo click más."""
+    """El botón único: analiza, elige qué publicar, arma texto e imagen para Instagram
+    y Facebook, y deja las dos listas para que Berenice las vea y confirme cada una
+    con un solo click más."""
     if (redireccion := requiere_login(request)):
         return redireccion
     agente = AgentePCfix(sesion)
-    publicacion = agente.generar_publicacion_automatica()
+    agente.generar_publicacion_automatica()
+    return RedirectResponse(url="/publicaciones/pendientes", status_code=303)
+
+
+@router.post("/{publicacion_id}/marcar-publicada-manual")
+def marcar_publicada_manual(publicacion_id: int, request: Request, sesion: Session = Depends(obtener_sesion)):
+    """Instagram no se conecta vía API (decisión de Berenice, ver memoria/PC_FIX.md) —
+    el kit de texto+hashtags+imagen ya sale listo para copiar/descargar en la
+    previsualización; este botón solo confirma que ella ya la publicó a mano en la app."""
+    if (redireccion := requiere_login(request)):
+        return redireccion
+    publicacion = sesion.get(Publicacion, publicacion_id)
+    if publicacion is None or publicacion.plataforma != "instagram":
+        return RedirectResponse(url="/publicaciones/pendientes", status_code=303)
+    if publicacion.estado not in ("previsualizado", "aprobado", "error"):
+        return RedirectResponse(url=f"/publicaciones/{publicacion.id}/previsualizar", status_code=303)
+
+    publicacion.estado = "publicado"
+    sesion.add(RegistroAccion(
+        herramienta="marcar_publicada_manual", datos_utilizados=f"publicacion_id={publicacion.id}",
+        resultado="Marcada como publicada en Instagram — publicación manual (sin conexión API, decisión de Berenice).",
+        requirio_aprobacion=True, aprobado=True,
+    ))
+    sesion.commit()
     return RedirectResponse(url=f"/publicaciones/{publicacion.id}/previsualizar", status_code=303)
 
 

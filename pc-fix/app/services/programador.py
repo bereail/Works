@@ -38,8 +38,9 @@ def generar_borrador_si_corresponde() -> None:
             return
         agente = AgentePCfix(sesion)
         agente.ejecutar_automatizacion_integral()
-        publicacion = agente.generar_publicacion_automatica()
-        logger.info("Borrador semanal automático generado: publicacion_id=%s", publicacion.id)
+        publicaciones = agente.generar_publicacion_automatica()
+        ids = [p.id for p in publicaciones]
+        logger.info("Borradores semanales automáticos generados: publicacion_ids=%s", ids)
     except Exception:
         logger.exception("No se pudo generar el borrador semanal automático")
     finally:

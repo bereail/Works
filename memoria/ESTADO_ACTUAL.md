@@ -4,18 +4,20 @@ Leer este archivo primero al empezar cualquier sesión. Después, solo los archi
 puntuales que hagan falta (`memoria/PC_FIX.md` o `memoria/FREELANCE.md` según el
 contexto activado).
 
-**Última actualización:** 2026-09-09
+**Última actualización:** 2026-09-11
 
 ## Área activa
-Reorganización del repositorio recién terminada. Sin negocio específico activado —
-esperando que Berenice diga "PC FIX" o "FREELANCE" para continuar el trabajo de fondo
-de cada uno.
+PC FIX activo: investigación de Instagram (propio + competencia de Rosario) e
+implementación de mejoras al generador de contenido, recién terminada. Ver
+`memoria/PC_FIX.md`.
 
 ## Estado de PC FIX
 Estrategia (etapas 1-4) y diseño de automatizaciones (etapas 6, 9) completos. El
 sistema de generación de contenido con aprobación humana **ya está construido**
-(`pc-fix/app/agents/agente_negocio.py`). Integración con Meta API en curso. Detalle:
-`memoria/PC_FIX.md`.
+(`pc-fix/app/agents/agente_negocio.py`) y ahora genera Instagram y Facebook juntas
+en cada corrida, con hashtags y CTA adaptados por red. Facebook publica de verdad con
+un click; Instagram tiene un kit de publicación manual (copiar texto + descargar
+imagen) porque Berenice decidió no conectarlo por API. Detalle: `memoria/PC_FIX.md`.
 
 ## Estado de FREELANCE
 Perfil, LinkedIn y GitHub ya optimizados (Fases 0-1). Ingesta automática de ofertas
@@ -23,6 +25,12 @@ de 4 fuentes públicas ya funcionando (Fase 2b, terminada hoy mismo). Matching E
 real (Fase 3) todavía no arrancó. Detalle: `memoria/FREELANCE.md`.
 
 ## Últimas decisiones (ver `historial/decisiones.md` para el detalle completo)
+- **2026-09-11:** investigación de Instagram (propio + 6 competidores de Rosario) →
+  el botón único del dashboard generaba publicaciones solo para Instagram, nunca para
+  Facebook (el canal ya 100% automatizado) — corregido. Se sumaron hashtags curados
+  por pilar (solo Instagram) y CTA adaptado por plataforma. Instagram pasó a tener un
+  kit de publicación manual (copiar texto + descargar imagen) en vez de un intento de
+  publicación real que nunca iba a poder completarse.
 - **2026-09-09:** auditoría completa del repo + reorganización. Se corrigió una
   fuga de credenciales (contraseña del VPS de Glicemia, ya rotada por Berenice) y se
   sacaron del repo dos carpetas con datos reales del Hospital Eva Perón que nunca
@@ -34,7 +42,9 @@ real (Fase 3) todavía no arrancó. Detalle: `memoria/FREELANCE.md`.
 - Confirmar con Berenice si `freelancer/notas/career-master-memory-2026-09-01.html`
   sigue teniendo valor o se puede dejar de generar (ver nota en
   `historial/decisiones.md`).
-- PC FIX: arrancar Etapa 5 (procedimientos operativos) cuando Berenice lo indique.
+- PC FIX: definir con Berenice si vale invertir tiempo en contenido de video/reels —
+  es lo que mejor le está funcionando a la competencia local mejor posicionada, pero
+  el sistema actual no lo automatiza (solo flyers estáticos).
 - FREELANCE: definir con Berenice si se arranca la Fase 3 (Matching Engine).
 
 ## Bloqueos

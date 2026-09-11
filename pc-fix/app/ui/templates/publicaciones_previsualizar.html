@@ -22,13 +22,27 @@
       </div>
     {% endif %}
 
-    <p style="white-space:pre-wrap;">{{ publicacion.texto }}</p>
-    {% if publicacion.cta %}<p style="font-weight:600; color: var(--color-primario);">{{ publicacion.cta }}</p>{% endif %}
+    <p id="texto-publicacion" style="white-space:pre-wrap;">{{ publicacion.texto }}</p>
+    {% if publicacion.cta %}<p id="cta-publicacion" style="font-weight:600; color: var(--color-primario);">{{ publicacion.cta }}</p>{% endif %}
+    {% if publicacion.hashtags %}<p id="hashtags-publicacion" class="texto-suave" style="margin-top:6px;">{{ publicacion.hashtags }}</p>{% endif %}
 
     {% if publicacion.estado in ['previsualizado', 'borrador'] %}
     <form method="post" action="/publicaciones/{{ publicacion.id }}/generar-flyer" class="mt-24">
       <button type="submit" class="boton boton-acento">🎨 Generar flyer</button>
     </form>
+    {% endif %}
+
+    {% if publicacion.plataforma == 'instagram' and publicacion.estado != 'publicado' %}
+    <div class="mt-24" style="border-top:1px solid var(--borde); padding-top:14px;">
+      <div class="subtitulo-seccion" style="margin-top:0; font-size:13px;">📲 Kit para publicar en Instagram a mano</div>
+      <p class="texto-suave" style="font-size:12px; margin-bottom:10px;">Instagram no se conecta por API en este proyecto (decisión de Berenice) — el texto ya viene armado con hashtags y la imagen lista para descargar. En la app: pegás el texto, subís la imagen descargada, publicás.</p>
+      <div class="gap-8">
+        <button type="button" class="boton boton-ghost" style="flex:1; justify-content:center;" onclick="copiarTextoInstagram(this)">📋 Copiar texto + hashtags</button>
+        {% if publicacion.flyers %}
+        <a href="/static/{{ publicacion.flyers[-1].archivo_generado }}" download class="boton boton-ghost" style="flex:1; justify-content:center;">⬇️ Descargar imagen</a>
+        {% endif %}
+      </div>
+    </div>
     {% endif %}
   </div>
 
@@ -43,24 +57,35 @@
     <div class="lista-fila"><span class="texto-suave">Público</span><strong>Seguidores actuales + alcance orgánico</strong></div>
 
     <div class="mt-24">
-      {% if publicacion.estado in ['previsualizado', 'aprobado'] %}
-        <form method="post" action="/publicaciones/{{ publicacion.id }}/confirmar-y-publicar">
-          <button type="submit" class="boton boton-primario" style="width:100%; justify-content:center; font-size:15px; padding:14px;">✅ Confirmar y publicar</button>
-        </form>
-        {% if identidad.modo_operacion == 'real' %}
-          <p class="texto-suave" style="font-size:12px; margin-top:8px; text-align:center;">Modo Real activo: este click publica de verdad en {{ publicacion.plataforma|capitalize }}.</p>
-        {% else %}
-          <p class="texto-suave" style="font-size:12px; margin-top:8px; text-align:center;">Por ahora queda simulada — no sale a ninguna red real (modo Simulación activo).</p>
+      {% if publicacion.plataforma == 'instagram' %}
+        {% if publicacion.estado in ['previsualizado', 'aprobado', 'error'] %}
+          <form method="post" action="/publicaciones/{{ publicacion.id }}/marcar-publicada-manual">
+            <button type="submit" class="boton boton-primario" style="width:100%; justify-content:center; font-size:15px; padding:14px;">✅ Ya la publiqué en Instagram</button>
+          </form>
+          <p class="texto-suave" style="font-size:12px; margin-top:8px; text-align:center;">Usá el kit de la izquierda (texto + imagen) para publicarla en la app y después confirmá acá.</p>
+        {% elif publicacion.estado == 'publicado' %}
+          <div class="mensaje-exito">✅ Publicada en Instagram (manual, confirmada por vos).</div>
         {% endif %}
-      {% elif publicacion.estado == 'simulado' %}
-        <div class="mensaje-exito">✅ Publicación simulada — no se envió a ninguna cuenta real.</div>
-      {% elif publicacion.estado == 'publicado' %}
-        <div class="mensaje-exito">✅ Publicada de verdad en {{ publicacion.plataforma|capitalize }}{% if publicacion.id_publicacion_externa %} (id {{ publicacion.id_publicacion_externa }}){% endif %}.</div>
-      {% elif publicacion.estado == 'error' %}
-        <div class="mensaje-error">⚠️ No se pudo publicar. Revisá el último intento en Analíticas → Registro de acciones.</div>
-        <form method="post" action="/publicaciones/{{ publicacion.id }}/confirmar-y-publicar" class="mt-24">
-          <button type="submit" class="boton boton-primario" style="width:100%; justify-content:center;">Reintentar</button>
-        </form>
+      {% else %}
+        {% if publicacion.estado in ['previsualizado', 'aprobado'] %}
+          <form method="post" action="/publicaciones/{{ publicacion.id }}/confirmar-y-publicar">
+            <button type="submit" class="boton boton-primario" style="width:100%; justify-content:center; font-size:15px; padding:14px;">✅ Confirmar y publicar</button>
+          </form>
+          {% if identidad.modo_operacion == 'real' %}
+            <p class="texto-suave" style="font-size:12px; margin-top:8px; text-align:center;">Modo Real activo: este click publica de verdad en {{ publicacion.plataforma|capitalize }}.</p>
+          {% else %}
+            <p class="texto-suave" style="font-size:12px; margin-top:8px; text-align:center;">Por ahora queda simulada — no sale a ninguna red real (modo Simulación activo).</p>
+          {% endif %}
+        {% elif publicacion.estado == 'simulado' %}
+          <div class="mensaje-exito">✅ Publicación simulada — no se envió a ninguna cuenta real.</div>
+        {% elif publicacion.estado == 'publicado' %}
+          <div class="mensaje-exito">✅ Publicada de verdad en {{ publicacion.plataforma|capitalize }}{% if publicacion.id_publicacion_externa %} (id {{ publicacion.id_publicacion_externa }}){% endif %}.</div>
+        {% elif publicacion.estado == 'error' %}
+          <div class="mensaje-error">⚠️ No se pudo publicar. Revisá el último intento en Analíticas → Registro de acciones.</div>
+          <form method="post" action="/publicaciones/{{ publicacion.id }}/confirmar-y-publicar" class="mt-24">
+            <button type="submit" class="boton boton-primario" style="width:100%; justify-content:center;">Reintentar</button>
+          </form>
+        {% endif %}
       {% endif %}
 
       {% if publicacion.estado in ['borrador', 'previsualizado', 'aprobado'] %}
@@ -74,5 +99,23 @@
     </div>
   </div>
 </div>
+
+{% if publicacion.plataforma == 'instagram' %}
+<script>
+function copiarTextoInstagram(boton) {
+  const partes = [
+    document.getElementById('texto-publicacion'),
+    document.getElementById('cta-publicacion'),
+    document.getElementById('hashtags-publicacion'),
+  ].filter(Boolean).map(el => el.textContent.trim());
+  const textoCompleto = partes.join('\n\n');
+  navigator.clipboard.writeText(textoCompleto).then(() => {
+    const original = boton.textContent;
+    boton.textContent = '✅ Copiado';
+    setTimeout(() => { boton.textContent = original; }, 2000);
+  });
+}
+</script>
+{% endif %}
 
 {% endblock %}

@@ -108,11 +108,11 @@ class AgentePCfix:
         )
         return propuesta
 
-    def herramienta_generar_copy(self, servicio_nombre: str, objetivo: str):
-        copy = generar_copy(servicio_nombre, objetivo)
+    def herramienta_generar_copy(self, servicio_nombre: str, objetivo: str, plataforma: str = "instagram", pilar: str = ""):
+        copy = generar_copy(servicio_nombre, objetivo, plataforma=plataforma, pilar=pilar)
         self._registrar(
             "herramienta_generar_copy",
-            f"servicio={servicio_nombre}, objetivo={objetivo}",
+            f"servicio={servicio_nombre}, objetivo={objetivo}, plataforma={plataforma}",
             copy.texto,
         )
         return copy
@@ -141,47 +141,57 @@ class AgentePCfix:
 
         return min(servicios_verdes, key=lambda s: ultima_fecha_por_servicio[s.id])
 
-    def generar_publicacion_automatica(self) -> Publicacion:
-        """Botón único: analiza, decide qué publicar, arma el copy y el flyer, y deja
-        la publicación lista en 'previsualizado' — falta un solo click para confirmarla."""
+    def generar_publicacion_automatica(self) -> list[Publicacion]:
+        """Botón único: analiza, decide qué publicar, arma el copy y el flyer para
+        Instagram y Facebook (mismo contenido, adaptado por red — ver generador_copy)
+        y deja las dos publicaciones listas en 'previsualizado'. Instagram queda con
+        su kit de copiar/descargar para publicar a mano (decisión de Berenice de no
+        conectar esa red por API); Facebook queda a un solo click de salir de verdad."""
         propuesta = self.herramienta_proponer_publicacion()
         servicio = propuesta["servicio"]
         if servicio is None:
             raise ValueError("No hay servicios activos en el catálogo para proponer una publicación.")
 
-        copy = self.herramienta_generar_copy(servicio.nombre, propuesta["objetivo"])
         identidad = self.sesion.query(IdentidadNegocio).first()
+        publicaciones: list[Publicacion] = []
+        ruta_flyer: str | None = None
 
-        publicacion = Publicacion(
-            plataforma="instagram",
-            fecha=datetime.now(),
-            formato=propuesta["formato"],
-            pilar=propuesta["pilar"],
-            objetivo=propuesta["objetivo"],
-            tema=f"{servicio.nombre} — {propuesta['objetivo'].replace('_', ' ')}",
-            texto=copy.texto,
-            cta=copy.cta,
-            estado="previsualizado",
-            origen_datos="simulado",
-            servicio_id=servicio.id,
-        )
-        self.sesion.add(publicacion)
-        self.sesion.commit()
-        self.sesion.refresh(publicacion)
+        for plataforma in ("instagram", "facebook"):
+            copy = self.herramienta_generar_copy(servicio.nombre, propuesta["objetivo"], plataforma=plataforma, pilar=propuesta["pilar"])
 
-        ruta = generar_flyer(
-            titular=servicio.nombre,
-            subtitulo=copy.texto,
-            cta=copy.cta,
-            nombre_comercial=identidad.nombre_comercial,
-            tagline=identidad.tagline,
-            color_primario=identidad.color_primario,
-            color_acento=identidad.color_acento,
-        )
-        self.sesion.add(Flyer(
-            publicacion_id=publicacion.id, titular=publicacion.tema, subtitulo=copy.texto,
-            cta=copy.cta, archivo_generado=ruta,
-        ))
-        self._registrar("herramienta_generar_flyer", f"publicacion_id={publicacion.id}", ruta)
+            publicacion = Publicacion(
+                plataforma=plataforma,
+                fecha=datetime.now(),
+                formato=propuesta["formato"],
+                pilar=propuesta["pilar"],
+                objetivo=propuesta["objetivo"],
+                tema=f"{servicio.nombre} — {propuesta['objetivo'].replace('_', ' ')}",
+                texto=copy.texto,
+                cta=copy.cta,
+                hashtags=copy.hashtags,
+                estado="previsualizado",
+                origen_datos="simulado",
+                servicio_id=servicio.id,
+            )
+            self.sesion.add(publicacion)
+            self.sesion.commit()
+            self.sesion.refresh(publicacion)
 
-        return publicacion
+            if ruta_flyer is None:
+                ruta_flyer = generar_flyer(
+                    titular=servicio.nombre,
+                    subtitulo=copy.texto,
+                    cta=copy.cta,
+                    nombre_comercial=identidad.nombre_comercial,
+                    tagline=identidad.tagline,
+                    color_primario=identidad.color_primario,
+                    color_acento=identidad.color_acento,
+                )
+            self.sesion.add(Flyer(
+                publicacion_id=publicacion.id, titular=publicacion.tema, subtitulo=copy.texto,
+                cta=copy.cta, archivo_generado=ruta_flyer,
+            ))
+            self._registrar("herramienta_generar_flyer", f"publicacion_id={publicacion.id}", ruta_flyer)
+            publicaciones.append(publicacion)
+
+        return publicaciones

@@ -81,3 +81,48 @@ estructura pedida, se auditó todo el repo existente. Hallazgos y acciones:
 `freelancer/notas/career-master-memory-2026-09-01.html` (dashboard visual, contenido
 solapado con `busqueda-laboral.md` en la misma carpeta) — se conservó como snapshot
 histórico sin resolver del todo si sigue teniendo valor seguir generándolo.
+
+---
+
+## 2026-09-11 — PC FIX: investigación de Instagram (propio + competencia de Rosario) y mejoras al generador de contenido
+
+**Investigación:** cuenta propia `@pcfix.informatica` (57 seguidores, sigue a 332 —
+ratio invertido) publica solo posts estáticos de promociones, sin hashtags. Se
+relevaron 6 cuentas de servicio técnico de Rosario; la de mejor desempeño local
+(`@rosarioblackam`, ~3.000 seguidores, verificada) crece con video corto mostrando
+reparación real (reballing, componentes, "laboratorio"), organizado en categorías de
+destacados — ninguna usa hashtags de forma visible tampoco, así que ahí sigue habiendo
+oportunidad real si PC Fix los suma bien. Ninguna cuenta relevada juega en
+transparencia de precios ni proceso — confirma que esos dos pilares (ya elegidos en
+`05-Redes/PLAN-DE-CONTENIDOS.md`) siguen siendo el diferencial correcto.
+
+**Hallazgo de código:** `generar_publicacion_automatica` (el botón único del
+dashboard) generaba **una sola publicación, siempre en Instagram**, nunca en
+Facebook — o sea que el único canal ya automatizado de punta a punta (Facebook, con
+API real conectada) no se estaba alimentando desde el flujo automático. Corregido:
+ahora genera las dos publicaciones (mismo servicio, misma imagen, copy adaptado por
+red) en cada corrida.
+
+**Implementado:**
+- Campo `hashtags` en `Publicacion` (migración `a1c2e3f4b5d6`) + generador de
+  hashtags curados por pilar de contenido, **solo para Instagram** (en Facebook no
+  aportan alcance real y ensucian el texto).
+- CTA distinto por plataforma en `generador_copy.py`: Facebook más formal, orientado
+  a dueños de comercio (coincide con el público más adulto que señala Fase 2);
+  Instagram más directo/casual.
+- `generar_publicacion_automatica` ahora crea Instagram **y** Facebook juntas,
+  compartiendo el mismo flyer generado (no se renderiza dos veces).
+- Como Berenice decidió no conectar Instagram por API (ver nota en `PC_FIX.md`), se
+  reemplazó el intento de publicación real de Instagram en la previsualización por un
+  **kit de publicación manual**: texto + CTA + hashtags listos para copiar con un
+  click, e imagen lista para descargar con un click — y un botón "Ya la publiqué en
+  Instagram" que solo confirma el estado. Facebook sigue con su publicación real de
+  un click, sin cambios.
+- 5 tests nuevos (`tests/test_agente_negocio.py`) cubriendo la generación de a pares
+  y la diferenciación por plataforma. Los 14 tests existentes siguen pasando (19
+  en total).
+
+**No implementado (fuera del alcance de código):** contenido en video (reels) — el
+sistema solo compone flyers estáticos vía plantilla HTML/Playwright, no genera video;
+quedaría como una automatización nueva y más cara de construir, no una mejora al
+generador actual.

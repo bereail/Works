@@ -3,6 +3,13 @@ de no sumar costo de API todavía — ver plan de arquitectura).
 
 Cada plantilla está atada a un objetivo comercial y usa el tagline real de
 marca ("Se entiende lo que te arreglan.", 01-Marca/FASE-3-POSICIONAMIENTO.md).
+
+El texto base es el mismo para Instagram y Facebook (mismo contenido, cross-post
+— ver 05-Redes/PLAN-DE-CONTENIDOS.md), pero el CTA y los hashtags se adaptan por
+plataforma: Facebook tiene un público más adulto y con más peso de dueños de
+comercio (Fase 2), así que su CTA apunta a "la página" en tono más formal; los
+hashtags solo se generan para Instagram porque ahí sí ayudan al alcance —
+en Facebook la práctica no aporta y solo ensucia el texto.
 """
 
 from dataclasses import dataclass
@@ -30,11 +37,32 @@ PLANTILLAS_POR_OBJETIVO = {
     ],
 }
 
-CTA_POR_OBJETIVO = {
+CTA_POR_OBJETIVO_INSTAGRAM = {
     "generar_consultas": "Escribinos por mensaje y te contamos cómo sigue.",
     "generar_confianza": "Zona Arroyito, Rosario — te esperamos.",
     "reconocimiento": "Seguinos para más contenido como este.",
     "recuperar_clientes": "Escribinos y vemos cómo está tu equipo.",
+}
+
+CTA_POR_OBJETIVO_FACEBOOK = {
+    "generar_consultas": "Envianos un mensaje a la página y coordinamos el diagnóstico.",
+    "generar_confianza": "Zona Arroyito, Rosario — consultanos por tu equipo o el de tu negocio.",
+    "reconocimiento": "Seguí la página para más contenido como este.",
+    "recuperar_clientes": "Escribinos a la página y vemos cómo está tu equipo.",
+}
+
+CTA_POR_PLATAFORMA = {
+    "instagram": CTA_POR_OBJETIVO_INSTAGRAM,
+    "facebook": CTA_POR_OBJETIVO_FACEBOOK,
+}
+
+HASHTAGS_BASE = ["#Rosario", "#RosarioArgentina", "#ServicioTecnico", "#ReparacionDePC"]
+
+HASHTAGS_POR_PILAR = {
+    "criterio_tecnico": ["#TipsDeCompu", "#SoporteTecnico", "#Notebook", "#Tecnologia"],
+    "transparencia": ["#PresupuestoSinCargo", "#ServicioTecnicoRosario", "#Confianza"],
+    "confianza": ["#ClientesConformes", "#GarantiaDeTrabajo", "#ServicioTecnicoRosario"],
+    "tecnologia": ["#Automatizacion", "#PyMEs", "#TecnologiaRosario", "#InnovacionRosario"],
 }
 
 
@@ -42,11 +70,24 @@ CTA_POR_OBJETIVO = {
 class CopyGenerado:
     texto: str
     cta: str
+    hashtags: str = ""
 
 
-def generar_copy(servicio_nombre: str, objetivo: str) -> CopyGenerado:
+def generar_hashtags(pilar: str) -> str:
+    """Set curado de 8-9 hashtags (nunca genéricos de más — mejor pocos relevantes
+    que treinta que no aportan alcance real)."""
+    especificos = HASHTAGS_POR_PILAR.get(pilar, [])
+    return " ".join(HASHTAGS_BASE + especificos)
+
+
+def generar_copy(servicio_nombre: str, objetivo: str, plataforma: str = "instagram", pilar: str = "") -> CopyGenerado:
     plantillas = PLANTILLAS_POR_OBJETIVO.get(objetivo, PLANTILLAS_POR_OBJETIVO["reconocimiento"])
     indice = hash(servicio_nombre) % len(plantillas)
     texto = plantillas[indice].format(servicio=servicio_nombre, tagline=TAGLINE)
-    cta = CTA_POR_OBJETIVO.get(objetivo, CTA_POR_OBJETIVO["reconocimiento"])
-    return CopyGenerado(texto=texto, cta=cta)
+
+    tabla_cta = CTA_POR_PLATAFORMA.get(plataforma, CTA_POR_OBJETIVO_INSTAGRAM)
+    cta = tabla_cta.get(objetivo, tabla_cta["reconocimiento"])
+
+    hashtags = generar_hashtags(pilar) if plataforma == "instagram" else ""
+
+    return CopyGenerado(texto=texto, cta=cta, hashtags=hashtags)

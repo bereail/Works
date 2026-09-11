@@ -27,6 +27,13 @@
       <input id="cta" type="text" name="cta" value="{{ publicacion.cta }}" />
     </div>
 
+    {% if publicacion.plataforma == 'instagram' %}
+    <div class="campo">
+      <label for="hashtags">Hashtags (solo Instagram)</label>
+      <input id="hashtags" type="text" name="hashtags" value="{{ publicacion.hashtags }}" />
+    </div>
+    {% endif %}
+
     <div class="fila-campos">
       <div class="campo">
         <label for="fecha">Fecha</label>

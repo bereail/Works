@@ -20,6 +20,7 @@ class Publicacion(Base):
     objetivo: Mapped[str] = mapped_column(String(80), default="")  # generar_consultas | reconocimiento | recuperar_clientes...
     texto: Mapped[str] = mapped_column(Text, default="")
     cta: Mapped[str] = mapped_column(String(255), default="")
+    hashtags: Mapped[str] = mapped_column(String(500), default="")  # solo Instagram — separados por espacio, con #
     estado: Mapped[str] = mapped_column(String(20), default="borrador")  # borrador|previsualizado|aprobado|publicado|simulado|error
     origen_datos: Mapped[str] = mapped_column(String(20), default="simulado")  # real | simulado
     id_publicacion_externa: Mapped[str] = mapped_column(String(60), default="")  # post_id (facebook) | media_id (instagram) cuando se publicó de verdad
