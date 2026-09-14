@@ -17,6 +17,9 @@ Criterios que vienen del master context (no inventados):
   trabajo full-time) y se descarta, aunque mencione Chile/LatAm como "mercado
   cercano" (2026-09-14, después de que 14 avisos presenciales/híbridos de Chile se
   colaron en la bandeja solo por nombrar el país).
+- "Remoto" restringido a una región que excluye LatAm (ej. "Asia Only", "US Only")
+  tampoco cuenta — se descarta igual que el presencial fuera de Argentina
+  (2026-09-14, después de que se colara una oferta remota exclusiva de Asia).
 """
 
 import re
@@ -150,6 +153,16 @@ FUENTES_INTERNACIONALES = {"remoteok", "remotive", "weworkremotely"}
 MODALIDAD_NO_REMOTA = {"presencial", "hibrido", "híbrido"}
 MERCADO_PROPIO = {"argentina", "rosario"}
 
+# "Remoto" no siempre significa remoto para ella: varias ofertas internacionales son
+# remoto restringido a una región puntual que excluye LatAm (candidate_required_location
+# de Remotive, tags de Remote OK/We Work Remotely). Se descarta igual que la modalidad
+# presencial no viable (2026-09-14, después de que se colara una oferta "Asia Only").
+GEO_RESTRINGIDA = {
+    "asia only", "apac only", "emea only", "europe only", "eu only",
+    "uk only", "us only", "usa only", "united states only",
+    "canada only", "australia only", "nz only",
+}
+
 
 def contiene(termino: str, texto: str) -> bool:
     """Busca el término como palabra entera.
@@ -227,8 +240,10 @@ def calcular_puntaje(oferta: OfertaExterna, fuente: str = "") -> int:
     es_en_argentina = any(contiene(t, texto) for t in MERCADO_PROPIO)
     hay_presencial_fuera_de_argentina = es_no_remota and not es_en_argentina
 
+    hay_geo_restringida = any(contiene(t, texto) for t in GEO_RESTRINGIDA)
+
     puntaje = max(0, min(100, puntaje))
-    if hay_stack_ajeno or hay_rol_ajeno or hay_presencial_fuera_de_argentina:
+    if hay_stack_ajeno or hay_rol_ajeno or hay_presencial_fuera_de_argentina or hay_geo_restringida:
         puntaje = min(puntaje, PUNTAJE_MINIMO - 1)
     return puntaje
 

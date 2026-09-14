@@ -127,6 +127,12 @@ dentro de Argentina no se toca (sigue siendo una opción real). 67 tests pasan
 (se ajustó 1 test que esperaba el texto viejo del badge del inicio, "sin revisar" →
 "para postular", por el cambio de copy de la sección Postulaciones).
 
+Mismo día, mismo patrón: se coló una oferta remota de Toptal "Asia Only" (remoto,
+pero restringido a esa región, no aplicable). Se descartó a mano y se sumó a
+`relevancia.py` el mismo mecanismo de descarte para remoto geo-restringido a otra
+región (Asia/US/UK/Europa/Canadá/Australia/NZ "only") — quedan **24 ofertas** en
+`/postulaciones`.
+
 ## Pendientes / próximos pasos
 - Definir y arrancar Fase 3 (Matching Engine) — hoy el filtro de relevancia de la
   Fase 2b es un adelanto mínimo (palabras clave), no el motor completo.
