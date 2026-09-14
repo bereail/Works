@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Postulaciones — Freelancer</title>
+<link rel="stylesheet" href="/static/estilos.css" />
+<style>
+  .franja-freelancer { max-width: 980px; margin: 0 auto; padding: 40px 24px 80px; }
+  .volver { display: inline-flex; align-items: center; gap: 6px; color: var(--texto-suave); font-size: 13px; margin-bottom: 20px; }
+  .volver:hover { color: var(--texto); }
+
+  .postulacion-tarjeta { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+  .postulacion-acciones { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; align-items: stretch; min-width: 150px; }
+  .postulacion-acciones .boton { justify-content: center; }
+  .oferta-meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--texto-tenue); margin-top: 6px; }
+  .etiquetas { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .etiqueta { font-size: 11px; padding: 2px 8px; border-radius: 999px; background: var(--superficie-hover); color: var(--texto-suave); border: 1px solid var(--borde); }
+  .puntaje { display: inline-flex; align-items: center; gap: 5px; }
+  .puntaje .barra { width: 34px; height: 4px; border-radius: 999px; background: var(--borde); overflow: hidden; }
+  .puntaje .relleno { height: 100%; border-radius: 999px; background: currentColor; }
+
+  .postularme {
+    background: var(--color-acento); color: #fff; border: none;
+    padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px;
+    text-align: center; box-shadow: 0 2px 8px rgba(14,165,164,0.28);
+    transition: filter var(--transicion), transform var(--transicion);
+  }
+  .postularme:hover { filter: brightness(1.08); }
+  .postularme:active { transform: scale(0.97); }
+
+  .grilla-portales { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+  .portal-tarjeta { display: flex; flex-direction: column; gap: 6px; text-decoration: none; }
+  .portal-tarjeta h4 { margin: 0; font-size: 15px; }
+  .portal-tarjeta p { margin: 0; font-size: 12.5px; color: var(--texto-suave); }
+  .portal-tarjeta .flecha { align-self: flex-end; font-size: 13px; color: var(--texto-tenue); }
+
+  .nota-legal { font-size: 11.5px; color: var(--texto-tenue); margin-top: 14px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="franja-freelancer">
+  <a class="volver" href="/">← Freelancer</a>
+
+  <div class="header-pagina">
+    <div>
+      <h1>🚀 Postulaciones</h1>
+      <p>Todo lo que tiene puntaje suficiente para postular ya. Un click en <strong>Postularme</strong> abre el aviso original en su sitio — la postulación la hacés ahí, esta pantalla solo lleva la cuenta.</p>
+    </div>
+    <a href="/ofertas" class="boton boton-ghost boton-chico">Ver historial completo →</a>
+  </div>
+
+  {% if not ofertas %}
+  <div class="tarjeta vacio mt-24">
+    <div class="icono">📭</div>
+    <p>No hay ninguna oportunidad esperando postulación ahora mismo.</p>
+    <p class="texto-suave" style="font-size:12px;">Las fuentes conectadas se consultan solas cada 6 horas. Mientras tanto, revisá los portales de abajo a mano.</p>
+  </div>
+  {% else %}
+  <div class="subtitulo-seccion" style="margin-top:8px;">{{ ofertas|length }} oportunidad{{ 'es' if ofertas|length != 1 else '' }} para postular</div>
+  {% for o in ofertas %}
+  <div class="tarjeta interactiva mt-24 fade-in postulacion-tarjeta">
+    <div style="min-width:0;">
+      <div class="gap-8" style="margin-bottom:8px; flex-wrap:wrap;">
+        <span class="badge {{ 'badge-verde' if o.puntaje >= 50 else ('badge-amarillo' if o.puntaje >= 35 else 'badge-neutro') }} puntaje"
+              title="Afinidad con tu perfil según el filtro por palabras clave">
+          <span class="barra"><span class="relleno" style="width: {{ o.puntaje }}%;"></span></span>
+          {{ o.puntaje }}
+        </span>
+        <span class="badge badge-neutro" style="text-transform:capitalize;">{{ o.fuente }}</span>
+        <span class="badge badge-neutro">{{ {'proyecto_freelance': 'proyecto freelance', 'empleo_relacion_dependencia': 'relación de dependencia', 'subcontrato': 'subcontrato'}.get(o.tipo, o.tipo) }}</span>
+      </div>
+
+      <h3 style="margin: 0 0 4px;">{{ o.titulo }}</h3>
+      {% if o.cliente_o_empresa %}<p class="texto-suave" style="margin:0; font-size:13px;">{{ o.cliente_o_empresa }}</p>{% endif %}
+
+      {% if o.ubicacion or o.salario or o.fecha_publicacion %}
+      <div class="oferta-meta">
+        {% if o.ubicacion %}<span>📍 {{ o.ubicacion }}</span>{% endif %}
+        {% if o.salario %}<span>💵 {{ o.salario }}</span>{% endif %}
+        {% if o.fecha_publicacion %}<span>🗓️ {{ o.fecha_publicacion.strftime('%d/%m/%Y') }}</span>{% endif %}
+      </div>
+      {% endif %}
+
+      {% if o.lista_etiquetas %}
+      <div class="etiquetas">
+        {% for e in o.lista_etiquetas[:8] %}<span class="etiqueta">{{ e }}</span>{% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="postulacion-acciones">
+      {% if o.url %}
+      <a href="{{ o.url }}" target="_blank" rel="noopener" class="postularme">🚀 Postularme →</a>
+      {% endif %}
+      <form method="post" action="/ofertas/{{ o.id }}/estado">
+        <input type="hidden" name="estado" value="postulada" />
+        <input type="hidden" name="volver_a" value="/postulaciones" />
+        <button type="submit" class="boton boton-ghost boton-chico" style="width:100%;">Ya me postulé</button>
+      </form>
+      <form method="post" action="/ofertas/{{ o.id }}/estado">
+        <input type="hidden" name="estado" value="descartada" />
+        <input type="hidden" name="volver_a" value="/postulaciones" />
+        <button type="submit" class="boton boton-ghost boton-chico" style="width:100%;">No me sirve</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <div class="subtitulo-seccion">Buscá también en estas plataformas</div>
+  <p class="texto-suave" style="margin-top:-6px; font-size:13px;">
+    Estas no tienen API pública, así que no se ingieren solas acá (para no scrapear lo que sus
+    términos prohíben) — cada acceso te lleva directo a una búsqueda ya armada con tu perfil
+    (full stack, Django/React, remoto). Conviene revisarlas cada tanto a mano.
+  </p>
+  <div class="grilla-portales mt-24">
+    {% for p in portales %}
+    <a href="{{ p.url }}" target="_blank" rel="noopener" class="tarjeta interactiva portal-tarjeta">
+      <h4>{{ p.nombre }}</h4>
+      <p>{{ p.descripcion }}</p>
+      <span class="flecha">Buscar →</span>
+    </a>
+    {% endfor %}
+  </div>
+
+  <p class="nota-legal">
+    Las 4 fuentes automáticas (Get on Board, Remote OK, Remotive, We Work Remotely) filtran por
+    puntaje mínimo de {{ puntaje_minimo }} contra tu perfil — lo que aparece acá arriba ya pasó ese
+    filtro. Los 5 portales de esta sección son búsquedas manuales de apoyo, no ingesta automática.
+  </p>
+</div>
+</body>
+</html>

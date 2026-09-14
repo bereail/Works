@@ -10,6 +10,9 @@ node_modules/
 .env
 .clave_sesion
 
+# Contactos/datos reales de terceros — nunca al repo público (es público en GitHub)
+freelancer/clientes-freelance/privado/
+
 # Logs y cachés
 *.log
 .pytest_cache/

@@ -15,6 +15,38 @@ router = APIRouter()
 
 ESTADOS_ACTIVOS = ["por_postular", "postulada", "en_conversacion"]
 ESTADOS_CERRADOS = ["ganada", "rechazada", "descartada"]
+ESTADOS_PARA_POSTULARSE = ["nueva", "por_postular"]
+
+# Accesos directos a búsquedas ya armadas en portales que no tienen API pública
+# (por eso no se ingieren automático, coherente con no scrapear lo que lo prohíbe
+# en sus términos) — Berenice hace un click y revisa/postula a mano ahí mismo.
+PORTALES_BUSQUEDA_MANUAL = [
+    {
+        "nombre": "Computrabajo",
+        "url": "https://ar.computrabajo.com/trabajo-de-desarrollador-full-stack-remoto",
+        "descripcion": "El más grande en Argentina — conviene revisarlo seguido.",
+    },
+    {
+        "nombre": "Bumeran",
+        "url": "https://www.bumeran.com.ar/busquedas.html?q=desarrollador+full+stack+remoto",
+        "descripcion": "Fuerte en PyMEs e instituciones locales.",
+    },
+    {
+        "nombre": "ZonaJobs",
+        "url": "https://www.zonajobs.com.ar/empleos-busqueda-desarrollador-full-stack-remoto.html",
+        "descripcion": "Mismo grupo que Bumeran, avisos distintos igual.",
+    },
+    {
+        "nombre": "LinkedIn Jobs",
+        "url": "https://www.linkedin.com/jobs/search/?keywords=full%20stack%20django%20react&location=Argentina&f_WT=2",
+        "descripcion": "Filtrado por remoto — buscá también \"contract\"/\"freelance\".",
+    },
+    {
+        "nombre": "Indeed Argentina",
+        "url": "https://ar.indeed.com/jobs?q=desarrollador+full+stack+remoto&l=Argentina",
+        "descripcion": "Agrega avisos que no están en los otros cuatro.",
+    },
+]
 
 
 @router.get("/")
@@ -49,6 +81,23 @@ def listado_ofertas(request: Request, estado: str = "", aviso: str = "", sesion:
         "total_bandeja": _contar_bandeja(sesion),
         "aviso": aviso,
         "fuentes": _estado_de_fuentes(sesion),
+        "puntaje_minimo": relevancia.PUNTAJE_MINIMO,
+    })
+
+
+@router.get("/postulaciones")
+def pantalla_postulaciones(request: Request, sesion: Session = Depends(obtener_sesion)):
+    """Todo lo que tiene sentido postular ya, en un solo lugar: un click abre el
+    aviso original en su sitio para que Berenice se postule ahí (no lo hace esta
+    app), y otro click acá lo marca como ya postulado."""
+    consulta = (
+        sesion.query(OportunidadFreelance)
+        .filter(OportunidadFreelance.estado.in_(ESTADOS_PARA_POSTULARSE))
+        .order_by(OportunidadFreelance.puntaje.desc(), OportunidadFreelance.fecha_encontrada.desc())
+    )
+    return templates.TemplateResponse(request, "freelancer_postulaciones.html", {
+        "ofertas": consulta.all(),
+        "portales": PORTALES_BUSQUEDA_MANUAL,
         "puntaje_minimo": relevancia.PUNTAJE_MINIMO,
     })
 

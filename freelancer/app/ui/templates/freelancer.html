@@ -83,19 +83,27 @@
   </div>
 
   <div class="subtitulo-seccion">Búsqueda de oportunidades</div>
-  <a href="/ofertas?estado=nueva" class="tarjeta interactiva" style="display:flex; justify-content:space-between; align-items:center; text-decoration:none; color:inherit;">
+  <a href="/postulaciones" class="tarjeta interactiva" style="display:flex; justify-content:space-between; align-items:center; text-decoration:none; color:inherit; border-left: 3px solid var(--color-acento);">
     <div>
       <p style="margin:0; font-size:16px; font-weight:600;">
-        📋 Ofertas y postulaciones
-        {% if total_bandeja %}<span class="badge badge-amarillo" style="margin-left:8px;">{{ total_bandeja }} sin revisar</span>{% endif %}
+        🚀 Postulaciones
+        {% if total_bandeja %}<span class="badge badge-amarillo" style="margin-left:8px;">{{ total_bandeja }} para postular</span>{% endif %}
       </p>
       <p class="texto-suave" style="margin:4px 0 0; font-size:13px;">
-        {% if total_bandeja %}
-          Llegaron solas desde las fuentes públicas conectadas.{% if total_ofertas_activas %} Además tenés {{ total_ofertas_activas }} en seguimiento activo.{% endif %}
-        {% elif total_ofertas_activas %}
+        Todo lo que ya pasó el filtro, con un click directo al aviso original para postularte — y accesos a Computrabajo, Bumeran, ZonaJobs, LinkedIn e Indeed.
+      </p>
+    </div>
+    <div class="flecha texto-suave">Ver →</div>
+  </a>
+
+  <a href="/ofertas" class="tarjeta interactiva mt-24" style="display:flex; justify-content:space-between; align-items:center; text-decoration:none; color:inherit;">
+    <div>
+      <p style="margin:0; font-size:16px; font-weight:600;">📋 Historial completo de ofertas</p>
+      <p class="texto-suave" style="margin:4px 0 0; font-size:13px;">
+        {% if total_ofertas_activas %}
           {{ total_ofertas_activas }} oferta{{ 's' if total_ofertas_activas != 1 else '' }} en seguimiento activo.
         {% else %}
-          Get on Board, Remote OK, Remotive y We Work Remotely se consultan solas cada 6 horas.
+          Todos los estados: postuladas, en conversación, ganadas, rechazadas y descartadas.
         {% endif %}
       </p>
     </div>

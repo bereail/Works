@@ -96,6 +96,24 @@ proyectos reales y las 3 piezas de portafolio ya existentes — nada inventado.
 Ejecución (mandar mensajes de verdad) queda en manos de Berenice; próxima sesión
 sobre esto: revisar qué canal tuvo respuesta y ajustar.
 
+## Sección "Postulaciones" (agregada 2026-09-14)
+Nueva pantalla en `http://127.0.0.1:8002/postulaciones` (ruta `GET /postulaciones` en
+`freelancer/app/ui/routers/freelancer.py`, plantilla
+`freelancer_postulaciones.html`): junta todo lo que está en bandeja o marcado
+"por postular" (estados `nueva`/`por_postular`), ordenado por puntaje, con un botón
+grande **"🚀 Postularme →"** que abre el aviso original en una pestaña nueva —
+Berenice se postula ahí, la app no postula sola, solo lleva la cuenta ("Ya me
+postulé" marca el estado). Al pie suma **5 accesos directos de búsqueda manual**
+(Computrabajo, Bumeran, ZonaJobs, LinkedIn Jobs, Indeed Argentina) con URLs de
+búsqueda ya armadas para su perfil (full stack, Django/React, remoto) —
+**no son fuentes de ingesta automática**, esos portales no tienen API pública y el
+proyecto explícitamente no scrapea lo que los términos de cada plataforma prohíben
+(mismo criterio que las 4 fuentes ya conectadas). El home (`freelancer.html`) ahora
+enlaza primero a `/postulaciones` y aparte a `/ofertas` (historial completo, todos
+los estados). Se corrió la ingesta de las 4 fuentes ese día: 0 ofertas nuevas, pero
+quedaron 39 en bandeja sin revisar de corridas previas, visibles ya en
+`/postulaciones`.
+
 ## Pendientes / próximos pasos
 - Definir y arrancar Fase 3 (Matching Engine) — hoy el filtro de relevancia de la
   Fase 2b es un adelanto mínimo (palabras clave), no el motor completo.

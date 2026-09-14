@@ -55,7 +55,15 @@ para detectar freelance/part-time (Fase 2b). Matching Engine real (Fase 3)
 todavía no arrancó. Detalle: `memoria/FREELANCE.md`.
 
 ## Últimas decisiones (ver `historial/decisiones.md` para el detalle completo)
-- **2026-09-11 (más reciente):** revisando publicaciones generadas en vivo, Berenice
+- **2026-09-14 (más reciente):** FREELANCE — se agregó la sección
+  `http://127.0.0.1:8002/postulaciones`: todas las oportunidades con puntaje
+  suficiente, un click "Postularme →" abre el aviso original para que Berenice se
+  postule ella misma, más 5 accesos directos de búsqueda manual (Computrabajo,
+  Bumeran, ZonaJobs, LinkedIn Jobs, Indeed) — no ingesta automática, esos portales no
+  tienen API pública. Se corrió la ingesta de las 4 fuentes conectadas (0 nuevas ese
+  día, 39 en bandeja de corridas previas ya visibles ahí). Detalle en
+  `memoria/FREELANCE.md`.
+- **2026-09-11:** revisando publicaciones generadas en vivo, Berenice
   aclaró que el botón "Publicar" de Instagram tiene que publicar de verdad
   automatizando el navegador con su sesión ya logueada — el kit manual (copiar/
   descargar) fue un paso intermedio, no el diseño final. Corrigió también la voz de
