@@ -114,6 +114,19 @@ los estados). Se corrió la ingesta de las 4 fuentes ese día: 0 ofertas nuevas,
 quedaron 39 en bandeja sin revisar de corridas previas, visibles ya en
 `/postulaciones`.
 
+## Filtro corregido: presencial/híbrido fuera de Argentina (2026-09-14)
+Al revisar la bandeja con Berenice, 14 de las 39 ofertas eran presenciales o
+híbridas en Chile — el filtro de `relevancia.py` sumaba puntos por "Chile" como
+mercado cercano sin chequear que el puesto fuera remoto, así que rankeaban alto
+avisos que en la práctica son inviables (no se muda por un trabajo full-time).
+Se descartaron esas 14 a mano y se corrigió `relevancia.py`: ahora cualquier aviso
+que mencione "presencial"/"híbrido" y no mencione "Argentina"/"Rosario" queda
+tapado por debajo del puntaje mínimo (mismo mecanismo que el stack o el rol ajeno),
+así que la próxima ingesta automática ya no los vuelve a traer. Híbrido/presencial
+dentro de Argentina no se toca (sigue siendo una opción real). 67 tests pasan
+(se ajustó 1 test que esperaba el texto viejo del badge del inicio, "sin revisar" →
+"para postular", por el cambio de copy de la sección Postulaciones).
+
 ## Pendientes / próximos pasos
 - Definir y arrancar Fase 3 (Matching Engine) — hoy el filtro de relevancia de la
   Fase 2b es un adelanto mínimo (palabras clave), no el motor completo.

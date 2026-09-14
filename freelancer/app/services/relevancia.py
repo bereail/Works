@@ -12,6 +12,11 @@ Criterios que vienen del master context (no inventados):
 - Mercado español / LatAm por sobre plataformas internacionales en inglés.
 - Capacidad real de 5-10 hs/semana: part-time, freelance y por proyecto valen más
   que un full-time en relación de dependencia.
+- Full-time fijo/presencial no cuenta como oportunidad válida. Presencial o híbrido
+  fuera de Argentina es directamente inviable (no hay forma de mudarse por un
+  trabajo full-time) y se descarta, aunque mencione Chile/LatAm como "mercado
+  cercano" (2026-09-14, después de que 14 avisos presenciales/híbridos de Chile se
+  colaron en la bandeja solo por nombrar el país).
 """
 
 import re
@@ -140,6 +145,11 @@ ROLES_AJENOS = {
 # priorizar todavía (inglés técnico básico). No se descartan, pero pesan menos.
 FUENTES_INTERNACIONALES = {"remoteok", "remotive", "weworkremotely"}
 
+# Presencial/híbrido fuera de Argentina es inviable para ella (no se muda por un
+# trabajo full-time) — se trata como descarte efectivo, igual que el stack ajeno.
+MODALIDAD_NO_REMOTA = {"presencial", "hibrido", "híbrido"}
+MERCADO_PROPIO = {"argentina", "rosario"}
+
 
 def contiene(termino: str, texto: str) -> bool:
     """Busca el término como palabra entera.
@@ -210,8 +220,15 @@ def calcular_puntaje(oferta: OfertaExterna, fuente: str = "") -> int:
     if fuente in FUENTES_INTERNACIONALES:
         puntaje -= 5
 
+    # Presencial/híbrido fuera de Argentina no es una opción real, sin importar qué
+    # tan cerca esté "el mercado" (Chile suma puntos en MERCADO_CERCANO, pero eso es
+    # para trabajo remoto en ese mercado, no para ir a una oficina ahí).
+    es_no_remota = any(contiene(t, texto) for t in MODALIDAD_NO_REMOTA)
+    es_en_argentina = any(contiene(t, texto) for t in MERCADO_PROPIO)
+    hay_presencial_fuera_de_argentina = es_no_remota and not es_en_argentina
+
     puntaje = max(0, min(100, puntaje))
-    if hay_stack_ajeno or hay_rol_ajeno:
+    if hay_stack_ajeno or hay_rol_ajeno or hay_presencial_fuera_de_argentina:
         puntaje = min(puntaje, PUNTAJE_MINIMO - 1)
     return puntaje
 

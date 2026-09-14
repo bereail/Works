@@ -76,11 +76,11 @@ class TestPantallas:
         texto = api.get(f"/ofertas?estado={ESTADO_BANDEJA}").text
         assert texto.index("Mas afin") < texto.index("Menos afin")
 
-    def test_el_inicio_avisa_cuantas_hay_sin_revisar(self, cliente):
+    def test_el_inicio_avisa_cuantas_hay_para_postular(self, cliente):
         api, fabrica = cliente
         guardar(fabrica, estado=ESTADO_BANDEJA, origen="importada")
 
-        assert "1 sin revisar" in api.get("/").text
+        assert "1 para postular" in api.get("/").text
 
 
 class TestPipeline:
